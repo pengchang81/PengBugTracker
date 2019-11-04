@@ -1,19 +1,26 @@
-﻿@model
+﻿@model IEnumerable<PengBugTracker.Models.ManageRolesViewModel>
 @{ 
     ViewBag.Title = "ManageRoles";
+    
 }
 
 <style>
     .cntrlWide{
         width:100%;
+        max-width: 100%;
     }
+
+    .IstBoxTall{
+        height: 500px;
+    }
+
 
 </style>
 
 
 
 
-<h2>ManageRoles</h2>
+<h2>Manage Roles</h2>
 
 <div class="row">
     <div class="col-md-6">
@@ -22,8 +29,9 @@
         @Html.AntiForgeryToken()
 
         <div class="row">
-            <div class="col-md-12">Multi select list</div>
-            @Html.ListBox("UserIds", null, new { @class = "cntrlWide" })
+            <div class="col-md-12">
+                @Html.ListBox("UserIds", null, new { @class = "cntrlWide" })
+            </div>
         </div>
         <div class="row">
             <div class="col-md-12">
@@ -54,10 +62,10 @@
             {
                 <tr>                    
                     <td>
-                        @Html.DisplayFor()
+                        @Html.DisplayFor(model => user.UserName)
                     </td>
                     <td>
-                        @Html.DisplayFor()
+                        @Html.DisplayFor(model => user.RoleName)
                     </td>
                     
                 </tr>

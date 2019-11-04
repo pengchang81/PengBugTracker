@@ -15,6 +15,7 @@ namespace PengBugTracker.Helpers
         private UserManager<ApplicationUser> userManager = 
             new UserManager<ApplicationUser>(new UserStore<ApplicationUser>(
                 new ApplicationDbContext()));
+        
 
         private ApplicationDbContext db = new ApplicationDbContext();
         public bool IsUserInRole(string userId, string roleName)

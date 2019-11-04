@@ -1,4 +1,20 @@
-﻿<!DOCTYPE html>
+﻿@using Microsoft.AspNet.Identity
+@using PengBugTracker.Models
+@using PengBugTracker.Helpers
+@{ 
+    var userId = User.Identity.GetUserId();
+    var db = new ApplicationDbContext();
+    ApplicationUser user = new ApplicationUser();
+    String cUserRole = string.Empty;
+    if (!string.IsNullOrEmpty(userId))
+    {
+        user = db.Users.Find(userId);
+        RoleHelper roleHelper = new RoleHelper();
+        cUserRole = roleHelper.ListUserRoles(userId).FirstOrDefault();
+    }
+}
+
+<!DOCTYPE html>
 <html lang="en">
 
 <head>
@@ -18,6 +34,9 @@
     <!-- CSS Files -->
     <link href="~/Content/css/material-dashboard.css?v=2.1.0" rel="stylesheet" />
 
+    <!--JQuery DataTables Reference-->
+    <link href="~/Content/jquery.dataTables.css" rel="stylesheet" />
+
     <!-- CSS Just for demo purpose, don't include it in your project -->
     <link href="~/Content/demo.css" rel="stylesheet" />
 
@@ -32,47 +51,64 @@
                 Tip 2: you can also add an image using data-image tag
             -->
             <div class="logo">
-                <a href="http://www.creative-tim.com" class="simple-text logo-normal">Peng Chang</a>
+                <a href="http://www.creative-tim.com" class="simple-text logo-normal">Peng's Bug Tracker</a>
             </div>
             <div class="sidebar-wrapper">
-                <div class="user">
-                    <div class="photo">
-                        <img src="~/img/faces/avatar.jpg" />
-                    </div>
-                    <div class="user-info">
-                        <a data-toggle="collapse" href="#collapseExample" class="username">
-                            <span>
-                                Bug Tracker
-                                <b class="caret"></b>
-                            </span>
-                        </a>
-                        <div class="collapse" id="collapseExample">
-                            <ul class="nav">
-                                <li class="nav-item">
-                                    <a class="nav-link" href="#">
-                                        <span class="sidebar-mini"> MP </span>
-                                        <span class="sidebar-normal"> My Profile </span>
-                                    </a>
-                                </li>
-                                <li class="nav-item">
-                                    <a class="nav-link" href="#">
-                                        <span class="sidebar-mini"> EP </span>
-                                        <span class="sidebar-normal"> Edit Profile </span>
-                                    </a>
-                                </li>
-                                <li class="nav-item">
-                                    <a class="nav-link" href="#">
-                                        <span class="sidebar-mini"> S </span>
-                                        <span class="sidebar-normal"> Settings </span>
-                                    </a>
-                                </li>
-                            </ul>
+                @if (user != null)
+                {
+                    <div class="user">
+                        <div class="photo">
+                            @if (!string.IsNullOrEmpty(user.AvatarUrl))
+                            {
+                                <img src="@Url.Content(user.AvatarUrl)" alt ="@user.FirstName" class="img-responsive avatar" />
+                            }
+                            else
+                            {
+                                <img src="@Url.Content("~/Uploads/Default-avatar.jpg")" class="img-responsive avatar" />
+                            }
+                        </div>
+                        <div class="user-info">
+                            <a data-toggle="collapse" href="#collapseExample" class="username">
+                                <span>
+                                    @Html.DisplayFor(m => user.FirstName)
+                                    @Html.DisplayFor(m => user.LastName)
+                                    <b class="caret"></b>
+                                </span>
+
+                                <span>
+                                    @cUserRole
+                                    <b class="caret"></b>
+                                </span>
+                            </a>
+                            
+                            <div class="collapse" id="collapseExample">
+                                <ul class="nav">
+                                    <li class="nav-item">
+                                        <a class="nav-link" href="#">
+                                            <span class="sidebar-mini"> MP </span>
+                                            <span class="sidebar-normal"> My Profile </span>
+                                        </a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a class="nav-link" href="#">
+                                            <span class="sidebar-mini"> EP </span>
+                                            <span class="sidebar-normal"> Edit Profile </span>
+                                        </a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a class="nav-link" href="#">
+                                            <span class="sidebar-mini"> S </span>
+                                            <span class="sidebar-normal"> Settings </span>
+                                        </a>
+                                    </li>
+                                </ul>
+                            </div>
                         </div>
                     </div>
-                </div>
+                 }
                 <ul class="nav">
                     <li class="nav-item active ">
-                        <a class="nav-link" href="../examples/dashboard.html">
+                        <a class="nav-link" href="@Url.Action("Dashboard", "Home")">
                             <i class="material-icons">dashboard</i>
                             <p> Dashboard </p>
                         </a>
@@ -81,60 +117,25 @@
                         <a class="nav-link" data-toggle="collapse" href="#pagesExamples">
                             <i class="material-icons">image</i>
                             <p>
-                                Pages
+                                User Administration
                                 <b class="caret"></b>
                             </p>
                         </a>
                         <div class="collapse" id="pagesExamples">
                             <ul class="nav">
                                 <li class="nav-item ">
-                                    <a class="nav-link" href="../examples/pages/pricing.html">
+                                    <a class="nav-link" href="@Url.Action("UserIndex", "Admin")">
                                         <span class="sidebar-mini"> P </span>
-                                        <span class="sidebar-normal"> Pricing </span>
+                                        <span class="sidebar-normal"> User Index </span>
                                     </a>
                                 </li>
                                 <li class="nav-item ">
-                                    <a class="nav-link" href="../examples/pages/rtl.html">
+                                    <a class="nav-link" href="@Url.Action("ManageRoles", "Admin")">
                                         <span class="sidebar-mini"> RS </span>
-                                        <span class="sidebar-normal"> RTL Support </span>
+                                        <span class="sidebar-normal"> Manage Roles </span>
                                     </a>
                                 </li>
-                                <li class="nav-item ">
-                                    <a class="nav-link" href="../examples/pages/timeline.html">
-                                        <span class="sidebar-mini"> T </span>
-                                        <span class="sidebar-normal"> Timeline </span>
-                                    </a>
-                                </li>
-                                <li class="nav-item ">
-                                    <a class="nav-link" href="../examples/pages/login.html">
-                                        <span class="sidebar-mini"> LP </span>
-                                        <span class="sidebar-normal"> Login Page </span>
-                                    </a>
-                                </li>
-                                <li class="nav-item ">
-                                    <a class="nav-link" href="../examples/pages/register.html">
-                                        <span class="sidebar-mini"> RP </span>
-                                        <span class="sidebar-normal"> Register Page </span>
-                                    </a>
-                                </li>
-                                <li class="nav-item ">
-                                    <a class="nav-link" href="../examples/pages/lock.html">
-                                        <span class="sidebar-mini"> LSP </span>
-                                        <span class="sidebar-normal"> Lock Screen Page </span>
-                                    </a>
-                                </li>
-                                <li class="nav-item ">
-                                    <a class="nav-link" href="../examples/pages/user.html">
-                                        <span class="sidebar-mini"> UP </span>
-                                        <span class="sidebar-normal"> User Profile </span>
-                                    </a>
-                                </li>
-                                <li class="nav-item ">
-                                    <a class="nav-link" href="../examples/pages/error.html">
-                                        <span class="sidebar-mini"> E </span>
-                                        <span class="sidebar-normal"> Error Page </span>
-                                    </a>
-                                </li>
+                                
                             </ul>
                         </div>
                     </li>
@@ -407,264 +408,14 @@
             <!-- End Navbar -->
             <div class="content">
                 @RenderBody()
-                <div class="content">
-                    <div class="container-fluid">
-                        <div class="row">
-                            <div class="col-md-12">
-                                <div class="card ">
-                                    <div class="card-header card-header-success card-header-icon">
-                                        <div class="card-icon">
-                                            <i class="material-icons"></i>
-                                        </div>
-                                        <h4 class="card-title">Global Sales by Top Locations</h4>
-                                    </div>
-                                    <div class="card-body ">
-                                        <div class="row">
-                                            <div class="col-md-6">
-                                                <div class="table-responsive table-sales">
-                                                    <table class="table">
-                                                        <tbody>
-                                                            <tr>
-                                                                <td>
-                                                                    <div class="flag">
-                                                                        <img src="~/img/flags/US.png" />
-                                                                    </div>
-                                                                </td>
-                                                                <td>USA</td>
-                                                                <td class="text-right">
-                                                                    2.920
-                                                                </td>
-                                                                <td class="text-right">
-                                                                    53.23%
-                                                                </td>
-                                                            </tr>
-                                                            <tr>
-                                                                <td>
-                                                                    <div class="flag">
-                                                                        <img src="~/img/flags/DE.png" />
-                                                                    </div>
-                                                                </td>
-                                                                <td>Germany</td>
-                                                                <td class="text-right">
-                                                                    1.300
-                                                                </td>
-                                                                <td class="text-right">
-                                                                    20.43%
-                                                                </td>
-                                                            </tr>
-                                                            <tr>
-                                                                <td>
-                                                                    <div class="flag">
-                                                                        <img src="~/img/flags/AU.png" />
-                                                                    </div>
-                                                                </td>
-                                                                <td>Australia</td>
-                                                                <td class="text-right">
-                                                                    760
-                                                                </td>
-                                                                <td class="text-right">
-                                                                    10.35%
-                                                                </td>
-                                                            </tr>
-                                                            <tr>
-                                                                <td>
-                                                                    <div class="flag">
-                                                                        <img src="~/img/flags/GB.png" />
-                                                                    </div>
-                                                                </td>
-                                                                <td>United Kingdom</td>
-                                                                <td class="text-right">
-                                                                    690
-                                                                </td>
-                                                                <td class="text-right">
-                                                                    7.87%
-                                                                </td>
-                                                            </tr>
-                                                            <tr>
-                                                                <td>
-                                                                    <div class="flag">
-                                                                        <img src="~/img/flags/RO.png" />
-                                                                    </div>
-                                                                </td>
-                                                                <td>Romania</td>
-                                                                <td class="text-right">
-                                                                    600
-                                                                </td>
-                                                                <td class="text-right">
-                                                                    5.94%
-                                                                </td>
-                                                            </tr>
-                                                            <tr>
-                                                                <td>
-                                                                    <div class="flag">
-                                                                        <img src="~/img/flags/BR.png" />
-                                                                    </div>
-                                                                </td>
-                                                                <td>Brasil</td>
-                                                                <td class="text-right">
-                                                                    550
-                                                                </td>
-                                                                <td class="text-right">
-                                                                    4.34%
-                                                                </td>
-                                                            </tr>
-                                                        </tbody>
-                                                    </table>
-                                                </div>
-                                            </div>
-                                            <div class="col-md-6 ml-auto mr-auto">
-                                                <div id="worldMap" style="height: 300px;"></div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <!-- <button type="button" class="btn btn-round btn-default dropdown-toggle btn-link" data-toggle="dropdown">
-                        7 days
-                        </button> -->
-                                               
-                        
-                    </div>
-                </div>
             </div>
-            <footer class="footer">
-                <div class="container-fluid">
-                    <nav class="float-left">
-                        <ul>                            
-                            <li>
-                                <a href="https://creative-tim.com/presentation">
-                                    About Us
-                                </a>
-                            </li>
-                            <li>
-                                <a href="http://blog.creative-tim.com">
-                                    Blog
-                                </a>
-                            </li>
-                            <li>
-                                <a href="https://www.creative-tim.com/license">
-                                    Licenses
-                                </a>
-                            </li>
-                        </ul>
-                    </nav>
-                    <div class="copyright float-center">
-                        &copy;
-                        <script>document.write(new Date().getFullYear())</script> made by Peng Chang
-                    </div>
-                </div>
-            </footer>
         </div>
     </div>
-    <div class="fixed-plugin">
-        <div class="dropdown show-dropdown">
-            <a href="#" data-toggle="dropdown">
-                <i class="fa fa-cog fa-2x"> </i>
-            </a>
-            <ul class="dropdown-menu">
-                <li class="header-title"> Sidebar Filters</li>
-                <li class="adjustments-line">
-                    <a href="javascript:void(0)" class="switch-trigger active-color">
-                        <div class="badge-colors ml-auto mr-auto">
-                            <span class="badge filter badge-purple" data-color="purple"></span>
-                            <span class="badge filter badge-azure" data-color="azure"></span>
-                            <span class="badge filter badge-green" data-color="green"></span>
-                            <span class="badge filter badge-warning" data-color="orange"></span>
-                            <span class="badge filter badge-danger" data-color="danger"></span>
-                            <span class="badge filter badge-rose active" data-color="rose"></span>
-                        </div>
-                        <div class="clearfix"></div>
-                    </a>
-                </li>
-                <li class="header-title">Sidebar Background</li>
-                <li class="adjustments-line">
-                    <a href="javascript:void(0)" class="switch-trigger background-color">
-                        <div class="ml-auto mr-auto">
-                            <span class="badge filter badge-black active" data-background-color="black"></span>
-                            <span class="badge filter badge-white" data-background-color="white"></span>
-                            <span class="badge filter badge-red" data-background-color="red"></span>
-                        </div>
-                        <div class="clearfix"></div>
-                    </a>
-                </li>
-                <li class="adjustments-line">
-                    <a href="javascript:void(0)" class="switch-trigger">
-                        <p>Sidebar Mini</p>
-                        <label class="ml-auto">
-                            <div class="togglebutton switch-sidebar-mini">
-                                <label>
-                                    <input type="checkbox">
-                                    <span class="toggle"></span>
-                                </label>
-                            </div>
-                        </label>
-                        <div class="clearfix"></div>
-                    </a>
-                </li>
-                <li class="adjustments-line">
-                    <a href="javascript:void(0)" class="switch-trigger">
-                        <p>Sidebar Images</p>
-                        <label class="switch-mini ml-auto">
-                            <div class="togglebutton switch-sidebar-image">
-                                <label>
-                                    <input type="checkbox" checked="">
-                                    <span class="toggle"></span>
-                                </label>
-                            </div>
-                        </label>
-                        <div class="clearfix"></div>
-                    </a>
-                </li>
-                <li class="header-title">Images</li>
-                <li class="active">
-                    <a class="img-holder switch-trigger" href="javascript:void(0)">
-                        <img src="~/img/sidebar-1.jpg" alt="">
-                    </a>
-                </li>
-                <li>
-                    <a class="img-holder switch-trigger" href="javascript:void(0)">
-                        <img src="~/img/sidebar-2.jpg" alt="">
-                    </a>
-                </li>
-                <li>
-                    <a class="img-holder switch-trigger" href="javascript:void(0)">
-                        <img src="~/img/sidebar-3.jpg" alt="">
-                    </a>
-                </li>
-                <li>
-                    <a class="img-holder switch-trigger" href="javascript:void(0)">
-                        <img src="~/img/sidebar-4.jpg" alt="">
-                    </a>
-                </li>
-                <li class="button-container">
-                    <a href="https://www.creative-tim.com/product/material-dashboard-pro" target="_blank" class="btn btn-rose btn-block btn-fill">Buy Now</a>
-                    <a href="https://demos.creative-tim.com/material-dashboard-pro/docs/2.1/getting-started/introduction.html" target="_blank" class="btn btn-default btn-block">
-                        Documentation
-                    </a>
-                    <a href="https://www.creative-tim.com/product/material-dashboard" target="_blank" class="btn btn-info btn-block">
-                        Get Free Demo!
-                    </a>
-                </li>
-                <li class="button-container github-star">
-                    <a class="github-button" href="https://github.com/creativetimofficial/ct-material-dashboard-pro" data-icon="octicon-star" data-size="large" data-show-count="true" aria-label="Star ntkme/github-buttons on GitHub">Star</a>
-                </li>
-                <li class="header-title">Thank you for 95 shares!</li>
-                <li class="button-container text-center">
-                    <button id="twitter" class="btn btn-round btn-twitter"><i class="fa fa-twitter"></i> &middot; 45</button>
-                    <button id="facebook" class="btn btn-round btn-facebook"><i class="fa fa-facebook-f"></i> &middot; 50</button>
-                    <br>
-                    <br>
-                </li>
-            </ul>
-        </div>
-    </div>
+
     <!--   Core JS Files   -->
     <script src="~/Scripts/js/core/jquery.min.js"></script>
     <script src="~/Scripts/js/core/popper.min.js"></script>
     <script src="~/Scripts/js/core/bootstrap-material-design.min.js"></script>
-
-
     <script src="~/Scripts/js/plugins/perfect-scrollbar.jquery.min.js"></script>
     <!-- Plugin for the momentJs  -->
     <script src="~/Scripts/js/plugins/moment.min.js"></script>
@@ -704,6 +455,13 @@
     <script src="~/Scripts/js/material-dashboard.js?v=2.1.0" type="text/javascript"></script>
     <!-- Material Dashboard DEMO methods, don't include it in your project! -->
     <script src="~/Scripts/demo.js"></script>
+
+    @*<script src="~/Scripts/jquery.dataTables.min.js"></script>*@
+
+    <script>
+        //format All tables by class selector
+        $('#demotable').DataTable();
+    </script>
 
     <script>
         $(document).ready(function () {
