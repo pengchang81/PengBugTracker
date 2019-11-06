@@ -11,7 +11,9 @@ namespace PengBugTracker.Helpers
     {
         public class ProjectsHelper
         {
-            ApplicationDbContext db = new ApplicationDbContext();
+            private ApplicationDbContext db = new ApplicationDbContext();
+            private RoleHelper roleHelper = new RoleHelper();
+
             public bool IsUserOnProject(string userId, int projectId)
             {
                 var project = db.Projects.Find(projectId);

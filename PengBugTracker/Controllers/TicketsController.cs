@@ -6,6 +6,7 @@ using System.Linq;
 using System.Net;
 using System.Web;
 using System.Web.Mvc;
+using PengBugTracker.Helpers;
 using PengBugTracker.Models;
 
 namespace PengBugTracker.Controllers
@@ -13,10 +14,16 @@ namespace PengBugTracker.Controllers
     public class TicketsController : Controller
     {
         private ApplicationDbContext db = new ApplicationDbContext();
+        private TicketHelper ticketHelper = new TicketHelper();
+        private RoleHelper roleHelper = new RoleHelper();
 
         // GET: Tickets
+        [Authorize]
         public ActionResult Index()
         {
+            //What role do I occupy
+            return View(ticketHelper.ListMyTickets());
+
             var tickets = db.Tickets.Include(t => t.AssignedToUser).Include(t => t.OwnerUser).Include(t => t.Project).Include(t => t.TicketPriority).Include(t => t.TicketStatus).Include(t => t.TicketType);
             return View(tickets.ToList());
         }

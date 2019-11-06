@@ -14,6 +14,8 @@ namespace PengBugTracker.Models
         public int TicketStatusId { get; set; }
         public string OwnerUserId { get; set; }
         public string AssignedToUserId { get; set; }
+        public string DeveloperId { get; set; }
+        public string SubmitterId { get; set; }
 
         public string Title { get; set; }
         public string Description { get; set; }

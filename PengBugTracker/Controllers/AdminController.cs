@@ -9,13 +9,11 @@ using PengBugTracker.Models;
 namespace PengBugTracker.Controllers
 {
     public class AdminController : Controller
-    {
-        
+    {        
         private ApplicationDbContext db = new ApplicationDbContext();
         private RoleHelper roleHelper = new RoleHelper();
         private ProjectHelper projectHelper = new ProjectHelper();
-
-       
+               
         // GET: Admin
         public ActionResult UserIndex()
         {
@@ -29,10 +27,8 @@ namespace PengBugTracker.Controllers
                 Email = u.Email
             }).ToList();
 
-            return View(users);
-            
+            return View(users);            
         }
-
 
         public ActionResult ManageRoles()
         {
@@ -50,8 +46,6 @@ namespace PengBugTracker.Controllers
             }
             return View(users);
         }
-
-
 
         [HttpPost]
         [ValidateAntiForgeryToken]
