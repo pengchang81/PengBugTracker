@@ -22,7 +22,7 @@ namespace PengBugTracker.Helpers
             var userId = HttpContext.Current.User.Identity.GetUserId();
             var user = db.Users.Find(userId);
 
-            //Step 1: Obtain my role or Determine my role
+            //Step 1: Determine my role
             var myRole = roleHelper.ListUserRoles(userId).FirstOrDefault();
 
             //Step 2: Use that role to build the appropriate set of Tickets
@@ -66,5 +66,4 @@ namespace PengBugTracker.Helpers
             return myTickets;                                                        
         }
     }
-
 }
