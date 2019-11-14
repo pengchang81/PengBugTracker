@@ -20,8 +20,8 @@ namespace PengBugTracker.Helpers
                 using (var img = Image.FromStream(file.InputStream))
                 {
                     return ImageFormat.Jpeg.Equals(img.RawFormat) ||
-                    ImageFormat.Png.Equals(img.RawFormat) ||
-                   ImageFormat.Gif.Equals(img.RawFormat);
+                            ImageFormat.Png.Equals(img.RawFormat) ||
+                            ImageFormat.Gif.Equals(img.RawFormat);
                 }
             }
             catch

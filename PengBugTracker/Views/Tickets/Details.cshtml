@@ -3,7 +3,31 @@
 @{
     ViewBag.Title = "Details";
 }
+<div>
 
+    @foreach (var comment in Model.TicketComments)
+    {
+
+            <p>
+                Comments Section
+            </p> 
+    }
+</div>
+
+@using(Html.BeginForm("Create","TicketComments", FormMethod.Post))
+{
+
+}
+@foreach (var com in Model.TicketAttachments)
+{
+    @com.FilePath
+    @com.Created
+}
+@foreach (var commen in Model.TicketHistories)
+{
+    @commen.OldValue
+    @commen.NewValue
+}
 <h2>Details</h2>
 
 <div>

@@ -150,11 +150,32 @@ namespace PengBugTracker.Controllers
         [HttpPost]
         [AllowAnonymous]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> Register(RegisterViewModel model)
+        public async Task<ActionResult> Register(RegisterViewModel model, HttpPostedFileBase avatar)
         {
             if (ModelState.IsValid)
             {
-                var user = new ApplicationUser { UserName = model.Email, Email = model.Email, FirstName = model.FirstName, LastName = model.LastName };
+                var user = new ApplicationUser 
+                { 
+                    UserName = model.Email, 
+                    Email = model.Email, 
+                    FirstName = model.FirstName, 
+                    LastName = model.LastName,
+                    AvatarUrl ="/Avatars/default_user.png"           
+                };
+
+                if(avatar != null)
+                {
+                    if (ImageUploadValidator.IsWebFriendlyImage(avatar))
+                    {
+
+                        var fileName = Path.GetFileName(avatar.FileName);
+                        var justFileName = Path.GetFileNameWithoutExtension(fileName);
+                        justFileName = StringUtilities.URLFriendly(justFileName);
+                        fileName = $"{justFileName} {DateTime.Now.Ticks}{Path.GetExtension(fileName)}";
+                        avatar.SaveAs(Path.Combine(Server.MapPath("~/Avatars/"), fileName));
+                        user.AvatarUrl = "/Uploads/" + fileName;
+                    }
+                }
                
                 if (ImageUploadValidator.IsWebFriendlyImage(model.Avatar))
                 {
@@ -300,39 +321,42 @@ namespace PengBugTracker.Controllers
         }
 
         //
-        // GET: /Account/SendCode
-        [AllowAnonymous]
-        public async Task<ActionResult> SendCode(string returnUrl, bool rememberMe)
-        {
-            var userId = await SignInManager.GetVerifiedUserIdAsync();
-            if (userId == null)
-            {
-                return View("Error");
-            }
-            var userFactors = await UserManager.GetValidTwoFactorProvidersAsync(userId);
-            var factorOptions = userFactors.Select(purpose => new SelectListItem { Text = purpose, Value = purpose }).ToList();
-            return View(new SendCodeViewModel { Providers = factorOptions, ReturnUrl = returnUrl, RememberMe = rememberMe });
-        }
+        // GET: /Account/SendCode ````````````````````````````````````````````````````````````
 
-        //
-        // POST: /Account/SendCode
-        [HttpPost]
-        [AllowAnonymous]
-        [ValidateAntiForgeryToken]
-        public async Task<ActionResult> SendCode(SendCodeViewModel model)
-        {
-            if (!ModelState.IsValid)
-            {
-                return View();
-            }
+        //[AllowAnonymous]
+        //public async Task<ActionResult> SendCode(string returnUrl, bool rememberMe)
+        //{
+        //    var userId = await SignInManager.GetVerifiedUserIdAsync();
+        //    if (userId == null)
+        //    {
+        //        return View("Error");
+        //    }
+        //    var userFactors = await UserManager.GetValidTwoFactorProvidersAsync(userId);
+        //    var factorOptions = userFactors.Select(purpose 
+                
+        //        new SelectListItem { Text = purpose, Value = purpose }).ToList();
+        //    return View(new SendCodeViewModel { Providers = factorOptions, ReturnUrl = returnUrl, RememberMe = rememberMe });
+        //}
 
-            // Generate the token and send it
-            if (!await SignInManager.SendTwoFactorCodeAsync(model.SelectedProvider))
-            {
-                return View("Error");
-            }
-            return RedirectToAction("VerifyCode", new { Provider = model.SelectedProvider, ReturnUrl = model.ReturnUrl, RememberMe = model.RememberMe });
-        }
+        ////
+        //// POST: /Account/SendCode
+        //[HttpPost]
+        //[AllowAnonymous]
+        //[ValidateAntiForgeryToken]
+        //public async Task<ActionResult> SendCode(SendCodeViewModel model)
+        //{
+        //    if (!ModelState.IsValid)
+        //    {
+        //        return View();
+        //    }
+
+        //    // Generate the token and send it
+        //    if (!await SignInManager.SendTwoFactorCodeAsync(model.SelectedProvider))
+        //    {
+        //        return View("Error");
+        //    }
+        //    return RedirectToAction("VerifyCode", new { Provider = model.SelectedProvider, ReturnUrl = model.ReturnUrl, RememberMe = model.RememberMe });
+        //}`````````````````````````````````````````````````````````````````````````````
 
         //
         // GET: /Account/ExternalLoginCallback

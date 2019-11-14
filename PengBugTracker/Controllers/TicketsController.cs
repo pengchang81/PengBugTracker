@@ -6,6 +6,7 @@ using System.Linq;
 using System.Net;
 using System.Web;
 using System.Web.Mvc;
+using Microsoft.AspNet.Identity;
 using PengBugTracker.Helpers;
 using PengBugTracker.Models;
 
@@ -16,6 +17,7 @@ namespace PengBugTracker.Controllers
         private ApplicationDbContext db = new ApplicationDbContext();
         private TicketHelper ticketHelper = new TicketHelper();
         private RoleHelper roleHelper = new RoleHelper();
+        private ProjectHelper projectHelper = new ProjectHelper();
 
         // GET: Tickets
         [Authorize]
@@ -46,9 +48,11 @@ namespace PengBugTracker.Controllers
         // GET: Tickets/Create
         public ActionResult Create()
         {
-            ViewBag.AssignedToUserId = new SelectList(db.Users, "Id", "FirstName");
-            ViewBag.OwnerUserId = new SelectList(db.Users, "Id", "FirstName");
-            ViewBag.ProjectId = new SelectList(db.Projects, "Id", "Name");
+            var userId = User.Identity.GetUserId();
+            var myProjects = projectHelper.ListUserProjects(userId);
+
+
+            ViewBag.ProjectId = new SelectList(myProjects, "Id", "Name");
             ViewBag.TicketPriorityId = new SelectList(db.TicketPriorities, "Id", "PriorityName");
             ViewBag.TicketStatusId = new SelectList(db.TicketStatus, "Id", "StatusName");
             ViewBag.TicketTypeId = new SelectList(db.TicketTypes, "Id", "TypeName");
@@ -60,10 +64,12 @@ namespace PengBugTracker.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "Id,ProjectId,TicketTypeId,TicketPriorityId,TicketStatusId,OwnerUserId,AssignedToUserId,Title,Description,Created,Updated")] Ticket ticket)
+        public ActionResult Create([Bind(Include = "Id,ProjectId,TicketTypeId,TicketPriorityId,TicketStatusId,OwnerUserId,Title,Description,Created")] Ticket ticket)
         {
             if (ModelState.IsValid)
             {
+                ticket.Created = DateTime.Now;
+                ticket.OwnerUserId = User.Identity.GetUserId();
                 db.Tickets.Add(ticket);
                 db.SaveChanges();
                 return RedirectToAction("Index");
@@ -108,8 +114,19 @@ namespace PengBugTracker.Controllers
         {
             if (ModelState.IsValid)
             {
+                //Record the old Ticket before it gets updated for comparison
+                //var oldTicket = db.Tickets.FInd(Ticket.Id);
+                var oldTicket = db.Tickets.AsNoTracking().FirstOrDefault(t => t.Id == ticket.Id);
+
+                ticket.Updated = DateTime.Now;
                 db.Entry(ticket).State = EntityState.Modified;
                 db.SaveChanges();
+
+                var newTicket = db.Tickets.AsNoTracking().FirstOrDefault(t => t.Id == ticket.Id);
+
+                //decide for yourself HistoryHelper as to whether a history record needs to be added...
+                //auditHelper.RecordHistoricalChanges(oldTicket, newTicket);
+
                 return RedirectToAction("Index");
             }
             ViewBag.AssignedToUserId = new SelectList(db.Users, "Id", "FirstName", ticket.AssignedToUserId);

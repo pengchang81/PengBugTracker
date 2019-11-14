@@ -60,8 +60,7 @@
     <!-- End Navbar -->
        
         <div class="wrapper wrapper-full-page">
-            <div class="page-header register-page header-filter" filter-color="black" style="background-image: url('../img/register.jpg')">
-
+            <div class="page-header register-page header-filter" filter-color="black" style="background-image: url('../img/bubbles-chemistry-close-up-color-220989.jpg')">   
                 <div class="container">
                     <div class="row">
                         <div class="col-md-10 ml-auto mr-auto">
@@ -115,93 +114,90 @@
                                                 <button class="btn btn-just-icon btn-round btn-facebook">
                                                     <i class="fa fa-facebook"> </i>
                                                 </button>
-                                                
+
                                             </div>
 
-                                           @using (Html.BeginForm("Register", "Account", FormMethod.Post, new { role = "form", enctype = "Multipart/form-data"}))
+                                            @using (Html.BeginForm("Register", "Account", FormMethod.Post, new { role = "form", enctype = "Multipart/form-data" }))
                                             {
                                                 @Html.AntiForgeryToken()
                                                 @Html.ValidationSummary(true, "", new { @class = "text-danger" })
 
-                                        <div class="form" @*method=""*@ >
-                                            <div class="form-group has-default">
-                                                <div class="input-group">
-                                                    <div class="input-group-prepend">
-                                                        <span class="input-group-text">
-                                                            <i class="material-icons">face</i>
-                                                        </span>
-                                                    </div>
+                                                <div class="form" @*method=""*@>
+                                                    <div class="form-group has-default">
+                                                        <div class="input-group">
+                                                            <div class="input-group-prepend">
+                                                                <span class="input-group-text">
+                                                                    <i class="material-icons">face</i>
+                                                                </span>
+                                                            </div>
 
-                                                    @Html.TextBoxFor(m => m.FirstName, new { @Placeholder = "First Name", @class = "form-control input-lg" })
-                                                    @Html.ValidationMessageFor(m => m.FirstName, "", new { @class = "text-danger" })
-                                                </div>
-                                            </div>
-                                            <div class="form-group has-default">
-                                                <div class="input-group">
-                                                    <div class="input-group-prepend">
-                                                        <span class="input-group-text">
-                                                            <i class="material-icons">face</i>
-                                                        </span>
+                                                            @Html.TextBoxFor(m => m.FirstName, new { @Placeholder = "First Name", @class = "form-control input-lg" })
+                                                            @Html.ValidationMessageFor(m => m.FirstName, "", new { @class = "text-danger" })
+                                                        </div>
                                                     </div>
-                                                    @Html.TextBoxFor(m => m.LastName, new { @Placeholder = "Last Name", @class = "form-control input-lg" })
-                                                    @Html.ValidationMessageFor(m => m.LastName, "", new { @class = "text-danger" })
-                                                </div>
-                                            </div>
-                                            <div class="form-group has-default">
-                                                <div class="input-group">
-                                                    <div class="input-group-prepend">
-                                                        <span class="input-group-text">
-                                                            <i class="material-icons">mail</i>
-                                                        </span>
+                                                    <div class="form-group has-default">
+                                                        <div class="input-group">
+                                                            <div class="input-group-prepend">
+                                                                <span class="input-group-text">
+                                                                    <i class="material-icons">face</i>
+                                                                </span>
+                                                            </div>
+                                                            @Html.TextBoxFor(m => m.LastName, new { @Placeholder = "Last Name", @class = "form-control input-lg" })
+                                                            @Html.ValidationMessageFor(m => m.LastName, "", new { @class = "text-danger" })
+                                                        </div>
                                                     </div>
-                                                    @*<input type="text" class="form-control" placeholder="Email...">*@
-                                                    @Html.TextBoxFor(m => m.Email, new { @Placeholder = "Email", @class = "form-control input-lg" })
-                                                    @Html.ValidationMessageFor(m => m.Email, "", new { @class = "text-danger" })
-                                                </div>
-                                            </div>
-                                            <div class="form-group has-default">
-                                                <div class="input-group">
-                                                    <div class="input-group-prepend">
-                                                        <span class="input-group-text">
-                                                            <i class="material-icons">lock_outline</i>
-                                                        </span>
+                                                    <div class="form-group has-default">
+                                                        <div class="input-group">
+                                                            <div class="input-group-prepend">
+                                                                <span class="input-group-text">
+                                                                    <i class="material-icons">mail</i>
+                                                                </span>
+                                                            </div>
+                                                            @*<input type="text" class="form-control" placeholder="Email...">*@
+                                                            @Html.TextBoxFor(m => m.Email, new { @Placeholder = "Email", @class = "form-control input-lg" })
+                                                            @Html.ValidationMessageFor(m => m.Email, "", new { @class = "text-danger" })
+                                                        </div>
                                                     </div>
-                                                    @*<input type="password" placeholder="Password..." class="form-control">*@
-                                                    @Html.PasswordFor(m => m.Password, new { @Placeholder = "Password", @class = "form-control input-lg" })
-                                                    @Html.ValidationMessageFor(m => m.Password, "", new { @class = "text-danger" })
-                                                </div>
-                                            </div>
-                                            <div class="form-group has-default">
-                                                <div class="input-group">
-                                                    <div class="input-group-prepend">
-                                                        <span class="input-group-text">
-                                                            <i class="material-icons">lock_outline</i>
-                                                        </span>
+                                                    <div class="form-group has-default">
+                                                        <div class="input-group">
+                                                            <div class="input-group-prepend">
+                                                                <span class="input-group-text">
+                                                                    <i class="material-icons">lock_outline</i>
+                                                                </span>
+                                                            </div>
+                                                            @*<input type="password" placeholder="Password..." class="form-control">*@
+                                                            @Html.PasswordFor(m => m.Password, new { @Placeholder = "Password", @class = "form-control input-lg" })
+                                                            @Html.ValidationMessageFor(m => m.Password, "", new { @class = "text-danger" })
+                                                        </div>
                                                     </div>
-                                                    @*<input type="password" placeholder="Confirm Password..." class="form-control">*@
-                                                    @Html.PasswordFor(m => m.ConfirmPassword, new { @Placeholder = "Confirm Password", @class = "form-control input-lg" })
-                                                    @Html.ValidationMessageFor(m => m.ConfirmPassword, "", new { @class = "text-danger" })
-                                                </div>
-                                            </div>
-
-                                            <div class="form-group">
-                                                <div class="input-group" id="profilebox">
-                                                    <div class="input-group-prepend">
-                                                        <span class="input-group-text">
-                                                            <i class="material-icons">lock_outline</i>
-                                                        </span>
+                                                    <div class="form-group has-default">
+                                                        <div class="input-group">
+                                                            <div class="input-group-prepend">
+                                                                <span class="input-group-text">
+                                                                    <i class="material-icons">lock_outline</i>
+                                                                </span>
+                                                            </div>
+                                                            @*<input type="password" placeholder="Confirm Password..." class="form-control">*@
+                                                            @Html.PasswordFor(m => m.ConfirmPassword, new { @Placeholder = "Confirm Password", @class = "form-control input-lg" })
+                                                            @Html.ValidationMessageFor(m => m.ConfirmPassword, "", new { @class = "text-danger" })
+                                                        </div>
                                                     </div>
-                                                    <input type="file" name="image" class="form-control" id="fileUpload" />
-                                                    @Html.ValidationMessageFor(m => m.Avatar, "", new { @class = "text-danger" })
+                                                    <div class="form-group">
+                                                        <div class="input-group" id="profilebox">
+                                                            <div class="input-group-prepend">
+                                                                <span class="input-group-text">
+                                                                    <i class="material-icons">lock_outline</i>
+                                                                </span>
+                                                            </div>
+                                                            <input type="file" name="image" class="form-control" id="fileUpload" />
+                                                            @Html.TextBox("Avatar", null, new {type = "file" })
+                                                        </div>
+                                                    </div>
+                                                    <div class="text-center">
+                                                        <button type="submit" onclick="location.href='@Url.Action("Dashboard","Home")'" class="btn signBtn btn-block">Sign Up</button>
+                                                        @*<a href="@Url.Action("Dashboard", "Home")" class="btn btn-primary btn-round mt-4">Submit</a>*@
+                                                    </div>
                                                 </div>
-                                            </div>
-
-
-                                            <div class="text-center">
-                                                <button type="submit" onclick="location.href='@Url.Action("Dashboard","Home")'" class="btn signBtn btn-block">Sign Up</button>
-                                                @*<a href="@Url.Action("Dashboard", "Home")" class="btn btn-primary btn-round mt-4">Submit</a>*@
-                                            </div>
-                                        </div>
                                             }
                                         </div>
                                     </div>

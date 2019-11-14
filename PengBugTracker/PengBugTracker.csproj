@@ -186,7 +186,9 @@
     <Compile Include="Helpers\ImageUploadValidator.cs" />
     <Compile Include="Helpers\ProjectHelper.cs" />
     <Compile Include="Helpers\RoleHelper.cs" />
+    <Compile Include="Helpers\StringUtilities.cs" />
     <Compile Include="Helpers\TicketHelper.cs" />
+    <Compile Include="Helpers\TicketHistoryHelper.cs" />
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\IdentityModels.cs" />
@@ -205,6 +207,7 @@
     <Compile Include="Startup.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Avatar\default_user.png" />
     <Content Include="Content\all.css" />
     <Content Include="Content\all.min.css" />
     <Content Include="Content\bootstrap.min.css" />
@@ -239,10 +242,13 @@
     <Content Include="favicon.ico" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />
+    <Content Include="img\action-balls-black-and-white-illustration-60582.jpg" />
+    <Content Include="img\antique-key-lock.png" />
     <Content Include="img\apple-icon.png" />
     <Content Include="img\bg-pricing.jpg" />
     <Content Include="img\bg3.jpg" />
     <Content Include="img\bg9.jpg" />
+    <Content Include="img\bubbles-chemistry-close-up-color-220989.jpg" />
     <Content Include="img\card-1.jpeg" />
     <Content Include="img\card-1.jpg" />
     <Content Include="img\card-2.jpeg" />
@@ -250,8 +256,10 @@
     <Content Include="img\card-3.jpeg" />
     <Content Include="img\card-3.jpg" />
     <Content Include="img\clint-mckoy.jpg" />
+    <Content Include="img\closed-black-metal-gate-1866710.jpg" />
     <Content Include="img\default-avatar.png" />
     <Content Include="img\faces\avatar.jpg" />
+    <Content Include="img\blue-and-black-flying-insects.jpg" />
     <Content Include="img\faces\card-profile1-square.jpg" />
     <Content Include="img\faces\card-profile2-square.jpg" />
     <Content Include="img\faces\marc.jpg" />
@@ -266,6 +274,7 @@
     <Content Include="img\image_placeholder.jpg" />
     <Content Include="img\lock.jpg" />
     <Content Include="img\login.jpg" />
+    <Content Include="img\macro-shot-of-gray-crawling-insect-762946.jpg" />
     <Content Include="img\mask.png" />
     <Content Include="img\new_logo.png" />
     <Content Include="img\placeholder.jpg" />
@@ -277,6 +286,7 @@
     <Content Include="img\sidebar-2.jpg" />
     <Content Include="img\sidebar-3.jpg" />
     <Content Include="img\sidebar-4.jpg" />
+    <Content Include="img\silhouette-of-person-holding-glass-mason-jar-1274260.jpg" />
     <Content Include="Scripts\all.js" />
     <Content Include="Scripts\all.min.js" />
     <Content Include="Scripts\bootstrap.bundle.js" />
@@ -634,6 +644,7 @@
     <Content Include="Scripts\js\material-dashboard.js.map" />
     <Content Include="Views\Admin\ManageRoles.cshtml" />
     <Content Include="Views\Admin\UserIndex.cshtml" />
+    <Content Include="Views\Admin\ManageUserRole.cshtml" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

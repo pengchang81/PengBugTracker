@@ -30,6 +30,33 @@ namespace PengBugTracker.Controllers
             return View(users);            
         }
 
+        //GET: UserRole
+
+        public ActionResult ManageUserRole(string userId)
+        {
+            var currentRole = roleHelper.ListUserRoles(userId).FirstOrDefault();
+            ViewBag.UserId = userId;
+            ViewBag.UserRole = new SelectList(db.Roles.ToList(), "Name", "Name", currentRole);
+            return View();
+        }
+
+        //Post:UserRole 
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult ManageUserRole(string userId, string userRole)
+        {
+            foreach (var role in roleHelper.ListUserRoles(userId))
+            {
+                roleHelper.RemoveUserFromRole(userId, role);
+            }
+            if (!string.IsNullOrEmpty(userRole))
+            {
+                roleHelper.AddUserToRole(userId, userRole);
+            }
+            return RedirectToAction("UserIndex");
+        }
+
+
         public ActionResult ManageRoles()
         {
             ViewBag.UserIds = new MultiSelectList(db.Users.ToList(), "Id", "Email");
@@ -71,20 +98,86 @@ namespace PengBugTracker.Controllers
                 }
             }
             return RedirectToAction("ManageRoles", "Admin");
+        }
 
+        [Authorize(Roles = "Admin, Manager")]
+        public ActionResult ManageProjectUsers()
+        {
+            ViewBag.Projects = new MultiSelectList(db.Projects, "Id", "Name");
+            ViewBag.Developers = new MultiSelectList(roleHelper.UsersInRole("Developer"), "Id", "Email");
+            ViewBag.Submitters = new MultiSelectList(roleHelper.UsersInRole("Submitter"), "Id", "Email");
 
+            if (User.IsInRole("Admin"))
+            {
+                ViewBag.ProjectManagerId = new SelectList(roleHelper.UsersInRole("Project_Manager"), "Id", "Email");
+            }
+
+            //Lets create a View Model for purposes of displaying User's and thier associated Projects
+            var myData = new List<UserProjectListViewModel>();
+            UserProjectListViewModel userVm = null;
+            foreach (var user in db.Users.ToList())
+            {
+                userVm = new UserProjectListViewModel()
+                {
+                    Name = $"{user.LastName}, {user.FirstName}",
+                    ProjectNames = projectHelper.ListUserProjects(user.Id).Select(p => p.Name).ToList()
+                };
+
+                if (userVm.ProjectNames.Count() == 0)
+                    userVm.ProjectNames.Add("N/A");
+
+                myData.Add(userVm);
+            }
+            return View(myData);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult ManageProjectUsers(List<int> projects, string projectManagerId, List<string> developers, List<string> submitters)
+        {
+            //Remove users from evvery project I have selected
+            if (projects != null)
+            {
+                foreach (var projectId in projects)
+                {
+                    //Remove everyone from THIS project
+                    foreach (var user in projectHelper.UsersOnProject(projectId).ToList())
+                    {
+                        projectHelper.RemoveUserFromProject(user.Id, projectId);
+                    }
+
+                    //Add back a PM if I can
+
+                    if (!string.IsNullOrEmpty(projectManagerId))
+                    {
+                        projectHelper.AddUserToProject(projectManagerId, projectId);
+                    }
+
+                    if (developers != null)
+                    {
+                        foreach (var developerId in developers)
+                        {
+                            projectHelper.AddUserToProject(developerId, projectId);
+                        }
+                    }
+                    if (submitters != null)
+                    {
+                        foreach(var submitterId in submitters)
+                        {
+                            projectHelper.AddUserToProject(submitterId, projectId);
+                        }
+                    }
+                }
+            }
+
+            return RedirectToAction("ManageProjectUsers");
         }
 
 
 
 
 
-        //    [Authorize(Roles ="Admin, Manager")]
-        //    public ActionResult ManageProjectUsers(){
-        //}
-
-
-    }
+    }   
 
 }
 

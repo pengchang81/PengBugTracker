@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Data.Entity;
 using System.Security.Claims;
 using System.Threading.Tasks;
@@ -24,6 +25,18 @@ namespace PengBugTracker.Models
         public string DisplayName { get; set; }
 
         public string AvatarUrl { get; set; }
+
+        [NotMapped]
+        public string FullName
+        {
+            get {
+
+                return $"{FirstName}, {LastName}";
+            }
+
+
+        }
+
 
         public virtual ICollection<TicketComment> TicketComments { get; set; }
         public virtual ICollection<Project> Projects { get; set; }

@@ -43,15 +43,15 @@
 </head>
 
 <body class="">
-    <div class="wrapper ">
-        <div class="sidebar" data-color="rose" data-background-color="black" data-image="../img/sidebar-1.jpg">
+    <div class="wrapper">
+        <div class="sidebar" data-color="rose" data-background-color="black" data-image="../img/sidebar-1.jpg" >
             <!--
                 Tip 1: You can change the color of the sidebar using: data-color="purple | azure | green | orange | danger"
 
                 Tip 2: you can also add an image using data-image tag
             -->
             <div class="logo">
-                <a href="http://www.creative-tim.com" class="simple-text logo-normal">Peng's Bug Tracker</a>
+                <a href="http://www.creative-tim.com" class="simple-text text-center logo-normal">Peng's Bug Tracker</a>
             </div>
             <div class="sidebar-wrapper">
                 @if (user != null)
@@ -128,7 +128,6 @@
                                     <span class="sidebar-normal"> Manage Roles </span>
                                 </a>
                             </li>
-
                         </ul>
                     </div>
                 </li>
@@ -162,13 +161,13 @@
             </div>
         </li>*@
                             <li class="nav-item ">
-                                <a class="nav-link" href="../examples/components/buttons.html">
+                                <a class="nav-link" href="@Url.Action("Index", "Projects")">                                    
                                     <i class="fa fa-dot-circle-o"></i>
                                     <span class="sidebar-normal"> All Projects</span>
                                 </a>
                             </li>
                             <li class="nav-item ">
-                                <a class="nav-link" href="../examples/components/grid.html">
+                                <a class="nav-link" href="@Url.Action("Index","Projects")">
                                     <i class="fa fa-dot-circle-o"></i>
                                     <span class="sidebar-normal"> My Projects </span>
                                 </a>
@@ -285,7 +284,7 @@
                         <span class="navbar-toggler-icon icon-bar"></span>
                         <span class="navbar-toggler-icon icon-bar"></span>
                     </button>
-                    <div class="collapse navbar-collapse justify-content-end">
+                    @*<div class="collapse navbar-collapse justify-content-end">
                         <form class="navbar-form">
                             <div class="input-group no-border">
                                 <input type="text" value="" class="form-control" placeholder="Search...">
@@ -335,7 +334,7 @@
                                 </div>
                             </li>
                         </ul>
-                    </div>
+                    </div>*@
                 </div>
             </nav>
             <!-- End Navbar -->
@@ -577,5 +576,5 @@
         });
     </script>
 </body>
-
+@RenderSection("scripts",false)
 </html>

@@ -6,68 +6,91 @@ using System.Linq;
 using System.Net;
 using System.Web;
 using System.Web.Mvc;
+using Microsoft.AspNet.Identity;
+using PengBugTracker.Helpers;
 using PengBugTracker.Models;
 
 namespace PengBugTracker.Controllers
-{
+{   
+    [Authorize]
     public class ProjectsController : Controller
-    {
-        //[Authorize]
+    {        
         private ApplicationDbContext db = new ApplicationDbContext();
-        ////private RoleHelper roleHelper = new RoleHelper();
-        ////private ProjectHelper projectHelper = new ProjectHelper();
+        private RoleHelper roleHelper = new RoleHelper();
+        private ProjectHelper projectHelper = new ProjectHelper();
 
-        ////public ActionResult ManageUsers(int id)
-        ////{
-        ////    View.Bag.ProjectId = id;
+        public ActionResult ManageUsers(int id)
+        {
+            ViewBag.ProjectId = id;
 
-        //    #region PM section
-        //    var pmId = projectHelper.ListUsersOnProjectInRole(id, "Project_Manager").FirstOrDefault();
-        //    ViewBag.ProjectManagerId = new SelectList(roleHelper.UsersInRole("Project_Manager"), "Id", "Email", pmId);
-        //    #endregion
+            #region PM section
+            var pmId = projectHelper.ListUsersOnProjectRole(id, "Manager").FirstOrDefault();
+            ViewBag.ProjectManagerId = new SelectList(roleHelper.UsersInRole("Project_Manager"), "Id", "Email", pmId);
+            #endregion
 
-        //    #region Dev section
-        //    ViewBag.Developers = new MultiSelectList(roleHelper.UsersInRole("Developer"), "Id", "Email", projectHelper.ListUsersOnProjecInRole(id, "Developer"));
-        //    #endregion
+            #region Dev section
+            ViewBag.Developers = new MultiSelectList(roleHelper.UsersInRole("Developer"), "Id", "Email", projectHelper.ListUsersOnProjectRole(id, "Developer"));
+            #endregion
 
-        //    #region Sub section
-        //    ViewBag.Submitters = new MultiSelectList(roleHelper.UsersInRole("Submitter",) "Id", "Email", projectHelper.ListUsersOnProjectInRole(id, "Submitter").FirstOrDefault());
-        //    #endregion
+            #region Sub section
+            ViewBag.Submitters = new MultiSelectList(roleHelper.UsersInRole("Submitter"), "Id", "Email", projectHelper.ListUsersOnProjectRole(id, "Submitter").FirstOrDefault());
+            #endregion
 
-        //    return View();
+            return View();
 
-
-        //}
-
-
-        //[HttpPost]
-        //[ValidateAntiForgeryToken]
-        //public ActionResult ManageUsers(int projectId, string projectManagerId, List<string> developers, List<string> submitters)
-        //{
-        //    foreach(var user in projectHelper.UsersOnProject(projectId).ToList())
-        //    {
-        //        projectHelper.RemoveUserFromProject(user.Id, projectId);
-        //    }
-
-        //    //In order to ensure that I always have the correct and current set of assign users
-        //    //I will first remove all users from the project and then I will add back the selected users
-
-        //    if(!string.IsNullOrEmpty(projectManagerId))
-        //    {
-        //        ProjectHelper.AddUserToProject(projectManagerId,projectId)
-
-        //    }
-
-        //}
+    }
 
 
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult ManageUsers(int projectId, string projectManagerId, List<string> developers, List<string> submitters)
+        {
+            foreach (var user in projectHelper.UsersOnProject(projectId).ToList())
+            {
+                projectHelper.RemoveUserFromProject(user.Id, projectId);
+            }
 
+            //In order to ensure that I always have the correct and current set of assign users
+            //I will first remove all users from the project and then I will add back the selected users
 
-
+            if (!string.IsNullOrEmpty(projectManagerId))
+            {
+                projectHelper.AddUserToProject(projectManagerId, projectId);
+            }
+            if(developers != null)
+            {
+                foreach(var developerId in developers)
+                {
+                    projectHelper.AddUserToProject(developerId, projectId);
+                }
+            }
+            if (submitters != null)
+            {
+                foreach (var submitterId in submitters)
+                {
+                    projectHelper.AddUserToProject(submitterId, projectId);
+                }
+            }
+            return RedirectToAction("ManageUsers", new { id = projectId });
+        }
+                     
         // GET: Projects
         public ActionResult Index()
         {
-            return View(db.Projects.ToList());
+            
+            var project = db.Projects.ToList();
+            
+            
+            return View(project);
+        }
+
+        public ActionResult MyIndex()
+        {
+            var userId = User.Identity.GetUserId();
+            var user = db.Users.Find(userId);
+            var project = projectHelper.ListUserProjects(user.Id);
+
+            return View(project.ToList());
         }
 
         // GET: Projects/Details/5
@@ -85,7 +108,7 @@ namespace PengBugTracker.Controllers
             return View(project);
         }
 
-        // GET: Projects/Create
+        // GET: Projects/Create//////////////////////////////////////////////////////////////////////////////////////////
         public ActionResult Create()
         {
             return View();
