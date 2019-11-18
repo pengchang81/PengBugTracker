@@ -14,7 +14,7 @@ namespace PengBugTracker.Controllers
         private RoleHelper roleHelper = new RoleHelper();
         private ProjectHelper projectHelper = new ProjectHelper();
                
-        // GET: Admin
+        //GET: Admin
         public ActionResult UserIndex()
         {
             var users = db.Users.Select(u => new UserProfileViewModel
@@ -31,7 +31,6 @@ namespace PengBugTracker.Controllers
         }
 
         //GET: UserRole
-
         public ActionResult ManageUserRole(string userId)
         {
             var currentRole = roleHelper.ListUserRoles(userId).FirstOrDefault();
@@ -39,8 +38,7 @@ namespace PengBugTracker.Controllers
             ViewBag.UserRole = new SelectList(db.Roles.ToList(), "Name", "Name", currentRole);
             return View();
         }
-
-        //Post:UserRole 
+        //POST: UserRole 
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult ManageUserRole(string userId, string userRole)
@@ -56,7 +54,35 @@ namespace PengBugTracker.Controllers
             return RedirectToAction("UserIndex");
         }
 
+        //Get: AssignProjects
+        public ActionResult ManageUserProjects(string userId)
+        {            
+            var myProjects = projectHelper.ListUserProjects(userId).Select(p => p.Id);            
+            ViewBag.Projects = new MultiSelectList(db.Projects.ToList(), "Id", "Name", myProjects);
+            return View();
+        }
 
+        //Post: AssignProjects
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult ManageUserProjects(string userId, List<int> projects)
+        {
+            foreach (var project in projectHelper.ListUserProjects(userId).ToList())
+            {
+                projectHelper.RemoveUserFromProject(userId, project.Id);
+            }
+            if (projects != null)
+            {
+                foreach (var projectId in projects) 
+                
+                {
+                    projectHelper.AddUserToProject(userId, projectId);
+                }
+            }
+            return RedirectToAction("UserIndex");
+        }
+
+        //Get: ManageRoles
         public ActionResult ManageRoles()
         {
             ViewBag.UserIds = new MultiSelectList(db.Users.ToList(), "Id", "Email");
@@ -73,7 +99,7 @@ namespace PengBugTracker.Controllers
             }
             return View(users);
         }
-
+        //Post: ManageRoles
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult ManageRoles(List<string> userIds, string role)
@@ -100,6 +126,8 @@ namespace PengBugTracker.Controllers
             return RedirectToAction("ManageRoles", "Admin");
         }
 
+        
+        //Get: ManageProjectUsers
         [Authorize(Roles = "Admin, Manager")]
         public ActionResult ManageProjectUsers()
         {
@@ -130,7 +158,7 @@ namespace PengBugTracker.Controllers
             }
             return View(myData);
         }
-
+        //Post: ManageProjectUsers
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult ManageProjectUsers(List<int> projects, string projectManagerId, List<string> developers, List<string> submitters)

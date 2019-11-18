@@ -2,10 +2,13 @@
 using System.Collections.Generic;
 using System.Data;
 using System.Data.Entity;
+using System.IO;
 using System.Linq;
 using System.Net;
 using System.Web;
 using System.Web.Mvc;
+using Microsoft.AspNet.Identity;
+using PengBugTracker.Helpers;
 using PengBugTracker.Models;
 
 namespace PengBugTracker.Controllers
@@ -13,6 +16,9 @@ namespace PengBugTracker.Controllers
     public class TicketAttachmentsController : Controller
     {
         private ApplicationDbContext db = new ApplicationDbContext();
+        private ImageUploadValidator imageUploadValidator = new ImageUploadValidator();
+        private NotificationHelper notificationHelper = new NotificationHelper();
+        private TicketHistoryHelper auditHelper = new TicketHistoryHelper();
 
         // GET: TicketAttachments
         public ActionResult Index()
@@ -46,20 +52,51 @@ namespace PengBugTracker.Controllers
 
         // POST: TicketAttachments/Create
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
-        // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
+        // more details see https://go.microsoft.com/fwlink/?LinkId=317598.                       
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "Id,TicketId,UserId,Description,FilePath,Created,Updated")] TicketAttachment ticketAttachment)
+        public ActionResult Create([Bind(Include = "TicketId,Description")] TicketAttachment ticketAttachment, HttpPostedFileBase file)
         {
             if (ModelState.IsValid)
             {
-                db.TicketAttachments.Add(ticketAttachment);
-                db.SaveChanges();
-                return RedirectToAction("Index");
-            }
+                if (file != null)
+                {
+                    if (ImageUploadValidator.IsWebFriendlyImage(file) || ImageUploadValidator.IsWebFriendlyFile(file))
+                    {
+                        var fileName = Path.GetFileName(file.FileName);
+                        var justFileName = Path.GetFileNameWithoutExtension(fileName);
+                        var ticketId = ticketAttachment.TicketId;
 
-            ViewBag.TicketId = new SelectList(db.Tickets, "Id", "OwnerUserId", ticketAttachment.TicketId);
-            ViewBag.UserId = new SelectList(db.Users, "Id", "FirstName", ticketAttachment.UserId);
+                        justFileName = StringUtilities.URLFriendly(justFileName);
+                        fileName = $"{justFileName}_{DateTime.Now.Ticks}{Path.GetExtension(fileName)}";
+                        file.SaveAs(Path.Combine(Server.MapPath("~/Uploads/"), fileName));
+                        ticketAttachment.FilePath = "/Uploads/" + fileName;
+
+                        ticketAttachment.Created = DateTime.Now;
+                        ticketAttachment.UserId = User.Identity.GetUserId();
+
+
+                        //=========================== Ticket History =======================================
+                        var oldTicket = db.Tickets.AsNoTracking().FirstOrDefault(t => t.Id == ticketId);
+
+                        oldTicket.Updated = DateTime.Now;
+                        //ticketAttachment.Ticket.Updated = DateTime.Now;
+                        db.Entry(oldTicket).State = EntityState.Modified;
+
+                        var newTicket = db.Tickets.AsNoTracking().FirstOrDefault(t => t.Id == ticketId);
+
+                        auditHelper.RecordHistoricalChanges(oldTicket, newTicket);
+                        notificationHelper.AttachmentNotification(newTicket);   // create notification
+                        //===================================================================================
+
+                        db.TicketAttachments.Add(ticketAttachment);
+
+                        db.SaveChanges();
+                    }
+                }
+                //Response.Redirect(Request.RawUrl);
+                return RedirectToAction("Index", "Tickets", new { id = ticketAttachment.TicketId });
+            }
             return View(ticketAttachment);
         }
 

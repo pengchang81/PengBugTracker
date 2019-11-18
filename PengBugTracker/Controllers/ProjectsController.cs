@@ -19,7 +19,8 @@ namespace PengBugTracker.Controllers
         private RoleHelper roleHelper = new RoleHelper();
         private ProjectHelper projectHelper = new ProjectHelper();
 
-        public ActionResult ManageUsers(int id)
+        //GET: Manage Users
+        public ActionResult ManageProjectUsers(int id)
         {
             ViewBag.ProjectId = id;
 
@@ -39,11 +40,10 @@ namespace PengBugTracker.Controllers
             return View();
 
     }
-
-
+        //POST: Manage Users
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult ManageUsers(int projectId, string projectManagerId, List<string> developers, List<string> submitters)
+        public ActionResult ManageProjectUsers(int projectId, string projectManagerId, List<string> developers, List<string> submitters)
         {
             foreach (var user in projectHelper.UsersOnProject(projectId).ToList())
             {
@@ -71,11 +71,11 @@ namespace PengBugTracker.Controllers
                     projectHelper.AddUserToProject(submitterId, projectId);
                 }
             }
-            return RedirectToAction("ManageUsers", new { id = projectId });
+            return RedirectToAction("ManageProjectUsers", new { id = projectId });
         }
-                     
-        // GET: Projects
-        public ActionResult Index()
+
+        // GET: Projects (for viewing only) No post
+        public ActionResult ProjectIndex()
         {
             
             var project = db.Projects.ToList();
@@ -84,13 +84,28 @@ namespace PengBugTracker.Controllers
             return View(project);
         }
 
-        public ActionResult MyIndex()
+        //Get: My Project Index (for viewing only) No post
+        public ActionResult MyProjectIndex()
         {
             var userId = User.Identity.GetUserId();
             var user = db.Users.Find(userId);
             var project = projectHelper.ListUserProjects(user.Id);
+            var myRole = roleHelper.ListUserRoles(userId).FirstOrDefault();
+            var myProjects = new List<Project>();
+            switch (myRole)
+            {
+                case "Developer": 
+                    myProjects = db.Users.Find(userId).Projects.ToList();
+                    break;
+                case "Submitter":
+                    myProjects = db.Users.Find(userId).Projects.ToList();
+                    break;
+                case "Manager":
+                    myProjects = db.Users.Find(userId).Projects.ToList();
+                    break;
+            }
 
-            return View(project.ToList());
+            return View("MyProjectIndex",myProjects);
         }
 
         // GET: Projects/Details/5
@@ -109,6 +124,8 @@ namespace PengBugTracker.Controllers
         }
 
         // GET: Projects/Create//////////////////////////////////////////////////////////////////////////////////////////
+        
+        [Authorize(Roles ="Admin,Manager")]
         public ActionResult Create()
         {
             return View();
@@ -119,13 +136,14 @@ namespace PengBugTracker.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "Id,Name,Description,Created,Updated")] Project project)
+        public ActionResult Create([Bind(Include = "Id,Name,Description,Created")] Project project)
         {
             if (ModelState.IsValid)
             {
+                project.Created = DateTime.Now;
                 db.Projects.Add(project);
                 db.SaveChanges();
-                return RedirectToAction("Index");
+                return RedirectToAction("ProjectIndex");
             }
 
             return View(project);
@@ -157,7 +175,7 @@ namespace PengBugTracker.Controllers
             {
                 db.Entry(project).State = EntityState.Modified;
                 db.SaveChanges();
-                return RedirectToAction("Index");
+                return RedirectToAction("ProjectIndex");
             }
             return View(project);
         }
@@ -185,7 +203,7 @@ namespace PengBugTracker.Controllers
             Project project = db.Projects.Find(id);
             db.Projects.Remove(project);
             db.SaveChanges();
-            return RedirectToAction("Index");
+            return RedirectToAction("ProjectIndex");
         }
 
         protected override void Dispose(bool disposing)

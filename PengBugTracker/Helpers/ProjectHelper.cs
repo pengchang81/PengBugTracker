@@ -18,7 +18,7 @@ namespace PengBugTracker.Helpers
             public List<string>ListUsersOnProjectRole(int projectId, string roleName)
             {
                 var userIdList = new List<string>();
-                foreach(var user in UsersOnProject(projectId))
+            foreach (var user in UsersOnProject(projectId))
                 {
                     if (roleHelper.IsUserInRole(user.Id, roleName))
                         userIdList.Add(user.Id);

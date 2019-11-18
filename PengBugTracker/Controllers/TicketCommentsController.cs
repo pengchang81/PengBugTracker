@@ -7,12 +7,17 @@ using System.Net;
 using System.Web;
 using System.Web.Mvc;
 using PengBugTracker.Models;
+using PengBugTracker.Helpers;
+using Microsoft.AspNet.Identity;
 
 namespace PengBugTracker.Controllers
 {
     public class TicketCommentsController : Controller
     {
         private ApplicationDbContext db = new ApplicationDbContext();
+        private NotificationHelper notificationHelper = new NotificationHelper();
+        private TicketHistoryHelper auditHelper = new TicketHistoryHelper();
+
 
         // GET: TicketComments
         public ActionResult Index()
@@ -49,16 +54,26 @@ namespace PengBugTracker.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "Id,TicketId,UserId,CommentBody,Created")] TicketComment ticketComment)
+        public ActionResult Create([Bind(Include = "TicketId, Comment")] TicketComment ticketComment)
         {
-            if (ModelState.IsValid)
+            if (ticketComment.CommentBody != null)
             {
-                db.TicketComments.Add(ticketComment);
-                db.SaveChanges();
-                return RedirectToAction("Index");
+                if (ModelState.IsValid)
+                {
+                    ticketComment.Created = DateTime.Now;
+                    ticketComment.UserId = User.Identity.GetUserId();
+                    db.TicketComments.Add(ticketComment);
+
+                    db.SaveChanges();
+                    return RedirectToAction("Details", "Tickets", new { id = ticketComment.TicketId });
+                }
+            }
+            else
+            {
+                return RedirectToAction("Index", "Tickets");
             }
 
-            ViewBag.TicketId = new SelectList(db.Tickets, "Id", "OwnerUserId", ticketComment.TicketId);
+            ViewBag.TicketId = new SelectList(db.Tickets, "Id", "SubmitterId", ticketComment.TicketId);
             ViewBag.UserId = new SelectList(db.Users, "Id", "FirstName", ticketComment.UserId);
             return View(ticketComment);
         }

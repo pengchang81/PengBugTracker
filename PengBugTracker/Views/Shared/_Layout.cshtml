@@ -60,7 +60,7 @@
                         <div class="photo">
                             @if (!string.IsNullOrEmpty(user.AvatarUrl))
                             {
-                                <img src="@Url.Content(user.AvatarUrl)" alt ="@user.FirstName" class="img-responsive avatar" />
+                                <img src="@Url.Content(user.AvatarUrl)" alt ="@user.FullName" class="img-responsive avatar" />
                             }
                             else
                             {
@@ -70,8 +70,8 @@
                         <div class="user-info">
                             <a data-toggle="collapse" href="#collapseExample" class="username">
                                 <span>
-                                    @Html.DisplayFor(m => user.FirstName)
-                                    @Html.DisplayFor(m => user.LastName)
+                                    @Html.DisplayFor(m => user.FullName)
+                                 
                                     <b class="caret"></b>
                                 </span>
 
@@ -81,7 +81,7 @@
                             </a>
                             
                             <div class="collapse" id="collapseExample">
-                                <ul class="nav">
+                                @*<ul class="nav">
                                     <li class="nav-item">
                                         <a class="nav-link" href="#">
                                             <i class="fa fa-dot-circle-o"></i>
@@ -94,7 +94,8 @@
                                             <span class="sidebar-normal"> Edit Profile </span>
                                         </a>
                                     </li>                                    
-                                </ul>
+                                </ul>*@
+                                @Html.Partial("_LoginPartial")
                             </div>
                         </div>
                     </div>
@@ -106,163 +107,194 @@
                         <p> Dashboard </p>
                     </a>
                 </li>
-                <li class="nav-item ">
-                    <a class="nav-link" data-toggle="collapse" href="#pagesExamples">
-                        <i class="material-icons">image</i>
-                        <p>
-                            Admin Functions
-                            <b class="caret"></b>
-                        </p>
-                    </a>
-                    <div class="collapse" id="pagesExamples">
-                        <ul class="nav">
-                            <li class="nav-item ">
-                                <a class="nav-link" href="@Url.Action("UserIndex", "Admin")">
-                                    <i class="fa fa-dot-circle-o"></i>
-                                    <span class="sidebar-normal"> User Index </span>
-                                </a>
-                            </li>
-                            <li class="nav-item ">
-                                <a class="nav-link" href="@Url.Action("ManageRoles", "Admin")">
-                                    <i class="fa fa-dot-circle-o"></i>
-                                    <span class="sidebar-normal"> Manage Roles </span>
-                                </a>
-                            </li>
-                        </ul>
-                    </div>
-                </li>
-                <li class="nav-item ">
-                    <a class="nav-link" data-toggle="collapse" href="#componentsExamples">
-                        <i class="material-icons">apps</i>
-                        <p>
-                            Projects Management
-                            <b class="caret"></b>
-                        </p>
-                    </a>
-                    <div class="collapse" id="componentsExamples">
-                        <ul class="nav">
-                            @*<li class="nav-item ">
-            <a class="nav-link" data-toggle="collapse" href="#componentsCollapse">
-                <span class="sidebar-mini"> MLT </span>
-                <span class="sidebar-normal">
-                    Multi Level Collapse
-                    <b class="caret"></b>
-                </span>
-            </a>
-            <div class="collapse" id="componentsCollapse">
-                <ul class="nav">
+                @if (User.IsInRole("Admin"))
+                {
                     <li class="nav-item ">
-                        <a class="nav-link" href="#0">
-                            <span class="sidebar-mini"> E </span>
-                            <span class="sidebar-normal"> Example </span>
+                        <a class="nav-link" data-toggle="collapse" href="#pagesExamples">
+                            <i class="material-icons">image</i>
+                            <p>
+                                Admin Functions
+                                <b class="caret"></b>
+                            </p>
                         </a>
+
+                        <div class="collapse" id="pagesExamples">
+                            <ul class="nav">
+                                <li class="nav-item ">
+                                    <a class="nav-link" href="@Url.Action("UserIndex", "Admin")">
+                                        <i class="fa fa-dot-circle-o"></i>
+                                        <span class="sidebar-normal"> User Index </span>
+                                    </a>
+                                </li>
+                                <li class="nav-item ">
+                                    <a class="nav-link" href="@Url.Action("ManageRoles", "Admin")">
+                                        <i class="fa fa-dot-circle-o"></i>
+                                        <span class="sidebar-normal"> Manage Roles </span>
+                                    </a>
+                                </li>              
+                                
+                                <li class="nav-item ">
+                                    <a class="nav-link" href="@Url.Action("ManageProjectUsers","Admin")">
+                                        <i class="fa fa-dot-circle-o"></i>
+                                        <span class="sidebar-normal"> Manage Project Users</span>
+                                    </a>
+                                </li>
+                                
+
+                            </ul>
+                        </div>                
                     </li>
+                }
+                    <li class="nav-item ">
+                        <a class="nav-link" data-toggle="collapse" href="#componentsExamples">
+                            <i class="material-icons">apps</i>
+                            <p>
+                                Projects
+                                <b class="caret"></b>
+                            </p>
+                        </a>
+                        <div class="collapse" id="componentsExamples">
+                            <ul class="nav">
+                                @if (User.IsInRole("Admin") || User.IsInRole("Manager"))
+                                {
+                                    <li class="nav-item ">
+                                        <a class="nav-link" href="@Url.Action("ProjectIndex", "Projects")">
+                                            <i class="fa fa-dot-circle-o"></i>
+                                            <span class="sidebar-normal"> All Projects</span>
+                                        </a>
+                                    </li>
+                                }
+
+                                @if (User.IsInRole("Manager") || User.IsInRole("Submitter") || User.IsInRole("Developer"))
+                                {
+                                    <li class="nav-item ">
+                                        <a class="nav-link" href="@Url.Action("MyProjectIndex","Projects")">
+                                            <i class="fa fa-dot-circle-o"></i>
+                                            <span class="sidebar-normal"> My Projects </span>
+                                        </a>
+                                    </li>
+                                }
+                                @if (User.IsInRole("Admin") || User.IsInRole("Manager"))
+                                {
+                                    <li class="nav-item ">
+                                        <a class="nav-link" href="@Url.Action("Create","Projects")">
+                                            <i class="fa fa-dot-circle-o"></i>
+                                            <span class="sidebar-normal"> Create a Project </span>
+                                        </a>
+                                    </li>
+                                }
+                                
+                            </ul>
+                        </div>
+                    </li>
+                    <li class="nav-item ">
+                        <a class="nav-link" data-toggle="collapse" href="#formsExamples">
+                            <i class="material-icons">content_paste</i>
+                            <p>
+                                Tickets
+                                <b class="caret"></b>
+                            </p>
+                        </a>
+                        <div class="collapse" id="formsExamples">
+                            <ul class="nav">
+
+                                <li class="nav-item ">
+                                    <a class="nav-link" href="@Url.Action("Index", "Tickets")">
+
+                                        <i class="fa fa-dot-circle-o"></i>
+                                        <p>
+                                            All Tickets
+                                        </p>
+                                    </a>
+                                </li>
+                                <li class="nav-item ">
+                                    <a class="nav-link" href="#componentsCollapse">
+                                        <i class="fa fa-dot-circle-o"></i>
+                                        <span class="sidebar-normal">
+                                            My Tickets
+
+                                        </span>
+                                    </a>
+                                </li>
+                                <li class="nav-item ">
+                                    <a class="nav-link" data-toggle="collapse" href="#tablesExamples">
+                                        <i class="fa fa-dot-circle-o"></i>
+                                        <p>
+                                            Ticket Properties
+                                            <b class="caret"></b>
+                                        </p>
+                                    </a>
+                                    <div class="collapse" id="tablesExamples">
+                                        <ul class="nav">
+                                            <li class="nav-item ">
+                                                <a class="nav-link" href="../examples/tables/regular.html">
+                                                    <span class="sidebar-mini"> - </span>
+                                                    <span class="=sidebar-normal">Priorities</span>
+                                                </a>
+                                            </li>
+                                            <li class="nav-item ">
+                                                <a class="nav-link" href="../examples/tables/extended.html">
+                                                    <span class="sidebar-mini"> - </span>
+                                                    <span class="sidebar-normal">Status</span>
+                                                </a>
+                                            </li>
+                                            <li class="nav-item ">
+                                                <a class="nav-link" href="../examples/tables/datatables.net.html">
+                                                    <span class="sidebar-mini"> - </span>
+                                                    <span class="sidebar-normal">Type</span>
+                                                </a>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </li>
+                                <li class="nav-item ">
+                                    <a class="nav-link" href="#componentsCollapse">
+                                        <i class="fa fa-dot-circle-o"></i>
+                                        <span class="sidebar-normal">
+                                            Ticket Histories
+
+                                        </span>
+                                    </a>
+                                </li>
+                                <li class="nav-item ">
+                                    <a class="nav-link" href="#componentsCollapse">
+                                        <i class="fa fa-dot-circle-o"></i>
+                                        <span class="sidebar-normal">
+                                            Ticket Notification
+
+                                        </span>
+                                    </a>
+                                </li>
+
+                            </ul>
+                        </div>
+                    </li>
+
+
+                    <!--Begin Comment out for later use-->
+
+                    @*<li class="nav-item ">
+                <a class="nav-link" href="../examples/widgets.html">
+                    <i class="material-icons">widgets</i>
+                    <p> Widgets </p>
+                </a>
+            </li>
+            <li class="nav-item ">
+                <a class="nav-link" href="../examples/charts.html">
+                    <i class="material-icons">timeline</i>
+                    <p> Charts </p>
+                </a>
+            </li>
+            <li class="nav-item ">
+                <a class="nav-link" href="../examples/calendar.html">
+                    <i class="material-icons">date_range</i>
+                    <p> Calendar </p>
+                </a>
+            </li>*@
+
+                    <!--End Comment out for later use-->
+
                 </ul>
-            </div>
-        </li>*@
-                            <li class="nav-item ">
-                                <a class="nav-link" href="@Url.Action("Index", "Projects")">                                    
-                                    <i class="fa fa-dot-circle-o"></i>
-                                    <span class="sidebar-normal"> All Projects</span>
-                                </a>
-                            </li>
-                            <li class="nav-item ">
-                                <a class="nav-link" href="@Url.Action("Index","Projects")">
-                                    <i class="fa fa-dot-circle-o"></i>
-                                    <span class="sidebar-normal"> My Projects </span>
-                                </a>
-                            </li>
-                            <li class="nav-item ">
-                                <a class="nav-link" href="../examples/components/grid.html">
-                                    <i class="fa fa-dot-circle-o"></i>
-                                    <span class="sidebar-normal"> Create a Project </span>
-                                </a>
-                            </li>
-                        </ul>
-                    </div>
-                </li>
-                <li class="nav-item ">
-                    <a class="nav-link" data-toggle="collapse" href="#formsExamples">
-                        <i class="material-icons">content_paste</i>
-                        <p>
-                            Tickets Management
-                            <b class="caret"></b>
-                        </p>
-                    </a>
-                    <div class="collapse" id="formsExamples">
-                        <ul class="nav">
-                            <li class="nav-item ">
-                                <a class="nav-link" href="../examples/forms/regular.html">
-                                    <i class="fa fa-dot-circle-o"></i>
-                                    <span class="sidebar-normal"> Regular Forms </span>
-                                </a>
-                            </li>
-                            <li class="nav-item ">
-                                <a class="nav-link" href="../examples/forms/extended.html">
-                                    <i class="fa fa-dot-circle-o"></i>
-                                    <span class="sidebar-normal"> Extended Forms </span>
-                                </a>
-                            </li>
-                            
-                        </ul>
-                    </div>
-                </li>
-                @*<li class="nav-item ">
-                    <a class="nav-link" data-toggle="collapse" href="#tablesExamples">
-                        <i class="material-icons">grid_on</i>
-                        <p>
-                            Ticket Notifications
-                            <b class="caret"></b>
-                        </p>
-                    </a>
-                    <div class="collapse" id="tablesExamples">
-                        <ul class="nav">
-                            <li class="nav-item ">
-                                <a class="nav-link" href="../examples/tables/regular.html">
-                                    <i class="fa fa-dot-circle-o"></i>
-                                    <span>All</span>
-                                </a>
-                            </li>
-                            <li class="nav-item ">
-                                <a class="nav-link" href="../examples/tables/extended.html">
-                                    <i class="fa fa-dot-circle-o"></i>
-                                    <span class="sidebar-normal"> My Tickets </span>
-                                </a>
-                            </li>
-                            <li class="nav-item ">
-                                <a class="nav-link" href="../examples/tables/datatables.net.html">
-                                    <i class="fa fa-dot-circle-o"></i>
-                                    <span class="sidebar-normal"> Delete </span>
-                                </a>
-                            </li>
-                        </ul>
-                    </div>
-                </li>*@
-
-                <!--Begin Comment out for later use-->
-
-                @*<li class="nav-item ">
-            <a class="nav-link" href="../examples/widgets.html">
-                <i class="material-icons">widgets</i>
-                <p> Widgets </p>
-            </a>
-        </li>
-        <li class="nav-item ">
-            <a class="nav-link" href="../examples/charts.html">
-                <i class="material-icons">timeline</i>
-                <p> Charts </p>
-            </a>
-        </li>
-        <li class="nav-item ">
-            <a class="nav-link" href="../examples/calendar.html">
-                <i class="material-icons">date_range</i>
-                <p> Calendar </p>
-            </a>
-        </li>*@
-
-                <!--End Comment out for later use-->
-
-            </ul>
             </div>
         </div>
         <div class="main-panel">

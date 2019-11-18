@@ -23,11 +23,13 @@ namespace PengBugTracker.Controllers
         [Authorize]
         public ActionResult Index()
         {
+            var allTickets = db.Tickets;
+            var highPriorityTickets = db.TicketPriorities.FirstOrDefault(tp => tp.PriorityName == "High").Tickets;
+            var medPriorityTickets = db.Tickets.Where(t => t.TicketPriority.PriorityName == "Medium");
+
             //What role do I occupy
             return View(ticketHelper.ListMyTickets());
 
-            var tickets = db.Tickets.Include(t => t.AssignedToUser).Include(t => t.OwnerUser).Include(t => t.Project).Include(t => t.TicketPriority).Include(t => t.TicketStatus).Include(t => t.TicketType);
-            return View(tickets.ToList());
         }
 
         // GET: Tickets/Details/5

@@ -71,7 +71,6 @@
                                         {
                                             <img src="@Url.Content("~/Uploads/Default-avatar.jpg")" class="img-responsive avatar" />
                                         }                     
-
                                     </td>
                                     <td>
                                         @Html.DisplayFor(modelItem => user.Email)
@@ -89,13 +88,11 @@
                                         @*<a href="#" class="btn btn-link btn-info btn-just-icon like"><i class="material-icons">favorite</i></a>
                                             <a href="#" class="btn btn-link btn-warning btn-just-icon edit"><i class="material-icons">dvr</i></a>
                                          <a href="#" class="btn btn-link btn-danger btn-just-icon remove"><i class="material-icons">close</i></a>*@
-                                        @Html.ActionLink("Assign Role", "ManageUserRole", "Admin", new { userId = user.Id }, null)|
+                                        @Html.ActionLink("Assign Role ", "ManageUserRole", "Admin", new { userId = user.Id }, null)|
                                         @Html.ActionLink("Assign Projects","ManageUserProjects", "Admin", new { userId = user.Id }, null)
                                     </td>
                                 </tr>
-
                             }
-
                         </tbody>
                     </table>
                 </div>

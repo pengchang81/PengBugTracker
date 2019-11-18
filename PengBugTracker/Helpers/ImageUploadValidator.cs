@@ -2,12 +2,14 @@
 using System.Collections.Generic;
 using System.Drawing;
 using System.Drawing.Imaging;
+using System.IO;
 using System.Linq;
 using System.Web;
+using System.Web.Configuration;
 
 namespace PengBugTracker.Helpers
 {
-    public static class ImageUploadValidator
+    public class ImageUploadValidator
     {
         public static bool IsWebFriendlyImage(HttpPostedFileBase file)
         {
@@ -23,6 +25,28 @@ namespace PengBugTracker.Helpers
                             ImageFormat.Png.Equals(img.RawFormat) ||
                             ImageFormat.Gif.Equals(img.RawFormat);
                 }
+            }
+            catch
+            {
+                return false;
+            }
+        }
+        public static bool IsWebFriendlyFile(HttpPostedFileBase file)
+        {
+            if (file == null)
+                return false;
+
+            //file restrictions in web config file
+            var maxSize = WebConfigurationManager.AppSettings["MaxFileSize"];
+            var minSize = WebConfigurationManager.AppSettings["MinFileSize"];
+            if (file.ContentLength > Convert.ToInt32(maxSize) || file.ContentLength < Convert.ToInt32(minSize))
+                return false;
+
+            try
+            {
+                var allowedExts = WebConfigurationManager.AppSettings["AllowedExts"];
+                var fileExt = Path.GetExtension(file.FileName);
+                return allowedExts.Contains(fileExt);
             }
             catch
             {
