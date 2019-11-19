@@ -5,6 +5,7 @@ using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
 using System.Web;
+using System.Web.Configuration;
 using System.Web.Mvc;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.Owin;
@@ -63,7 +64,36 @@ namespace PengBugTracker.Controllers
             return View();
         }
 
-        //
+        // GET: Demo Login Async
+        [AllowAnonymous]
+
+        public ActionResult DemoUsers()
+        {
+            return View();
+        }
+
+
+        // POST: Demo Login Async
+        [AllowAnonymous]
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<ActionResult> DemoLoginAsync(string emailKey)
+        {
+            var email = WebConfigurationManager.AppSettings[emailKey];
+            var password = WebConfigurationManager.AppSettings["DemoPassword"];
+
+            var result = await SignInManager.PasswordSignInAsync(email, password, false, shouldLockout: false);
+
+            switch (result)
+            {
+                case SignInStatus.Success:
+                    return RedirectToAction("Dashboard", "Home");
+                case SignInStatus.Failure:
+                default:
+                    return RedirectToAction("Login", "Home");
+            }
+        }
+
         // POST: /Account/Login
         [HttpPost]
         [AllowAnonymous]
@@ -92,7 +122,7 @@ namespace PengBugTracker.Controllers
                     return View(model);
             }
         }
-
+        
         //
         // GET: /Account/VerifyCode
         [AllowAnonymous]
@@ -182,9 +212,7 @@ namespace PengBugTracker.Controllers
                     var fileName = Path.GetFileName(model.Avatar.FileName);
                     model.Avatar.SaveAs(Path.Combine(Server.MapPath("~/Uploads/"), fileName));
                     user.AvatarUrl = "/Uploads/" + fileName;
-                }
-              
-                
+                }    
                 
                 var result = await UserManager.CreateAsync(user, model.Password);
                 if (result.Succeeded)

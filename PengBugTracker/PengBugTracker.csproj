@@ -211,9 +211,11 @@
     <Content Include="Avatar\default_user.png" />
     <Content Include="Content\all.css" />
     <Content Include="Content\all.min.css" />
+    <Content Include="Content\bootstrap.css" />
     <Content Include="Content\bootstrap.min.css" />
     <Content Include="Content\brands.css" />
     <Content Include="Content\brands.min.css" />
+    <Content Include="Content\css\default.css" />
     <Content Include="Content\css\material-dashboard.css" />
     <Content Include="Content\css\material-dashboard.min.css" />
     <Content Include="Content\css\partials\dashboard\core\bootstrap\scss\bootstrap-grid.css" />
@@ -224,11 +226,14 @@
     <Content Include="Content\css\partials\kit\core\bootstrap\scss\bootstrap.css" />
     <Content Include="Content\dataTables.bootstrap4.css" />
     <Content Include="Content\dataTables.bootstrap4.min.css" />
+    <Content Include="Content\datepicker3.css" />
+    <Content Include="Content\default.css" />
     <Content Include="Content\demo.css" />
     <Content Include="Content\fontawesome.css" />
     <Content Include="Content\fontawesome.min.css" />
     <Content Include="Content\jquery.dataTables.css" />
     <Content Include="Content\jquery.dataTables.min.css" />
+    <Content Include="Content\magnific-popup.css" />
     <Content Include="Content\material-dashboard.css" />
     <Content Include="Content\regular.css" />
     <Content Include="Content\regular.min.css" />
@@ -238,6 +243,8 @@
     <Content Include="Content\solid.min.css" />
     <Content Include="Content\svg-with-js.css" />
     <Content Include="Content\svg-with-js.min.css" />
+    <Content Include="Content\theme-custom.css" />
+    <Content Include="Content\theme.css" />
     <Content Include="Content\v4-shims.css" />
     <Content Include="Content\v4-shims.min.css" />
     <Content Include="favicon.ico" />
@@ -246,6 +253,8 @@
     <Content Include="img\action-balls-black-and-white-illustration-60582.jpg" />
     <Content Include="img\antique-key-lock.png" />
     <Content Include="img\apple-icon.png" />
+    <Content Include="img\avatardev.png" />
+    <Content Include="img\avatarsub.png" />
     <Content Include="img\bg-pricing.jpg" />
     <Content Include="img\bg3.jpg" />
     <Content Include="img\bg9.jpg" />
@@ -283,11 +292,13 @@
     <Content Include="img\product2.jpg" />
     <Content Include="img\product3.jpg" />
     <Content Include="img\register.jpg" />
+    <Content Include="img\showcasepic1.jpg" />
     <Content Include="img\sidebar-1.jpg" />
     <Content Include="img\sidebar-2.jpg" />
     <Content Include="img\sidebar-3.jpg" />
     <Content Include="img\sidebar-4.jpg" />
     <Content Include="img\silhouette-of-person-holding-glass-mason-jar-1274260.jpg" />
+    <Content Include="Models\modernizr.js" />
     <Content Include="Scripts\all.js" />
     <Content Include="Scripts\all.min.js" />
     <Content Include="Scripts\bootstrap.bundle.js" />
@@ -336,13 +347,19 @@
     <Content Include="Scripts\js\plugins\nouislider.min.js" />
     <Content Include="Scripts\js\plugins\perfect-scrollbar.jquery.min.js" />
     <Content Include="Scripts\js\plugins\sweetalert2.js" />
+    <Content Include="Scripts\modernizr.js" />
     <Content Include="Scripts\regular.js" />
     <Content Include="Scripts\regular.min.js" />
     <Content Include="Scripts\solid.js" />
     <Content Include="Scripts\solid.min.js" />
     <Content Include="Scripts\v4-shims.js" />
     <Content Include="Scripts\v4-shims.min.js" />
+    <Content Include="Uploads\avatar man pro.jpg" />
+    <Content Include="Uploads\avatardev.png" />
+    <Content Include="Uploads\avatarsub.png" />
     <Content Include="Uploads\Default-avatar.jpg" />
+    <Content Include="Uploads\Default-avatar1.png" />
+    <Content Include="Uploads\avatarmanager.png" />
     <Content Include="Web.config" />
     <Content Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
@@ -649,6 +666,8 @@
     <Content Include="Views\Admin\ManageUserProjects.cshtml" />
     <Content Include="Views\Projects\MyProjectIndex.cshtml" />
     <Content Include="Views\Admin\ManageProjectUsers.cshtml" />
+    <None Include="Properties\PublishProfiles\PengBugTracker - Web Deploy.pubxml" />
+    <Content Include="Views\Account\DemoUsers.cshtml" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

@@ -1,0 +1,215 @@
+﻿
+@{
+    ViewBag.Title = "DomoUser";
+    Layout = null;
+}
+<!doctype html>
+<html class="fixed">
+<head>
+
+    <!-- Basic -->
+    <meta charset="UTF-8">
+    <title>DemoUser | Peng's Bug Tracker</title>
+    <meta name="keywords" content="HTML5 Admin Template" />
+    <meta name="description" content="Porto Admin - Responsive HTML5 Template">
+    <meta name="author" content="okler.net">
+
+    <!-- Mobile Metas -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+
+    <!-- Web Fonts  -->
+    <link href="http://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700,800|Shadows+Into+Light" rel="stylesheet" type="text/css">
+
+    <!-- Vendor CSS -->
+    <link href="~/Content/bootstrap.css" rel="stylesheet" />
+    <link href="~/Content/magnific-popup.css" rel="stylesheet" />
+    <link href="~/Content/datepicker3.css" rel="stylesheet" />
+
+    <!-- Theme CSS -->
+    <link href="~/Content/theme.css" rel="stylesheet" />
+    <!-- Skin CSS -->
+    <link href="~/Content/default.css" rel="stylesheet" />
+    <!-- Theme Custom CSS -->
+    <link href="~/Content/theme-custom.css" rel="stylesheet" />
+
+    <!-- Head Libs -->
+    <script src="~/Scripts/modernizr.js"></script>
+
+    <style>
+        /* Showcase */
+        #showcase {
+            background: #333 url('/img/bubbles-chemistry-close-up-color-220989.jpg') no-repeat center center;
+            background-size: cover;
+            height: 120vh;
+            color: #fff;
+        }
+
+            #showcase .showcase-content {
+                display: flex;
+                flex-direction: column;
+                text-align: center;
+                justify-content: center;
+                align-items: center;
+                height: 70%;
+                padding: 0 2rem;
+                /* Overlay */
+                position: absolute;
+                top: 300px;
+                left: 0;
+                right: 0;
+                bottom: 200px;
+                background-color: rgba(0,0,0,0.7);
+            }
+
+        .demobox {
+            height: 350px !important;
+        }
+
+        h4 {
+            color: white !important;
+        }
+
+        div.ex1:hover, a.ex1:active {
+            transform: scale(1.2);
+            /*font-size: 120%;*/
+            text-decoration: none;
+        }
+
+        div.panel-heading-profile-picture a {
+            text-decoration: none;
+        }
+        /*div.panel-body{
+            border-left: 2px solid #dafff9;
+        }*/
+    </style>
+</head>
+
+<body id="DemoHome">
+    <header id="showcase">
+        <div class="showcase-content">
+            <div class="row">
+                <div class="col-sm-2"></div>
+                <div class="col-sm-8 demobox">
+                    <div class="col-sm-3">
+                        @using (Html.BeginForm("DemoLoginAsync", "Account", FormMethod.Post, new { id = "DemoAdminEmail" }))
+                        {
+                            @Html.AntiForgeryToken()
+                            @Html.Hidden("emailKey", "DemoAdminEmail")
+                            <section class="panel">
+                                <div class="panel-heading bg-tertiary">
+
+                                    <div class="panel-heading-profile-picture">
+                                        <a href="#" onclick="document.getElementById('DemoAdminEmail').submit();">
+                                            <div class="ex1">
+                                                <img src="@Url.Content("~/Uploads/Default-avatar1.png")" class="img-circle" />
+                                                <h4 class="text-semibold mt-sm">Demo Admin</h4>
+                                            </div>
+                                        </a>
+                                    </div>
+
+
+                                </div>
+                                <div class="panel-body">
+                                    <p>The Admin has almost full permissions across the site. </p>
+                                </div>
+                            </section>
+                        }
+                    </div>
+                    <div class="col-sm-3">
+                        @using (Html.BeginForm("DemoLoginAsync", "Account", FormMethod.Post, new { id = "DemoManagerEmail" }))
+                        {
+                            @Html.AntiForgeryToken()
+                            @Html.Hidden("emailKey", "DemoManagerEmail")
+                            <section class="panel">
+                                <div class="panel-heading bg-tertiary">
+                                    <div class="panel-heading-profile-picture">
+                                        <a href="#" onclick="document.getElementById('DemoManagerEmail').submit();">
+                                            <div class="ex1">
+                                                <img src="@Url.Content("~/Uploads/avatarmanager.png")" class="img-circle" />
+                                                <h4 class="text-semibold mt-sm">Demo Manager</h4>
+                                            </div>
+                                        </a>
+                                    </div>
+                                </div>
+                                <div class="panel-body">
+                                    <p>The project manager has a role with multiple project page views.</p>
+                                </div>
+                            </section>
+                        }
+                    </div>
+                    <div class="col-sm-3">
+                        @using (Html.BeginForm("DemoLoginAsync", "Account", FormMethod.Post, new { id = "DemoDeveloperEmail" }))
+                        {
+                            @Html.AntiForgeryToken()
+                            @Html.Hidden("emailKey", "DemoDeveloperEmail")
+                            <section class="panel">
+                                <div class="panel-heading bg-tertiary">
+                                    <div class="panel-heading-profile-picture">
+                                        <a href="#" onclick="document.getElementById('DemoDeveloperEmail').submit();">
+                                            <div class="ex1">
+                                                <img src="@Url.Content("~/Uploads/avatardev.png")" class="img-circle" />
+                                                <h4 class="text-semibold mt-sm">Demo Developer</h4>
+                                            </div>
+                                        </a>
+                                    </div>
+                                </div>
+                                <div class="panel-body">
+                                    <p>The developer has most functiionality across the site directs this role. </p>
+                                </div>
+                            </section>
+                        }
+                    </div>
+                    <div class="col-sm-3">
+                        @using (Html.BeginForm("DemoLoginAsync", "Account", FormMethod.Post, new { id = "DemoSubmitterEmail" }))
+                        {
+                            @Html.AntiForgeryToken()
+                            @Html.Hidden("emailKey", "DemoSubmitterEmail")
+                            <section class="panel">
+                                <div class="panel-heading bg-tertiary">
+                                    <div class="panel-heading-profile-picture">
+                                        <a href="#" onclick="document.getElementById('DemoSubmitterEmail').submit();">
+                                            <div class="ex1">
+                                                <img src="@Url.Content("~/Uploads/avatarsub.png")" class="img-circle" />
+                                                <h4 class="text-semibold mt-sm">Demo Submitter</h4>
+                                            </div>
+                                        </a>
+                                    </div>
+                                </div>
+                                <div class="panel-body">
+                                    <p>The submitter has the ability to create new tickets.</p>
+                                </div>
+                            </section>
+                        }
+                    </div>
+                </div>
+                <div class="col-sm-2"></div>
+
+            </div>
+        </div>
+    </header>
+
+
+    <!-- Vendor -->
+    <script src="~/assets/vendor/jquery/jquery.js"></script>
+    <script src="~/assets/vendor/jquery-browser-mobile/jquery.browser.mobile.js"></script>
+    <script src="~/assets/vendor/bootstrap/js/bootstrap.js"></script>
+    <script src="~/assets/vendor/nanoscroller/nanoscroller.js"></script>
+    <script src="~/assets/vendor/bootstrap-datepicker/js/bootstrap-datepicker.js"></script>
+    <script src="~/assets/vendor/magnific-popup/magnific-popup.js"></script>
+    <script src="~/assets/vendor/jquery-placeholder/jquery.placeholder.js"></script>
+
+    <!-- Theme Base, Components and Settings -->
+    <script src="~/assets/javascripts/theme.js"></script>
+
+    <!-- Theme Custom -->
+    <script src="~/assets/javascripts/theme.custom.js"></script>
+
+    <!-- Theme Initialization Files -->
+    <script src="~/assets/javascripts/theme.init.js"></script>
+</body>
+
+</html>
+
+
+
+

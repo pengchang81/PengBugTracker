@@ -197,75 +197,112 @@
                         </a>
                         <div class="collapse" id="formsExamples">
                             <ul class="nav">
+                                @if (User.IsInRole("Submitter"))
+                                {
 
-                                <li class="nav-item ">
-                                    <a class="nav-link" href="@Url.Action("Index", "Tickets")">
 
-                                        <i class="fa fa-dot-circle-o"></i>
-                                        <p>
-                                            All Tickets
-                                        </p>
-                                    </a>
-                                </li>
-                                <li class="nav-item ">
-                                    <a class="nav-link" href="#componentsCollapse">
-                                        <i class="fa fa-dot-circle-o"></i>
-                                        <span class="sidebar-normal">
-                                            My Tickets
+                                    <li class="nav-item ">
+                                        <a class="nav-link" href="@Url.Action("Create", "Tickets")">
 
-                                        </span>
-                                    </a>
-                                </li>
-                                <li class="nav-item ">
-                                    <a class="nav-link" data-toggle="collapse" href="#tablesExamples">
-                                        <i class="fa fa-dot-circle-o"></i>
-                                        <p>
-                                            Ticket Properties
-                                            <b class="caret"></b>
-                                        </p>
-                                    </a>
-                                    <div class="collapse" id="tablesExamples">
-                                        <ul class="nav">
-                                            <li class="nav-item ">
-                                                <a class="nav-link" href="../examples/tables/regular.html">
-                                                    <span class="sidebar-mini"> - </span>
-                                                    <span class="=sidebar-normal">Priorities</span>
-                                                </a>
-                                            </li>
-                                            <li class="nav-item ">
-                                                <a class="nav-link" href="../examples/tables/extended.html">
-                                                    <span class="sidebar-mini"> - </span>
-                                                    <span class="sidebar-normal">Status</span>
-                                                </a>
-                                            </li>
-                                            <li class="nav-item ">
-                                                <a class="nav-link" href="../examples/tables/datatables.net.html">
-                                                    <span class="sidebar-mini"> - </span>
-                                                    <span class="sidebar-normal">Type</span>
-                                                </a>
-                                            </li>
-                                        </ul>
-                                    </div>
-                                </li>
-                                <li class="nav-item ">
-                                    <a class="nav-link" href="#componentsCollapse">
-                                        <i class="fa fa-dot-circle-o"></i>
-                                        <span class="sidebar-normal">
-                                            Ticket Histories
+                                            <i class="fa fa-dot-circle-o"></i>
+                                            <p>
+                                                Create Tickets
+                                            </p>
+                                        </a>
+                                    </li>
+                                }
 
-                                        </span>
-                                    </a>
-                                </li>
-                                <li class="nav-item ">
-                                    <a class="nav-link" href="#componentsCollapse">
-                                        <i class="fa fa-dot-circle-o"></i>
-                                        <span class="sidebar-normal">
-                                            Ticket Notification
 
-                                        </span>
-                                    </a>
-                                </li>
+                                @if (User.IsInRole("Admin"))
+                                {
 
+
+                                    <li class="nav-item ">
+                                        <a class="nav-link" href="@Url.Action("Index", "Tickets")">
+
+                                            <i class="fa fa-dot-circle-o"></i>
+                                            <p>
+                                                All Tickets
+                                            </p>
+                                        </a>
+                                    </li>
+                                }
+                                @if (User.IsInRole("Manager") || User.IsInRole("Submitter") || User.IsInRole("Developer"))
+                                {
+                                    <li class="nav-item ">
+                                        <a class="nav-link" href="#componentsCollapse">
+                                            <i class="fa fa-dot-circle-o"></i>
+                                            <span class="sidebar-normal">
+                                                My Tickets
+
+                                            </span>
+                                        </a>
+                                    </li>
+                                }
+                                @if (User.IsInRole("Admin"))
+                                {
+                                    <li class="nav-item ">
+
+                                        <a class="nav-link" data-toggle="collapse" href="#tablesExamples">
+                                            <i class="fa fa-dot-circle-o"></i>
+                                            <p>
+                                                Ticket Properties
+                                                <b class="caret"></b>
+                                            </p>
+                                        </a>
+                                        <div class="collapse" id="tablesExamples">
+                                            <ul class="nav">
+                                                <li class="nav-item ">
+                                                    <a class="nav-link" href="../examples/tables/regular.html">
+                                                        <span class="sidebar-mini"> - </span>
+                                                        <span class="=sidebar-normal">Priorities</span>
+                                                    </a>
+                                                </li>
+                                                <li class="nav-item ">
+                                                    <a class="nav-link" href="../examples/tables/extended.html">
+                                                        <span class="sidebar-mini"> - </span>
+                                                        <span class="sidebar-normal">Status</span>
+                                                    </a>
+                                                </li>
+                                                <li class="nav-item ">
+                                                    <a class="nav-link" href="../examples/tables/datatables.net.html">
+                                                        <span class="sidebar-mini"> - </span>
+                                                        <span class="sidebar-normal">Type</span>
+                                                    </a>
+                                                </li>
+                                            </ul>
+                                        </div>
+                                    </li>
+                                    <li class="nav-item ">
+                                        <a class="nav-link" href="#componentsCollapse">
+                                            <i class="fa fa-dot-circle-o"></i>
+                                            <span class="sidebar-normal">
+                                                Ticket Histories
+
+                                            </span>
+                                        </a>
+                                    </li>
+                                    <li class="nav-item ">
+                                        <a class="nav-link" href="#componentsCollapse">
+                                            <i class="fa fa-dot-circle-o"></i>
+                                            <span class="sidebar-normal">
+                                                Ticket Notifications
+
+                                            </span>
+                                        </a>
+                                    </li>
+                                }
+                                @if (User.IsInRole("Manager") || User.IsInRole("Submitter") || User.IsInRole("Developer"))
+                                {
+                                    <li class="nav-item ">
+                                        <a class="nav-link" href="#componentsCollapse">
+                                            <i class="fa fa-dot-circle-o"></i>
+                                            <span class="sidebar-normal">
+                                                My Notification
+                                            </span>
+                                        </a>
+                                    </li>
+                                }
                             </ul>
                         </div>
                     </li>

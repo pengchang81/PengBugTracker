@@ -31,6 +31,56 @@ namespace PengBugTracker.Controllers
             return View(ticketHelper.ListMyTickets());
 
         }
+        //Get: My Index
+        [Authorize(Roles = "Admin,ProjectManager,Developer,Submitter")]
+        public ActionResult MyIndex(string req)
+        {
+            //First get the Id of the logged in User
+            var userId = User.Identity.GetUserId();
+
+            //Then get the Role they occupy
+            var myRole = roleHelper.ListUserRoles(userId).FirstOrDefault();
+
+            var myTickets = new List<Ticket>();
+
+            //Then based on the role name we will push different data into the view
+            switch (myRole)
+            {
+                case "Developer":
+                    myTickets = db.Tickets.Where(t => t.AssignedToUserId == userId).ToList();
+                    break;
+                case "Submitter":
+                    myTickets = db.Tickets.Where(t => t.OwnerUserId == userId).ToList();
+                    break;
+                case "Manager":
+                    //mytickets are going to be all the Tickets on all the Project I am no.
+                    myTickets = db.Users.Find(userId).Projects.SelectMany(t => t.Tickets).ToList();
+                    break;
+                case "Admin":
+                    myTickets = db.Tickets.ToList();
+                    break;
+            }
+            //This is for Dashboard showing Immediate - Recent Tickets
+            //switch (req)
+            //{
+            //    case "Immediate":
+            //        myTickets = myTickets.Where(t => t.TicketPriority.PriorityName.Equals("Immediate")).ToList();
+            //        break;
+            //    case "Recent":
+            //        var yesterday = DateTime.Now.AddHours(-24);
+            //        myTickets = myTickets.Where(t => t.Created >= yesterday).ToList();
+            //        break;
+            //}
+
+            //MyIndex wants to fill some view with MY Tickets only.
+            //Step 1: Ask the question, "What role do I occypy"
+            //If I am a Submitter my Tickets are the Tickets where the OwnerUserId equals my Id.
+            //If I am the Developer, my Tickets are the Tickets where the AssignedToUserId is my Id
+            return View("Index", myTickets);
+        }
+
+
+
 
         // GET: Tickets/Details/5
         public ActionResult Details(int? id)
@@ -48,6 +98,7 @@ namespace PengBugTracker.Controllers
         }
 
         // GET: Tickets/Create
+        [Authorize(Roles ="Submitter")]
         public ActionResult Create()
         {
             var userId = User.Identity.GetUserId();
@@ -55,8 +106,7 @@ namespace PengBugTracker.Controllers
 
 
             ViewBag.ProjectId = new SelectList(myProjects, "Id", "Name");
-            ViewBag.TicketPriorityId = new SelectList(db.TicketPriorities, "Id", "PriorityName");
-            ViewBag.TicketStatusId = new SelectList(db.TicketStatus, "Id", "StatusName");
+            ViewBag.TicketPriorityId = new SelectList(db.TicketPriorities, "Id", "PriorityName");            
             ViewBag.TicketTypeId = new SelectList(db.TicketTypes, "Id", "TypeName");
             return View();
         }
@@ -66,15 +116,16 @@ namespace PengBugTracker.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "Id,ProjectId,TicketTypeId,TicketPriorityId,TicketStatusId,OwnerUserId,Title,Description,Created")] Ticket ticket)
+        public ActionResult Create([Bind(Include = "ProjectId,TicketTypeId,TicketPriorityId,Title,Description")] Ticket ticket)
         {
             if (ModelState.IsValid)
             {
                 ticket.Created = DateTime.Now;
                 ticket.OwnerUserId = User.Identity.GetUserId();
+                ticket.TicketStatusId = db.TicketStatus.FirstOrDefault(t=>t.StatusName == "Open").Id;
                 db.Tickets.Add(ticket);
                 db.SaveChanges();
-                return RedirectToAction("Index");
+                return RedirectToAction("MyIndex", "Tickets");
             }
 
             ViewBag.AssignedToUserId = new SelectList(db.Users, "Id", "FirstName", ticket.AssignedToUserId);
