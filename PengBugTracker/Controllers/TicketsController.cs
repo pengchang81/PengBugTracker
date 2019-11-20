@@ -18,6 +18,8 @@ namespace PengBugTracker.Controllers
         private TicketHelper ticketHelper = new TicketHelper();
         private RoleHelper roleHelper = new RoleHelper();
         private ProjectHelper projectHelper = new ProjectHelper();
+        private NotificationHelper notificationHelper = new NotificationHelper();
+        private TicketHistoryHelper ticketHistoryHelper = new TicketHistoryHelper();
 
         // GET: Tickets
         [Authorize]
@@ -31,7 +33,7 @@ namespace PengBugTracker.Controllers
             return View(ticketHelper.ListMyTickets());
 
         }
-        //Get: My Index
+        //Get: All Tickets Index Formerly(My Index)
         [Authorize(Roles = "Admin,ProjectManager,Developer,Submitter")]
         public ActionResult MyIndex(string req)
         {
@@ -78,10 +80,6 @@ namespace PengBugTracker.Controllers
             //If I am the Developer, my Tickets are the Tickets where the AssignedToUserId is my Id
             return View("Index", myTickets);
         }
-
-
-
-
         // GET: Tickets/Details/5
         public ActionResult Details(int? id)
         {
@@ -94,24 +92,40 @@ namespace PengBugTracker.Controllers
             {
                 return HttpNotFound();
             }
+
+            var myProjects = projectHelper.ListUserProjects(User.Identity.GetUserId());
+            ProjectHelper projectsHelper = new ProjectHelper();
+            List<ApplicationUser> projectusers = new List<ApplicationUser>();
+            List<string> projectDevIds = new List<string>();
+            foreach (Project project in myProjects)
+            {
+                projectDevIds = projectsHelper.ListUsersOnProjectRole(project.Id, "Developer");   
+            }
+            foreach (string devId in projectDevIds)
+            {
+                ApplicationUser devUser = db.Users.Find(devId);
+                projectusers.Add(devUser);
+            }
+            ViewBag.AssignedToUserId = new SelectList(projectusers, "Id", "DisplayName", ticket.AssignedToUserId);
             return View(ticket);
         }
 
-        // GET: Tickets/Create
+        // GET: Tickets Submitters Create
         [Authorize(Roles ="Submitter")]
         public ActionResult Create()
         {
             var userId = User.Identity.GetUserId();
             var myProjects = projectHelper.ListUserProjects(userId);
-
+            var devs = roleHelper.UsersInRole("Developer").ToList();
 
             ViewBag.ProjectId = new SelectList(myProjects, "Id", "Name");
             ViewBag.TicketPriorityId = new SelectList(db.TicketPriorities, "Id", "PriorityName");            
             ViewBag.TicketTypeId = new SelectList(db.TicketTypes, "Id", "TypeName");
+            ViewBag.AssignToUserId = new SelectList(devs, "Id", "FullName");
             return View();
         }
 
-        // POST: Tickets/Create
+        // POST: Tickets Submitters Create
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
@@ -125,7 +139,7 @@ namespace PengBugTracker.Controllers
                 ticket.TicketStatusId = db.TicketStatus.FirstOrDefault(t=>t.StatusName == "Open").Id;
                 db.Tickets.Add(ticket);
                 db.SaveChanges();
-                return RedirectToAction("MyIndex", "Tickets");
+                return RedirectToAction("MyIndex");
             }
 
             ViewBag.AssignedToUserId = new SelectList(db.Users, "Id", "FirstName", ticket.AssignedToUserId);
@@ -170,7 +184,7 @@ namespace PengBugTracker.Controllers
                 //Record the old Ticket before it gets updated for comparison
                 //var oldTicket = db.Tickets.FInd(Ticket.Id);
                 var oldTicket = db.Tickets.AsNoTracking().FirstOrDefault(t => t.Id == ticket.Id);
-
+                ticket.AssignedToUserId = ticket.AssignedToUserId;
                 ticket.Updated = DateTime.Now;
                 db.Entry(ticket).State = EntityState.Modified;
                 db.SaveChanges();
@@ -178,7 +192,8 @@ namespace PengBugTracker.Controllers
                 var newTicket = db.Tickets.AsNoTracking().FirstOrDefault(t => t.Id == ticket.Id);
 
                 //decide for yourself HistoryHelper as to whether a history record needs to be added...
-                //auditHelper.RecordHistoricalChanges(oldTicket, newTicket);
+                ticketHistoryHelper.RecordHistoricalChanges(oldTicket, newTicket);
+                notificationHelper.ManageNotifications(oldTicket, newTicket);
 
                 return RedirectToAction("Index");
             }

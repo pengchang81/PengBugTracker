@@ -33,10 +33,7 @@ namespace PengBugTracker.Models
 
                 return $"{FirstName}, {LastName}";
             }
-
-
         }
-
 
         public virtual ICollection<TicketComment> TicketComments { get; set; }
         public virtual ICollection<Project> Projects { get; set; }

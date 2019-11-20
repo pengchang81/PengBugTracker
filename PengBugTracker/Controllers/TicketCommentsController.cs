@@ -54,26 +54,22 @@ namespace PengBugTracker.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "TicketId, Comment")] TicketComment ticketComment)
+        public ActionResult Create([Bind(Include = "Id, TicketId, UserId, CommentBody, Created")] TicketComment ticketComment, string commentBody, int ticketId)
         {
-            if (ticketComment.CommentBody != null)
-            {
+            
                 if (ModelState.IsValid)
                 {
+
                     ticketComment.Created = DateTime.Now;
+                    ticketComment.CommentBody = commentBody;
                     ticketComment.UserId = User.Identity.GetUserId();
                     db.TicketComments.Add(ticketComment);
 
                     db.SaveChanges();
-                    return RedirectToAction("Details", "Tickets", new { id = ticketComment.TicketId });
+                    return RedirectToAction("Details", "Tickets", new { id = ticketId });
                 }
-            }
-            else
-            {
-                return RedirectToAction("Index", "Tickets");
-            }
 
-            ViewBag.TicketId = new SelectList(db.Tickets, "Id", "SubmitterId", ticketComment.TicketId);
+            ViewBag.TicketId = new SelectList(db.Tickets, "Id", "Title", ticketComment.TicketId);
             ViewBag.UserId = new SelectList(db.Users, "Id", "FirstName", ticketComment.UserId);
             return View(ticketComment);
         }

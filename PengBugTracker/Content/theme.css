@@ -5493,7 +5493,7 @@ html.header-dark .userbox .dropdown-menu a {
     background: linear-gradient(180deg, black, transparent 100px);
     border-radius: 5px 5px 0 0;
     border-bottom: 1px solid #DADADA;
-    padding: 18px;
+    padding: 5px 5px;
     position: relative;
 }
 

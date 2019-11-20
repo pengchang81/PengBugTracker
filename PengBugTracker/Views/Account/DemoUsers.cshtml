@@ -1,12 +1,11 @@
-﻿
-@{
-    ViewBag.Title = "DomoUser";
+﻿@{
+    ViewBag.Title = "DemoUser";
     Layout = null;
 }
 <!doctype html>
-<html class="fixed">
-<head>
+@*<html class="fixed">*@
 
+<head>
     <!-- Basic -->
     <meta charset="UTF-8">
     <title>DemoUser | Peng's Bug Tracker</title>
@@ -31,7 +30,6 @@
     <link href="~/Content/default.css" rel="stylesheet" />
     <!-- Theme Custom CSS -->
     <link href="~/Content/theme-custom.css" rel="stylesheet" />
-
     <!-- Head Libs -->
     <script src="~/Scripts/modernizr.js"></script>
 
@@ -54,11 +52,11 @@
                 padding: 0 2rem;
                 /* Overlay */
                 position: absolute;
-                top: 300px;
+                top: 200px;
                 left: 0;
                 right: 0;
                 bottom: 200px;
-                background-color: rgba(0,0,0,0.7);
+                background-color: rgba(38, 11, 56, 0.59);
             }
 
         .demobox {
@@ -82,6 +80,7 @@
             border-left: 2px solid #dafff9;
         }*/
     </style>
+
 </head>
 
 <body id="DemoHome">
@@ -101,7 +100,7 @@
                                     <div class="panel-heading-profile-picture">
                                         <a href="#" onclick="document.getElementById('DemoAdminEmail').submit();">
                                             <div class="ex1">
-                                                <img src="@Url.Content("~/Uploads/Default-avatar1.png")" class="img-circle" />
+                                                <img src="@Url.Content("~/img/faces/avatar.jpg")" class="img-circle" />
                                                 <h4 class="text-semibold mt-sm">Demo Admin</h4>
                                             </div>
                                         </a>
@@ -110,7 +109,7 @@
 
                                 </div>
                                 <div class="panel-body">
-                                    <p>The Admin has almost full permissions across the site. </p>
+                                    <p>The Admin has overall power. Access the Admin console here.</p>
                                 </div>
                             </section>
                         }
@@ -132,7 +131,7 @@
                                     </div>
                                 </div>
                                 <div class="panel-body">
-                                    <p>The project manager has a role with multiple project page views.</p>
+                                    <p>The manager will assign tickets to developers. Access this demo here.</p>
                                 </div>
                             </section>
                         }
@@ -154,7 +153,7 @@
                                     </div>
                                 </div>
                                 <div class="panel-body">
-                                    <p>The developer has most functiionality across the site directs this role. </p>
+                                    <p>The developer works on the assigned tickets based on priority. </p>
                                 </div>
                             </section>
                         }
@@ -176,7 +175,7 @@
                                     </div>
                                 </div>
                                 <div class="panel-body">
-                                    <p>The submitter has the ability to create new tickets.</p>
+                                    <p>The submitter creates tickets.</p>
                                 </div>
                             </section>
                         }
@@ -187,7 +186,6 @@
             </div>
         </div>
     </header>
-
 
     <!-- Vendor -->
     <script src="~/assets/vendor/jquery/jquery.js"></script>

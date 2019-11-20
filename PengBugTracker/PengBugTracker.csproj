@@ -250,7 +250,7 @@
     <Content Include="favicon.ico" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />
-    <Content Include="img\action-balls-black-and-white-illustration-60582.jpg" />
+    <Content Include="img\action_balls.jpg" />
     <Content Include="img\antique-key-lock.png" />
     <Content Include="img\apple-icon.png" />
     <Content Include="img\avatardev.png" />
@@ -287,6 +287,8 @@
     <Content Include="img\macro-shot-of-gray-crawling-insect-762946.jpg" />
     <Content Include="img\mask.png" />
     <Content Include="img\new_logo.png" />
+    <Content Include="img\people-goup.png" />
+    <Content Include="img\people.png" />
     <Content Include="img\placeholder.jpg" />
     <Content Include="img\product1.jpg" />
     <Content Include="img\product2.jpg" />

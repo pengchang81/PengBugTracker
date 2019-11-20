@@ -26,8 +26,7 @@
 <body class="off-canvas-sidebar">
     <!-- Navbar -->
     <nav class="navbar navbar-expand-lg navbar-transparent navbar-absolute fixed-top text-white">
-        <div class="container">
-            
+        <div class="container">            
             <button class="navbar-toggler" type="button" data-toggle="collapse" aria-controls="navigation-index" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="sr-only">Toggle navigation</span>
                 <span class="navbar-toggler-icon icon-bar"></span>
@@ -45,8 +44,7 @@
                             <a href="@Url.Action("Register", "Account")" class="nav-link">
                             <i class="material-icons">person_add</i> Register
                             </a>                                                                              
-                        @*@Html.ActionLink("Register", "Register", "Account", new { @class="material-icons"})*@
-                        
+                        @*@Html.ActionLink("Register", "Register", "Account", new { @class="material-icons"})*@                        
                     </li>
                     <li class="nav-item  active ">
                         <a href="#" class="nav-link">
@@ -59,76 +57,77 @@
     </nav>
     <!-- End Navbar -->
     <div class="wrapper wrapper-full-page">
-        <div class="page-header login-page header-filter" filter-color="black" style="background-image: url('../../img/antique-key-lock.png'); background-size: auto; background-position: top center;">
+        <div class="page-header login-page header-filter" filter-color="black" style="background-image: url('../../img/action_balls.jpg'); background-position: top center;">
             <!--   you can change the color of the filter page using: data-color="blue | purple | green | orange | red | rose " -->
+            
             <div class="container">
                 <div class="row">
                     <div class="col-lg-4 col-md-6 col-sm-8 ml-auto mr-auto">
 
-                       @using (Html.BeginForm("Login", "Account", new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post, new { role = "form" }))
-                        { 
-                           @Html.AntiForgeryToken()
-                           @Html.ValidationSummary(true,"", new {@class="text-danger"})
+                        @using (Html.BeginForm("Login", "Account", new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post, new { role = "form" }))
+                        {
+                            @Html.AntiForgeryToken()
+                            @Html.ValidationSummary(true, "", new { @class = "text-danger" })
 
-                        <form class="form" method="" action="">
-                            <div class="card card-login card-hidden">
-                                <div class="card-header card-header-rose text-center">
-                                    <h4 class="card-title">Login</h4>
-                                    <div class="social-line">
-                                        <a href="#pablo" class="btn btn-just-icon btn-link btn-white">
-                                            <i class="fa fa-facebook-square"></i>
-                                        </a>
-                                        <a href="#pablo" class="btn btn-just-icon btn-link btn-white">
-                                            <i class="fa fa-twitter"></i>
-                                        </a>
-                                        <a href="#pablo" class="btn btn-just-icon btn-link btn-white">
-                                            <i class="fa fa-google-plus"></i>
-                                        </a>
+                            <form class="form" method="" action="">
+                                <div class="card card-login card-hidden">
+                                    <div class="card-header card-header-rose text-center">
+                                        <h4 class="card-title">Sign In</h4>
+                                        <div class="social-line">
+                                            @*<a href="#pablo" class="btn btn-just-icon btn-link btn-white">
+                                                <i class="fa fa-facebook-square"></i>
+                                            </a>
+                                            <a href="#pablo" class="btn btn-just-icon btn-link btn-white">
+                                                <i class="fa fa-twitter"></i>
+                                            </a>
+                                            <a href="#pablo" class="btn btn-just-icon btn-link btn-white">
+                                                <i class="fa fa-google-plus"></i>
+                                            </a>*@
+                                        </div>
+                                    </div>
+                                    <div class="card-body ">
+                                        <span class="bmd-form-group">
+                                            <div class="input-group">
+                                                <div class="input-group-prepend">
+                                                    <span class="input-group-text">
+                                                        <i class="material-icons">email</i>
+                                                    </span>
+                                                </div>
+                                                @*<input type="email" class="form-control" placeholder="Email...">*@
+                                                @Html.TextBoxFor(m => m.Email, new { @Placeholder = "Email", @class = "form-control input-lg" })
+                                                @Html.ValidationMessageFor(m => m.Email, "", new { @class = "text-danger" })
+
+                                            </div>
+                                        </span>
+                                        <span class="bmd-form-group">
+                                            <div class="input-group">
+                                                <div class="input-group-prepend">
+                                                    <span class="input-group-text">
+                                                        <i class="material-icons">lock_outline</i>
+                                                    </span>
+                                                </div>
+                                                @*<input type="password" class="form-control" placeholder="Password...">*@
+                                                @Html.PasswordFor(m => m.Password, new { @Placeholder = "Password", @class = "form-control input-lg" })
+                                                @Html.ValidationMessageFor(m => m.Password, "", new { @class = "text-danger" })
+                                            </div>
+                                        </span>
+                                    </div>
+                                    <div class="card-footer justify-content-center">
+                                        <input type="submit" value="Sign In" class="btn btn-rose btn-link btn-lg" />
                                     </div>
                                 </div>
-                                <div class="card-body ">
-                                    <span class="bmd-form-group">
-                                        <div class="input-group">
-                                            <div class="input-group-prepend">
-                                                <span class="input-group-text">
-                                                    <i class="material-icons">email</i>
-                                                </span>
-                                            </div>
-                                            @*<input type="email" class="form-control" placeholder="Email...">*@
-                                            @Html.TextBoxFor(m=>m.Email, new {@Placeholder="Email", @class="form-control input-lg"})
-                                            @Html.ValidationMessageFor(m =>m.Email, "", new {@class="text-danger"})
-                                            
-                                        </div>
-                                    </span>
-                                    <span class="bmd-form-group">
-                                        <div class="input-group">
-                                            <div class="input-group-prepend">
-                                                <span class="input-group-text">
-                                                    <i class="material-icons">lock_outline</i>
-                                                </span>
-                                            </div>
-                                            @*<input type="password" class="form-control" placeholder="Password...">*@
-                                            @Html.PasswordFor(m => m.Password, new { @Placeholder = "Password", @class = "form-control input-lg" })
-                                            @Html.ValidationMessageFor(m => m.Password, "", new { @class = "text-danger" })
-                                        </div>
-                                    </span>
-                                </div>
-                                <div class="card-footer justify-content-center">
-                                    <input type="submit" value="Login" class="btn btn-rose btn-link btn-lg"/>
-                                </div>
-                            </div>
-                        </form>
-                         }
-
+                            </form>
+                        }
                     </div>
                 </div>
             </div>
             <footer class="footer">
-                <div class="container">                    
+                <div class="container">
                     <div class="copyright text-center">
                         &copy;
-                        <script> document.write(new Date().getFullYear())
-                        </script> made by Peng Chang                        
+                        <script>
+    document.write(new Date().getFullYear())
+                        </script> made by Peng Chang
                     </div>
                 </div>
             </footer>
@@ -173,9 +172,7 @@
                     if ($('.fixed-plugin .dropdown').hasClass('show-dropdown')) {
                         $('.fixed-plugin .dropdown').addClass('open');
                     }
-
                 }
-
                 $('.fixed-plugin a').click(function (event) {
                     // Alex if we click on switch, stop propagation of the event, so the dropdown will not be hide, otherwise we set the  section active
                     if ($(this).hasClass('switch-trigger')) {
