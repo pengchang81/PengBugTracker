@@ -9,232 +9,266 @@
 }
 
 <style>
-.avatar {
-    display: block;
-    margin-left:auto;
-    margin-right:auto;
-    width: 60px;
-    height: 60px;
-    border-radius: 50%;
+    .avatar {
+        display: block;
+        margin-left: auto;
+        margin-right: auto;
+        width: 60px;
+        height: 60px;
+        border-radius: 50%;
     }
-</style>    
+</style>
 
 <div class="content">
-        <div class="container-fluid">
-            <div class="row">
-                <div class="col-md-12">
-                    <div class="card">
-                        <div class="card-header card-header-primary card-header-icon">
-                            <div class="card-icon">
-                                <i class="material-icons">assignment</i>
-                            </div>
-                            <h4 class="card-title">DataTables.net</h4>
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="card">
+
+                    <div class="card-header card-header-primary card-header-icon">
+                        <div class="card-icon">
+                            <i class="material-icons">assignment</i>
                         </div>
-                        <div class="card-body">
-                            <div class="toolbar">
-                                <!--        Here you can write extra buttons/actions for the toolbar              -->
-                            </div>
-                            <div class="material-datatables">
-                                <table id="datatables" class="table table-striped table-no-bordered table-hover" cellspacing="0" width="100%" style="width:100%">
-                                    <thead>
-                                        <tr>
-                                            <th>Title</th>
-                                            <th>Description</th>
-                                            <th>Project</th>
-                                            <th>Submitter</th>
-                                            <th>Developer</th>                          
-                                            <th>Priority</th>
-                                            <th>Status</th>
-                                            <th>Type</th>
-                                            <th>Created</th>
-                                            @*<th class="disabled-sorting text-right">Actions</th>*@
-                                        </tr>
-                                    </thead>
-                                    <tfoot>
-                                        <tr>
-                                            <th>Title</th>
-                                            <th>Description</th>
-                                            <th>Project</th>
-                                            <th>Submitter</th>
-                                            <th>Developer</th>
-                                            <th>Priority</th>
-                                            <th>Status</th>
-                                            <th>Type</th>
-                                            <th>Created</th>
-                                            @*<th class="text-right">Actions</th>*@
-                                        </tr>
-                                    </tfoot>
-                                    <tbody>
-                                        <tr>
-                                            <td>@Html.DisplayFor(model => model.Title)</td>
-                                            <td>@Html.DisplayFor(model => model.Description)</td>
-                                            <td>@Html.DisplayFor(model => model.Project.Name)</td>
-                                            <td>@Html.DisplayFor(model => model.OwnerUser.FullName)</td>
-                                            <td>@Html.DisplayFor(model => model.AssignedToUser.FullName)</td>
-                                            <td>@Html.DisplayFor(model => model.TicketPriority.PriorityName)</td>
-                                            <td>@Html.DisplayFor(model => model.TicketStatus.StatusName)</td>
-                                            <td>@Html.DisplayFor(model => model.TicketType.TypeName)</td>
-                                            <td>@Html.DisplayFor(model => model.Created)</td>
-                                            @*<td class="text-right">
+                        <h4 class="card-title">Ticket Details</h4>
+                    </div>
+                    <div class="card-body">
+                        <div class="toolbar">
+                            <!--        Here you can write extra buttons/actions for the toolbar              -->
+                        </div>
+                        <div class="material-datatables">
+                            <table id="datatables" class="table table-striped table-no-bordered table-hover" cellspacing="0" width="100%" style="width:100%">
+                                <thead>
+                                    <tr>
+                                        <th>Title</th>
+                                        <th>Description</th>
+                                        <th>Project</th>
+                                        <th>Submitter</th>
+                                        <th>Developer</th>
+                                        <th>Priority</th>
+                                        <th>Status</th>
+                                        <th>Type</th>
+                                        <th>Created</th>
+                                        @*<th class="disabled-sorting text-right">Actions</th>*@
+                                    </tr>
+                                </thead>
+                                <tfoot>
+                                    <tr>
+                                        <th>Title</th>
+                                        <th>Description</th>
+                                        <th>Project</th>
+                                        <th>Submitter</th>
+                                        <th>Developer</th>
+                                        <th>Priority</th>
+                                        <th>Status</th>
+                                        <th>Type</th>
+                                        <th>Created</th>
+                                        @*<th class="text-right">Actions</th>*@
+                                    </tr>
+                                </tfoot>
+                                <tbody>
+                                    <tr>
+                                        <td>@Html.DisplayFor(model => model.Title)</td>
+                                        <td>@Html.DisplayFor(model => model.Description)</td>
+                                        <td>@Html.DisplayFor(model => model.Project.Name)</td>
+                                        <td>@Html.DisplayFor(model => model.OwnerUser.FullName)</td>
+                                        <td>@Html.DisplayFor(model => model.AssignedToUser.FullName)</td>
+                                        <td>@Html.DisplayFor(model => model.TicketPriority.PriorityName)</td>
+                                        <td>@Html.DisplayFor(model => model.TicketStatus.StatusName)</td>
+                                        <td>@Html.DisplayFor(model => model.TicketType.TypeName)</td>
+                                        <td>@Html.DisplayFor(model => model.Created)</td>
+                                        @*<td class="text-right">
                                                 <a href="#" class="btn btn-link btn-info btn-just-icon like"><i class="material-icons">favorite</i></a>
                                                 <a href="#" class="btn btn-link btn-warning btn-just-icon edit"><i class="material-icons">dvr</i></a>
                                                 <a href="#" class="btn btn-link btn-danger btn-just-icon remove"><i class="material-icons">close</i></a>
                                             </td>*@
-                                        </tr>                                        
-                                    </tbody>
-                                </table>
-                            </div>
+                                    </tr>
+                                </tbody>
+                            </table>
                         </div>
-                        <!-- end content-->
                     </div>
-                    <!--  end card  -->
+                    <!-- end content-->
                 </div>
-                <!-- end col-md-12 -->
+                <!--  end card  -->
             </div>
-            <!-- end row -->
+            <!-- end col-md-12 -->
         </div>
-    </div>
-
-
-<div class="row">
-    <div class="container-fluid">
-    <!-- column: Comments & Attachment-->
-    <div class="col-md-4">
-        <!--Comments-->
-        <div class="row">
-            <div class="col-md-12">
-                <div class="card ">
-                    <div class="card-header card-header-rose card-header-icon">
-                        <div class="card-icon">
-                            <i class="material-icons">mail_outline</i>
-                        </div>
-                        <h4 class="card-title">Ticket Comment</h4>
-                    </div>
-                    <div class="card-body ">
-                        <div class="row table-responsive">
-                            <div class="col-md-12">
-                                @foreach (var comment in Model.TicketComments.OrderByDescending(c => c.Created))
-                                {
-                                    <div class="row">
-                                        <div class="col-md-4">
-                                            <div class="row">
-
-                                                @if (!string.IsNullOrEmpty(comment.User.AvatarUrl))
-                                                {
-                                                    <img class="img-responsive avatar" src="@comment.User.AvatarUrl" />
-                                                }
-                                                else
-                                                {
-                                                    <img src="@Url.Content("~/Uploads/Default-avatar.jpg")" class="img-responsive avatar" />
-                                                }
-
-                                            </div>
-                                            <div class="row text-center">
-                                                @comment.User.FullName
-                                            </div>
-                                        </div>
-                                        <div class="col-md-8">
-                                            <div class="row">
-                                                <b>@comment.Created.ToString("MMM d, yyyy")</b>
-                                            </div>
-                                            <div class="row" text-center">
-                                                @Html.Raw(@comment.CommentBody)
-                                            </div>
-                                            @if (User.IsInRole("Admin") || User.Identity.GetUserId() == comment.UserId)
-                                            {
-                                                <div class="row">
-                                                    <div class="col-md-offset-6">
-                                                        <a class="textcolor" href="@Url.Action("Edit", "TicketComments", new { Id = comment.Id })">Edit</a>|
-                                                        <a class="textcolor" href="@Url.Action("Delete", "TicketComments", new { Id = comment.Id })">Delete</a>
-                                                    </div>
-                                                </div>
-                                            }
-                                        </div>
-                                    </div>
-                                    <br />
-                                }
-                                <hr />
-
-                                @if (User.Identity.IsAuthenticated)
-                                {
-                                    using (Html.BeginForm("Create", "TicketComments", FormMethod.Post))
-                                    {
-                                        @Html.AntiForgeryToken()
-                                        @Html.HiddenFor(model => model.Id)
-                                        @Html.Hidden("TicketId", Model.Id)
-
-                                        <div class="row">
-                                            <div class="col-md-12">
-                                                @Html.TextArea("CommentBody", new { @class = "form-control cell-fill-textarea", rows = 3, cols = 70, placeholder = "Comment" })
-                                            </div>
-                                        </div>
-                                        <div clss="row">
-                                            @*<div class="col-md-12">
-                                                            <button typeof="submit" class="site-btn btn-success">Send</button>
-                                                </div>*@
-                                            <div class="card-footer col-md-12">
-                                                <button type="submit" class="btn btn-fill btn-rose">Submit</button>
-                                            </div>
-                                        </div>
-                                    };
-                                }
-
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <!--Attachments-->
-        <div class="row">
-            <div class="col-md-12">
-                <div class="card ">
-                    <div class="card-header card-header-rose card-header-icon">
-                        <div class="card-icon">
-                            <i class="material-icons">mail_outline</i>
-                        </div>
-                        <h4 class="card-title">Ticket Attachment</h4>
-                    </div>
-                    <div class="card-body ">
-                        <form method="#" action="#">
-                            <div class="form-group">
-                                <label for="exampleEmail" class="bmd-label-floating">Email Address</label>
-                                <input type="email" class="form-control" id="exampleEmail">
-                            </div>
-                            <div class="form-group">
-                                <label for="examplePass" class="bmd-label-floating">Password</label>
-                                <input type="password" class="form-control" id="examplePass">
-                            </div>
-                            <div class="form-check">
-                                <label class="form-check-label">
-                                    <input class="form-check-input" type="checkbox" value=""> Subscribe to newsletter
-                                    <span class="form-check-sign">
-                                        <span class="check"></span>
-                                    </span>
-                                </label>
-                            </div>
-                        </form>
-                    </div>
-                    <div class="card-footer ">
-                        <button type="submit" class="btn btn-fill btn-rose">Submit</button>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-        
-
-    <!-- column: History -->
-    <div class="col-md-8">
-
-    </div>
+        <!-- end row -->
     </div>
 </div>
 
+<div class="row">
+    <div class="container-fluid">
+        <!-- column: Comments & Attachment-->
+        <div class="col-md-4">
+            <!--Comments-->
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="card ">
+                        <div class="card-header card-header-rose card-header-icon">
+                            <div class="card-icon">
+                                <i class="material-icons">mail_outline</i>
+                            </div>
+                            <h4 class="card-title">Ticket Comment</h4>
+                        </div>
+                        <div class="card-body ">
+                            <div class="row table-responsive">
+                                <div class="col-md-12">
+                                    @foreach (var comment in Model.TicketComments.OrderByDescending(c => c.Created))
+                                    {
+                                        <div class="row">
+                                            <div class="col-md-4">
+                                                <div class="row">
+                                                    @if (!string.IsNullOrEmpty(comment.User.AvatarUrl))
+                                                    {
+                                                        <img class="img-responsive avatar" src="@comment.User.AvatarUrl" />
+                                                    }
+                                                    else
+                                                    {
+                                                        <img src="@Url.Content("~/Uploads/Default-avatar.jpg")" class="img-responsive avatar" />
+                                                    }
+                                                </div>
+                                                <div class="row text-center">
+                                                    @comment.User.FullName
+                                                </div>
+                                            </div>
+                                            <div class="col-md-8">
+                                                <div class="row">
+                                                    <b>@comment.Created.ToString("MMM dd, yyyy")</b>
+                                                </div>
+                                                <div class="row" text-center">
+                                                    @Html.Raw(@comment.CommentBody)
+                                                </div>
+                                                @if (User.IsInRole("Admin") || User.Identity.GetUserId() == comment.UserId)
+                                                {
+                                                    <div class="row">
+                                                        <div class="col-md-offset-6">
+                                                            <a class="textcolor" href="@Url.Action("Edit", "TicketComments", new { Id = comment.Id })">Edit</a>|
+                                                            <a class="textcolor" href="@Url.Action("Delete", "TicketComments", new { Id = comment.Id })">Delete</a>
+                                                        </div>
+                                                    </div>
+                                                }
+                                            </div>
+                                        </div>
+                                    }
+                                    <br />
 
-    <p>
-        @Html.ActionLink("Edit", "Edit", new { id = Model.Id }) |
-        @Html.ActionLink("Back to List", "Index")
-    </p>
+                                    @if (User.Identity.IsAuthenticated)
+                                    {
+                                        using (Html.BeginForm("Create", "TicketComments", FormMethod.Post))
+                                        {
+                                            @Html.AntiForgeryToken()
+                                            @Html.Hidden("TicketId", Model.Id)
+
+                                            <div class="row">
+                                                <div class="col-md-12">
+                                                    @Html.TextArea("CommentBody", new { @class = "form-control cell-fill-textarea", rows = 3, cols = 70, placeholder = "Comment" })
+                                                </div>
+                                            </div>
+                                            <div clss="row">
+                                                @*<div class="col-md-12">
+                                                                <button typeof="submit" class="site-btn btn-success">Send</button>
+                                                    </div>*@
+                                                <div class="card-footer col-md-12">
+                                                    <button type="submit" class="btn btn-fill btn-rose">Submit</button>
+                                                </div>
+                                            </div>
+                                        };
+                                    }
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!--Attachments-->
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="card ">
+                        <div class="card-header card-header-rose card-header-icon">
+                            <div class="card-icon">
+                                <i class="material-icons">mail_outline</i>
+                            </div>
+                            <h4 class="card-title">Ticket Attachment</h4>
+                        </div>
+                        <div class="card-body ">
+                            <div class="row table-responsive">
+                                <div class="col-md-12">
+                                    <table>
+                                        @foreach (var attachments in Model.TicketAttachments)
+                                        {
+                                            <tr>
+                                                <td>
+                                                    <a href="@attachments.FilePath">
+                                                        <img src="@AttachmentHelper.GetIcon(attachments.FilePath)" style="width:40px;" />
+                                                    </a>
+                                                </td>
+                                                <td>
+                                                    @Html.DisplayFor(modelAttachments => attachments.Description)
+                                                </td>
+                                                <td>
+                                                    @Html.ActionLink("Edit", "Edit", new { id = attachments.Id })|
+                                                    @Html.ActionLink("Details", "Details", new { id = attachments.Id })|
+                                                    @Html.ActionLink("Delete", "Delete", new { id = attachments.Id })
+                                                </td>
+                                            </tr>
+                                        }
+                                    </table>
+
+
+                                        <div class="fileinput fileinput-new text-center" data-provides="fileinput">
+                                            <div class="fileinput-new thumbnail">
+                                                <img src="~/img/image_placeholder.jpg" alt="...">
+                                            </div>
+                                            <div class="fileinput-preview fileinput-exists thumbnail"></div>
+                                            <div>
+                                                <span class="btn btn-rose btn-round btn-file">
+                                                    <span class="fileinput-new">Select image</span>
+                                                    <span class="fileinput-exists">Change</span>
+                                                    <input type="file" name="..." />
+                                                </span>
+                                                <a href="#pablo" class="btn btn-danger btn-round fileinput-exists" data-dismiss="fileinput"><i class="fa fa-times"></i> Remove</a>
+                                            </div>
+                                        </div>
+                                        @*@using (Html.BeginForm("Create", "TicketAttachments", FormMethod.Post, new { enctype = "Multipart/form-data" }))
+            {
+                @Html.AntiForgeryToken()
+                @Html.Hidden("TicketId", Model.Id)
+                @Html.Hidden("Ticket", Model)
+                @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+                <div class="form-group">
+                    <input name="image" type="file" class="form-control" id="fileUpload" />
+                    @Html.TextBox("file", null, new { @class = "btn btn-info", type = "file", value = "fileButton" })
+                </div>
+
+                <div class="form-group">
+                    <div>
+                        @Html.TextArea("Description", "", new { @class = "form-control", rows = 5, placeholder = "Description" })
+                        @Html.ValidationMessageFor(model => model.Description, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+                <div class="card-footer ">
+                    <button type="submit" class="btn btn-fill btn-rose">Attach</button>
+                </div>
+            }*@
+                                    </div>
+                                </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- column: History -->
+        <div class="col-md-8">
+
+
+
+        </div>
+    </div>
+</div>
+
+<p>
+    @Html.ActionLink("Edit", "Edit", new { id = Model.Id }) |
+    @Html.ActionLink("Back to List", "Index")
+</p>
 

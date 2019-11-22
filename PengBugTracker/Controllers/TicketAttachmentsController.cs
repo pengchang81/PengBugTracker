@@ -43,11 +43,13 @@ namespace PengBugTracker.Controllers
         }
 
         // GET: TicketAttachments/Create
-        public ActionResult Create()
+        public ActionResult Create(int id)
         {
-            ViewBag.TicketId = new SelectList(db.Tickets, "Id", "OwnerUserId");
-            ViewBag.UserId = new SelectList(db.Users, "Id", "FirstName");
-            return View();
+            TicketAttachment model = new TicketAttachment()
+            {
+                TicketId = id
+            };
+            return View(model);
         }
 
         // POST: TicketAttachments/Create
@@ -55,23 +57,22 @@ namespace PengBugTracker.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.                       
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "TicketId,Description")] TicketAttachment ticketAttachment, HttpPostedFileBase file)
+        public ActionResult Create([Bind(Include = "TicketId,Description,Created")] TicketAttachment ticketAttachment, HttpPostedFileBase attachment)
         {
             if (ModelState.IsValid)
             {
-                if (file != null)
+                if (attachment != null)
                 {
-                    if (ImageUploadValidator.IsWebFriendlyImage(file) || ImageUploadValidator.IsWebFriendlyFile(file))
+                    if (ImageUploadValidator.IsWebFriendlyImage(attachment) || ImageUploadValidator.IsWebFriendlyFile(attachment))
                     {
-                        var fileName = Path.GetFileName(file.FileName);
+                        var fileName = Path.GetFileName(attachment.FileName);
                         var justFileName = Path.GetFileNameWithoutExtension(fileName);
                         var ticketId = ticketAttachment.TicketId;
 
                         justFileName = StringUtilities.URLFriendly(justFileName);
                         fileName = $"{justFileName}_{DateTime.Now.Ticks}{Path.GetExtension(fileName)}";
-                        file.SaveAs(Path.Combine(Server.MapPath("~/Uploads/"), fileName));
+                        attachment.SaveAs(Path.Combine(Server.MapPath("~/Uploads/"), fileName));
                         ticketAttachment.FilePath = "/Uploads/" + fileName;
-
                         ticketAttachment.Created = DateTime.Now;
                         ticketAttachment.UserId = User.Identity.GetUserId();
 
@@ -95,7 +96,7 @@ namespace PengBugTracker.Controllers
                     }
                 }
                 //Response.Redirect(Request.RawUrl);
-                return RedirectToAction("Index", "Tickets", new { id = ticketAttachment.TicketId });
+                return RedirectToAction("Index", "TicketAttachments", new { id = ticketAttachment.TicketId });
             }
             return View(ticketAttachment);
         }
