@@ -35,7 +35,7 @@ namespace PengBugTracker.Controllers
 
         }
         //Get: All Tickets Index Formerly(My Index)
-        [Authorize(Roles = "Manager,Developer,Submitter")]
+        [Authorize(Roles = "Admin,Manager,Developer,Submitter")]
         public ActionResult MyIndex(string req)
         {
             //First get the Id of the logged in User
@@ -164,7 +164,8 @@ namespace PengBugTracker.Controllers
             {
                 return HttpNotFound();
             }
-            ViewBag.AssignedToUserId = new SelectList(db.Users, "Id", "FirstName", ticket.AssignedToUserId);
+            var devs = roleHelper.UsersInRole("Developer").ToList();
+            ViewBag.AssignedToUserId = new SelectList(devs, "Id", "FirstName", ticket.AssignedToUserId);
             ViewBag.OwnerUserId = new SelectList(db.Users, "Id", "FirstName", ticket.OwnerUserId);
             ViewBag.ProjectId = new SelectList(db.Projects, "Id", "Name", ticket.ProjectId);
             ViewBag.TicketPriorityId = new SelectList(db.TicketPriorities, "Id", "PriorityName", ticket.TicketPriorityId);
@@ -185,7 +186,11 @@ namespace PengBugTracker.Controllers
                 //Record the old Ticket before it gets updated for comparison
                 //var oldTicket = db.Tickets.FInd(Ticket.Id);
                 var oldTicket = db.Tickets.AsNoTracking().FirstOrDefault(t => t.Id == ticket.Id);
-                ticket.AssignedToUserId = ticket.AssignedToUserId;
+                if (ticket.AssignedToUserId != null)
+                {
+                    ticket.AssignedToUserId = ticket.AssignedToUserId;
+
+                }
                 ticket.Updated = DateTime.Now;
                 db.Entry(ticket).State = EntityState.Modified;
                 db.SaveChanges();
@@ -249,10 +254,9 @@ namespace PengBugTracker.Controllers
             var ticket = db.Tickets.Find(id);
 
             var users = roleHelper.UsersInRole("Developer").ToList();
-            ViewBag.DeveloperId = new SelectList(users, "Id", "DisplayName", ticket.DeveloperId);
+            ViewBag.DeveloperId = new SelectList(users, "Id", "FullName");
 
             return View(ticket);
-
         }
 
         //POST: Assign Ticket
@@ -286,11 +290,6 @@ namespace PengBugTracker.Controllers
             }
 
             return RedirectToAction("Index");
-        }
-
-
-
-
-
+        }                          
     }
 }

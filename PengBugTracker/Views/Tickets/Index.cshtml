@@ -97,8 +97,8 @@
                                                 @Html.ActionLink("Edit", "Edit", new { id = item.Id }) |
                                                 @Html.ActionLink("Details", "Details", new { id = item.Id }) |
                                                 @Html.ActionLink("Delete", "Delete", new { id = item.Id }) |
-                                                @Html.ActionLink("Add Attachment", "Create", "TicketAttachments", new { id = item.Id}, null)
-                                                @Html.ActionLink("Assign","AssignTicket", "Tickets" new { id = item.Id})
+                                                @Html.ActionLink("Add Attachment", "Create", "TicketAttachments", new { id = item.Id}, null) |
+                                                @Html.ActionLink("Assign","AssignTicket", "Tickets", new { id = item.Id})
                                             </td>
                                         </tr>
                                     }
@@ -121,5 +121,4 @@
     <script>
         $('#datatables').DataTable();
     </script>
-
 }

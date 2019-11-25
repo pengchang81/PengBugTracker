@@ -34,8 +34,8 @@ namespace PengBugTracker.Helpers
                 var newHistoryRecord = new TicketHistory
                 {
                     Property = "TicketPriorityId",
-                    OldValue = oldTicket.TicketStatus.StatusName,
-                    NewValue = newTicket.TicketStatus.StatusName,
+                    OldValue = oldTicket.TicketPriority.PriorityName,
+                    NewValue = newTicket.TicketPriority.PriorityName,
                     Changed = (DateTime)newTicket.Updated,
                     TicketId = newTicket.Id,
                     UserId = HttpContext.Current.User.Identity.GetUserId()
@@ -43,6 +43,25 @@ namespace PengBugTracker.Helpers
 
                 db.TicketHistories.Add(newHistoryRecord);
             }
+
+            if (oldTicket.AssignedToUserId != newTicket.AssignedToUserId)
+
+            {
+                var newHistoryRecord = new TicketHistory
+                {
+                    Property = "AssignedToUserId",
+                    OldValue = oldTicket.AssignedToUserId == null ? "UnAssigned" : oldTicket.AssignedToUser.FullName,
+                    NewValue = newTicket.AssignedToUserId == null ? "UnAssigned" : newTicket.AssignedToUser.FullName,
+                    Changed = (DateTime)newTicket.Updated,
+                    TicketId = newTicket.Id,
+                    UserId = HttpContext.Current.User.Identity.GetUserId()
+                };
+
+                db.TicketHistories.Add(newHistoryRecord);
+            }
+
+            db.SaveChanges();
+
         }
     }
 }

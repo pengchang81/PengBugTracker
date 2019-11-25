@@ -96,7 +96,7 @@
                             </div>
                         </div>
                     </div>
-                 }
+                }
             <ul class="nav">
                 <li class="nav-item active ">
                     <a class="nav-link" href="@Url.Action("Dashboard", "Home")">
@@ -104,7 +104,7 @@
                         <p> Dashboard </p>
                     </a>
                 </li>
-                @if (User.IsInRole("Admin"))
+                @if (User.IsInRole("Admin") || User.IsInRole("DemoAdmin"))
                 {
                     <li class="nav-item ">
                         <a class="nav-link" data-toggle="collapse" href="#pagesExamples">
@@ -114,7 +114,6 @@
                                 <b class="caret"></b>
                             </p>
                         </a>
-
                         <div class="collapse" id="pagesExamples">
                             <ul class="nav">
                                 <li class="nav-item ">
@@ -128,16 +127,13 @@
                                         <i class="fa fa-dot-circle-o"></i>
                                         <span class="sidebar-normal"> Manage Roles </span>
                                     </a>
-                                </li>              
-                                
+                                </li>
                                 <li class="nav-item ">
-                                    <a class="nav-link" href="@Url.Action("ManageProjectUsers","Admin")">
+                                    <a class="nav-link" href="@Url.Action("ManageProjectUsers", "Admin")">
                                         <i class="fa fa-dot-circle-o"></i>
                                         <span class="sidebar-normal"> Manage Project Users</span>
                                     </a>
-                                </li>
-                                
-
+                                </li> 
                             </ul>
                         </div>                
                     </li>
@@ -152,7 +148,7 @@
                         </a>
                         <div class="collapse" id="componentsExamples">
                             <ul class="nav">
-                                @if (User.IsInRole("Admin"))
+                                @if (User.IsInRole("Admin") || User.IsInRole("DemoAdmin"))
                                 {
                                     <li class="nav-item ">
                                         <a class="nav-link" href="@Url.Action("ProjectIndex", "Projects")">
@@ -162,10 +158,10 @@
                                     </li>
                                 }
 
-                                @if (User.IsInRole("Manager") || User.IsInRole("Developer") || User.IsInRole("Admin"))
+                                @if (User.IsInRole("Manager") || User.IsInRole("Developer") || User.IsInRole("Admin") || User.IsInRole("DemoManager") || User.IsInRole("DemoDeveloper") || User.IsInRole("DemoAdmin"))
                                 {
                                     <li class="nav-item ">
-                                        <a class="nav-link" href="@Url.Action("MyProjectIndex","Projects")">
+                                        <a class="nav-link" href="@Url.Action("MyProjectIndex", "Projects")">
                                             <i class="fa fa-dot-circle-o"></i>
                                             <span class="sidebar-normal"> My Projects </span>
                                         </a>
@@ -173,10 +169,10 @@
                                 }
 
 
-                                @if (User.IsInRole("Admin") || User.IsInRole("Manager"))
+                                @if (User.IsInRole("Admin") || User.IsInRole("Manager") || User.IsInRole("DemoAdmin") || User.IsInRole("DemoManager"))
                                 {
                                     <li class="nav-item ">
-                                        <a class="nav-link" href="@Url.Action("Create","Projects")">
+                                        <a class="nav-link" href="@Url.Action("Create", "Projects")">
                                             <i class="fa fa-dot-circle-o"></i>
                                             <span class="sidebar-normal"> Create a Project </span>
                                         </a>
@@ -196,7 +192,7 @@
                         <div class="collapse" id="formsExamples">
                             <ul class="nav">
 
-                                @if (User.IsInRole("Submitter"))
+                                @if (User.IsInRole("Submitter") || User.IsInRole("DemoSubmitter"))
                                 {
                                     <li class="nav-item ">
                                         <a class="nav-link" href="@Url.Action("Create", "Tickets")">
@@ -209,7 +205,7 @@
                                     </li>
                                 }
 
-                                @if (User.IsInRole("Admin") || User.IsInRole("Manager"))
+                                @if (User.IsInRole("Admin") || User.IsInRole("Manager") || User.IsInRole("DemoAdmin") || User.IsInRole("DemoManager"))
                                 {
                                     <li class="nav-item ">
                                         <a class="nav-link" href="@Url.Action("Index", "Tickets")">
@@ -222,7 +218,7 @@
                                     </li>
                                 }
 
-                                @if (User.IsInRole("Manager") || User.IsInRole("Submitter") || User.IsInRole("Developer"))
+                                @if (User.IsInRole("Manager") || User.IsInRole("Submitter") || User.IsInRole("Developer") || User.IsInRole("DemoManager") || User.IsInRole("DemoSubmitter") || User.IsInRole("DemoDeveloper"))
                                 {
                                     <li class="nav-item ">
                                         <a class="nav-link" href="@Url.Action("MyIndex","Tickets")">
@@ -234,7 +230,7 @@
                                     </li>
                                 }
 
-                                @if (User.IsInRole("Admin"))
+                                @*@if (User.IsInRole("Admin") || User.IsInRole("DemoAdmin"))
                                 {
                                     <li class="nav-item ">
 
@@ -277,7 +273,7 @@
                                             </span>
                                         </a>
                                     </li>
-                                }
+                                }*@
                                 @if (User.IsInRole("Manager") || User.IsInRole("Submitter") || User.IsInRole("Developer"))
                                 {
                                     <li class="nav-item ">

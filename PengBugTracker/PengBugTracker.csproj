@@ -669,9 +669,11 @@
     <Content Include="Views\Admin\ManageUserProjects.cshtml" />
     <Content Include="Views\Projects\MyProjectIndex.cshtml" />
     <Content Include="Views\Admin\ManageProjectUsers.cshtml" />
+    <Content Include="private.config" />
     <None Include="Properties\PublishProfiles\PengBugTracker - Web Deploy.pubxml" />
     <Content Include="Views\Account\DemoUsers.cshtml" />
     <Content Include="Views\Tickets\MyIndex.cshtml" />
+    <Content Include="Views\Tickets\AssignTicket.cshtml" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
