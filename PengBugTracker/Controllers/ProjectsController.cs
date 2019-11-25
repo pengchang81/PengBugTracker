@@ -26,7 +26,7 @@ namespace PengBugTracker.Controllers
 
             #region PM section
             var pmId = projectHelper.ListUsersOnProjectRole(id, "Manager").FirstOrDefault();
-            ViewBag.ProjectManagerId = new SelectList(roleHelper.UsersInRole("Project_Manager"), "Id", "Email", pmId);
+            ViewBag.ProjectManagerId = new SelectList(roleHelper.UsersInRole("Manager"), "Id", "Email", pmId);
             #endregion
 
             #region Dev section

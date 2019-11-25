@@ -152,7 +152,7 @@
                         </a>
                         <div class="collapse" id="componentsExamples">
                             <ul class="nav">
-                                @if (User.IsInRole("Admin") || User.IsInRole("Manager"))
+                                @if (User.IsInRole("Admin"))
                                 {
                                     <li class="nav-item ">
                                         <a class="nav-link" href="@Url.Action("ProjectIndex", "Projects")">
@@ -162,7 +162,7 @@
                                     </li>
                                 }
 
-                                @if (User.IsInRole("Manager") || User.IsInRole("Submitter") || User.IsInRole("Developer"))
+                                @if (User.IsInRole("Manager") || User.IsInRole("Developer") || User.IsInRole("Admin"))
                                 {
                                     <li class="nav-item ">
                                         <a class="nav-link" href="@Url.Action("MyProjectIndex","Projects")">
@@ -171,6 +171,8 @@
                                         </a>
                                     </li>
                                 }
+
+
                                 @if (User.IsInRole("Admin") || User.IsInRole("Manager"))
                                 {
                                     <li class="nav-item ">
@@ -193,6 +195,7 @@
                         </a>
                         <div class="collapse" id="formsExamples">
                             <ul class="nav">
+
                                 @if (User.IsInRole("Submitter"))
                                 {
                                     <li class="nav-item ">
@@ -206,7 +209,7 @@
                                     </li>
                                 }
 
-                                @if (User.IsInRole("Admin"))
+                                @if (User.IsInRole("Admin") || User.IsInRole("Manager"))
                                 {
                                     <li class="nav-item ">
                                         <a class="nav-link" href="@Url.Action("Index", "Tickets")">
@@ -218,6 +221,7 @@
                                         </a>
                                     </li>
                                 }
+
                                 @if (User.IsInRole("Manager") || User.IsInRole("Submitter") || User.IsInRole("Developer"))
                                 {
                                     <li class="nav-item ">
@@ -229,6 +233,7 @@
                                         </a>
                                     </li>
                                 }
+
                                 @if (User.IsInRole("Admin"))
                                 {
                                     <li class="nav-item ">

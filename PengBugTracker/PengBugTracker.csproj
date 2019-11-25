@@ -671,6 +671,7 @@
     <Content Include="Views\Admin\ManageProjectUsers.cshtml" />
     <None Include="Properties\PublishProfiles\PengBugTracker - Web Deploy.pubxml" />
     <Content Include="Views\Account\DemoUsers.cshtml" />
+    <Content Include="Views\Tickets\MyIndex.cshtml" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

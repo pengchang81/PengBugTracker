@@ -96,8 +96,8 @@
     </div>
 </div>
 
-<div class="row">
-    <div class="container-fluid">
+<div class="row container-fluid">
+    <div class="row container-fluid">
         <!-- column: Comments & Attachment-->
         <div class="col-md-4">
             <!--Comments-->
@@ -260,8 +260,47 @@
         </div>
         <!-- column: History -->
         <div class="col-md-8">
+            <div class="card ">
+                <div class="card-header card-header-rose card-header-icon">
+                    <div class="card-icon">
+                        <i class="material-icons">mail_outline</i>
+                    </div>
+                    <h4 class="card-title">Ticket Histories</h4>
+                </div>
+                <div class="card-body ">
+                    <ul class="timeline timeline-simple">
+                        @foreach (var history in Model.TicketHistories.OrderByDescending(h => h.Changed))
+                        {
+                            <li class="timeline-inverted">
+                                <div class="timeline-badge danger">
+                                    @if (!string.IsNullOrEmpty(history.User.AvatarUrl))
+                                    {
+                                        <img src="@history.User.AvatarUrl" alt="Avatar" />
+                                    }
+                                    else
+                                    {
+                                        <img src="@Url.Content("~/uploads/Default-avaar.jpg")" class="img-responsive avatar"/>
 
-
+                                    }
+                                </div>
+                                <div class="timeline-panel">
+                                    <div class="timeline-heading">
+                                        
+                                        <span class="badge badge-pill badge-danger">Edit Author: @history.User.FullName</span>
+                                    </div>
+                                    <div class="timeline-body">
+                                        <p>The @history.Property has been changed from "@history.OldValue" to "@history.NewValue"</p>
+                                    </div>
+                                    <h6>
+                                        <i class="ti-time"></i> @history.Changed.ToString("MMMM d, yyyy") @history.Changed.ToString("HH:MM tt")
+                                    </h6>
+                                </div>
+                            </li>
+                        }
+                    </ul>
+                </div>
+            </div>
+            
 
         </div>
     </div>

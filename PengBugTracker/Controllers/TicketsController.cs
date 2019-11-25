@@ -4,6 +4,7 @@ using System.Data;
 using System.Data.Entity;
 using System.Linq;
 using System.Net;
+using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
 using Microsoft.AspNet.Identity;
@@ -22,19 +23,19 @@ namespace PengBugTracker.Controllers
         private TicketHistoryHelper ticketHistoryHelper = new TicketHistoryHelper();
 
         // GET: Tickets
-        [Authorize]
+        [Authorize(Roles = "Admin")]
         public ActionResult Index()
         {
-            var allTickets = db.Tickets;
-            var highPriorityTickets = db.TicketPriorities.FirstOrDefault(tp => tp.PriorityName == "High").Tickets;
-            var medPriorityTickets = db.Tickets.Where(t => t.TicketPriority.PriorityName == "Medium");
+            var allTickets = db.Tickets.ToList();
+            //var highPriorityTickets = db.TicketPriorities.FirstOrDefault(tp => tp.PriorityName == "High").Tickets;
+            //var medPriorityTickets = db.Tickets.Where(t => t.TicketPriority.PriorityName == "Medium");
 
             //What role do I occupy
-            return View(ticketHelper.ListMyTickets());
+            return View(allTickets);
 
         }
         //Get: All Tickets Index Formerly(My Index)
-        [Authorize(Roles = "Admin,ProjectManager,Developer,Submitter")]
+        [Authorize(Roles = "Manager,Developer,Submitter")]
         public ActionResult MyIndex(string req)
         {
             //First get the Id of the logged in User
@@ -78,7 +79,7 @@ namespace PengBugTracker.Controllers
             //Step 1: Ask the question, "What role do I occypy"
             //If I am a Submitter my Tickets are the Tickets where the OwnerUserId equals my Id.
             //If I am the Developer, my Tickets are the Tickets where the AssignedToUserId is my Id
-            return View("Index", myTickets);
+            return View(myTickets);
         }
         // GET: Tickets/Details/5
         public ActionResult Details(int? id)
@@ -240,5 +241,56 @@ namespace PengBugTracker.Controllers
             }
             base.Dispose(disposing);
         }
+
+        //GET: Assign Ticket
+        public ActionResult AssignTicket(int? id)
+        {
+            RoleHelper roleHelper = new RoleHelper();
+            var ticket = db.Tickets.Find(id);
+
+            var users = roleHelper.UsersInRole("Developer").ToList();
+            ViewBag.DeveloperId = new SelectList(users, "Id", "DisplayName", ticket.DeveloperId);
+
+            return View(ticket);
+
+        }
+
+        //POST: Assign Ticket
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<ActionResult> AssignTicket(Ticket model)
+        {
+            var ticket = db.Tickets.Find(model.Id);
+            ticket.DeveloperId = model.DeveloperId;
+
+            db.SaveChanges();
+
+            var callbackUrl = Url.Action("Details", "Tickets", new { id = ticket.Id }, protocol: Request.Url.Scheme);
+
+            try
+            {
+                EmailService ems = new EmailService();
+                IdentityMessage msg = new IdentityMessage();
+                ApplicationUser user = db.Users.Find(model.TicketAttachments);
+
+                msg.Body = $"You have been assigned a new Ticket.{Environment.NewLine}Please click the following link to view the details <a href = \"{callbackUrl}\">New Ticket <a/>";
+
+                msg.Destination = user.Email;
+                msg.Subject = "Invite to Household";
+
+                await ems.SendMailAsync(msg);
+            }
+            catch (Exception ex)
+            {
+                await Task.FromResult(0);
+            }
+
+            return RedirectToAction("Index");
+        }
+
+
+
+
+
     }
 }

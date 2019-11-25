@@ -1,10 +1,11 @@
-﻿@model IEnumerable<PengBugTracker.Models.Ticket>
+﻿
+@model IEnumerable<PengBugTracker.Models.Ticket>
 
 @{
-    ViewBag.Title = "Index";
+    ViewBag.Title = "MyIndex";
 }
 
-<h2>Index</h2>
+<h2>MyIndex</h2>
 
 <div class="content">
     <div class="container-fluid">
@@ -16,15 +17,15 @@
                             <i class="material-icons">assignment</i>
                         </div>
                         @*<h3>
-                            @Html.ActionLink("Create New", "Create")
-                        </h3>*@
+                                @Html.ActionLink("Create New", "Create")
+                            </h3>*@
                     </div>
                     <div class="card-body">
                         <div class="toolbar">
-                                    @*Here you can write extra buttons/actions for the toolbar*@              
+                            @*Here you can write extra buttons/actions for the toolbar*@
                         </div>
                         <div class="table-responsive">
-                            <table id="datatables" class="table table-striped table-no-bordered table-hover"  width="100%" style="width:100%">
+                            <table id="datatables" class="table table-striped table-no-bordered table-hover" width="100%" style="width:100%">
                                 <!-------------------------Head--------------------------------->
                                 <thead>
                                     <tr>
@@ -45,7 +46,7 @@
                                 <tfoot>
                                     <tr>
                                         <th>Owner</th>
-                                        <th>Assigned</th>                                                                                
+                                        <th>Assigned</th>
                                         <th>Project</th>
                                         <th>Priority</th>
                                         <th>Status</th>
@@ -67,7 +68,7 @@
                                             </td>
                                             <td>
                                                 @Html.DisplayFor(modelItem => item.AssignedToUser.FullName)
-                                            </td>                                            
+                                            </td>
                                             <td>
                                                 @Html.DisplayFor(modelItem => item.Project.Name)
                                             </td>
@@ -97,8 +98,8 @@
                                                 @Html.ActionLink("Edit", "Edit", new { id = item.Id }) |
                                                 @Html.ActionLink("Details", "Details", new { id = item.Id }) |
                                                 @Html.ActionLink("Delete", "Delete", new { id = item.Id }) |
-                                                @Html.ActionLink("Add Attachment", "Create", "TicketAttachments", new { id = item.Id}, null)
-                                                @Html.ActionLink("Assign","AssignTicket", "Tickets" new { id = item.Id})
+                                                @Html.ActionLink("Add Attachment", "Create", "TicketAttachments", new { id = item.Id }, null)
+                                                @Html.ActionLink("Assign", "AssignTicket", "Tickets", new { id = item.Id }, null)
                                             </td>
                                         </tr>
                                     }
