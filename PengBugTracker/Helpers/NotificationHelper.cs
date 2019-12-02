@@ -10,7 +10,6 @@ namespace PengBugTracker.Helpers
     public class NotificationHelper
     {
         private static ApplicationDbContext db = new ApplicationDbContext();
-
         public void ManageNotifications(Ticket oldTicket, Ticket newTicket)
         {
             var ticketAssigned = oldTicket.DeveloperId == null && newTicket.DeveloperId != null;

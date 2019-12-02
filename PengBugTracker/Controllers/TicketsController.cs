@@ -22,8 +22,8 @@ namespace PengBugTracker.Controllers
         private NotificationHelper notificationHelper = new NotificationHelper();
         private TicketHistoryHelper ticketHistoryHelper = new TicketHistoryHelper();
 
-        // GET: Tickets
-        [Authorize(Roles = "Admin")]
+        // GET: All Tickets: Everyone can view tickets        
+        [Authorize(Roles = "Admin,Manager,Developer,Submitter")]
         public ActionResult Index()
         {
             var allTickets = db.Tickets.ToList();
@@ -34,7 +34,7 @@ namespace PengBugTracker.Controllers
             return View(allTickets);
 
         }
-        //Get: All Tickets Index Formerly(My Index)
+        //Get: All Tickets MyIndex: Authorized can view   
         [Authorize(Roles = "Admin,Manager,Developer,Submitter")]
         public ActionResult MyIndex(string req)
         {
@@ -63,6 +63,7 @@ namespace PengBugTracker.Controllers
                     myTickets = db.Tickets.ToList();
                     break;
             }
+
             //This is for Dashboard showing Immediate - Recent Tickets
             //switch (req)
             //{
@@ -248,13 +249,14 @@ namespace PengBugTracker.Controllers
         }
 
         //GET: Assign Ticket
+        [Authorize(Roles = "Admin,Manager,DemoAdmin,DemoManager")]
         public ActionResult AssignTicket(int? id)
         {
             RoleHelper roleHelper = new RoleHelper();
             var ticket = db.Tickets.Find(id);
 
             var users = roleHelper.UsersInRole("Developer").ToList();
-            ViewBag.DeveloperId = new SelectList(users, "Id", "FullName");
+            ViewBag.DeveloperId = new SelectList(users, "Id", "FullName", ticket.DeveloperId);
 
             return View(ticket);
         }

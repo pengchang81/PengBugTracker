@@ -69,6 +69,7 @@ namespace PengBugTracker.Controllers
         {
             if (ModelState.IsValid)
             {
+                ticketNotification.Created = DateTime.Now;
                 db.TicketNotifications.Add(ticketNotification);
                 db.SaveChanges();
                 return RedirectToAction("Index");

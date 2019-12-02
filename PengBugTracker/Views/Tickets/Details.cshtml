@@ -24,13 +24,13 @@
         <div class="row">
             <div class="col-md-12">
                 <div class="card">
-
                     <div class="card-header card-header-primary card-header-icon">
                         <div class="card-icon">
                             <i class="material-icons">assignment</i>
                         </div>
                         <h4 class="card-title">Ticket Details</h4>
                     </div>
+
                     <div class="card-body">
                         <div class="toolbar">
                             <!--        Here you can write extra buttons/actions for the toolbar              -->
@@ -53,7 +53,7 @@
                                 </thead>
                                 <tfoot>
                                     <tr>
-                                        <th>Title</th>
+                                        @*<th>Title</th>*@
                                         <th>Description</th>
                                         <th>Project</th>
                                         <th>Submitter</th>
@@ -67,7 +67,7 @@
                                 </tfoot>
                                 <tbody>
                                     <tr>
-                                        <td>@Html.DisplayFor(model => model.Title)</td>
+                                        @*<td>@Html.DisplayFor(model => model.Title)</td>*@
                                         <td>@Html.DisplayFor(model => model.Description)</td>
                                         <td>@Html.DisplayFor(model => model.Project.Name)</td>
                                         <td>@Html.DisplayFor(model => model.OwnerUser.FullName)</td>

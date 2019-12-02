@@ -16,10 +16,11 @@ namespace PengBugTracker.Models
         //Nav section...
         public virtual ICollection<Ticket> Tickets { get; set; }
         public virtual ICollection<ApplicationUser> Users { get; set; }
+        public virtual ICollection<TicketComment> ProjectComments { get; set; }
         public Project()
         {
             Tickets = new HashSet<Ticket>();
-            Users = new HashSet <ApplicationUser>();
+            Users = new HashSet<ApplicationUser>();
         }
 
     }

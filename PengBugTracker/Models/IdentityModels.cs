@@ -39,7 +39,7 @@ namespace PengBugTracker.Models
         public virtual ICollection<Project> Projects { get; set; }
         public virtual ICollection<TicketAttachment> TicketAttachments { get; set; }
         public virtual ICollection<TicketHistory> TicketHistories { get; set; }
-        public virtual ICollection<TicketNotification> TicketNotifications { get; set; }
+        //public virtual ICollection<TicketNotification> TicketNotifications { get; set; }
 
         //I am intentionally NOT including ICollections to the Ticket...
 

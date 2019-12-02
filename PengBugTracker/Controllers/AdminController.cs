@@ -137,7 +137,7 @@ namespace PengBugTracker.Controllers
 
             if (User.IsInRole("Admin"))
             {
-                ViewBag.ProjectManagerId = new SelectList(roleHelper.UsersInRole("Project_Manager"), "Id", "Email");
+                ViewBag.ProjectManagerId = new SelectList(roleHelper.UsersInRole("Manager"), "Id", "Email");
             }
 
             //Lets create a View Model for purposes of displaying User's and thier associated Projects

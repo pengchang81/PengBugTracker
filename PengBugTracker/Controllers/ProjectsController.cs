@@ -4,6 +4,7 @@ using System.Data;
 using System.Data.Entity;
 using System.Linq;
 using System.Net;
+using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
 using Microsoft.AspNet.Identity;
@@ -11,10 +12,10 @@ using PengBugTracker.Helpers;
 using PengBugTracker.Models;
 
 namespace PengBugTracker.Controllers
-{   
+{
     [Authorize]
     public class ProjectsController : Controller
-    {        
+    {
         private ApplicationDbContext db = new ApplicationDbContext();
         private RoleHelper roleHelper = new RoleHelper();
         private ProjectHelper projectHelper = new ProjectHelper();
@@ -39,8 +40,8 @@ namespace PengBugTracker.Controllers
 
             return View();
 
-    }
-        //POST: Manage Users
+        }
+        //POST: Manage Users/Assign
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult ManageProjectUsers(int projectId, string projectManagerId, List<string> developers, List<string> submitters)
@@ -57,9 +58,9 @@ namespace PengBugTracker.Controllers
             {
                 projectHelper.AddUserToProject(projectManagerId, projectId);
             }
-            if(developers != null)
+            if (developers != null)
             {
-                foreach(var developerId in developers)
+                foreach (var developerId in developers)
                 {
                     projectHelper.AddUserToProject(developerId, projectId);
                 }
@@ -77,10 +78,10 @@ namespace PengBugTracker.Controllers
         // GET: Projects (for viewing only) No post
         public ActionResult ProjectIndex()
         {
-            
+
             var project = db.Projects.ToList();
-            
-            
+
+
             return View(project);
         }
 
@@ -94,7 +95,7 @@ namespace PengBugTracker.Controllers
             var myProjects = new List<Project>();
             switch (myRole)
             {
-                case "Developer": 
+                case "Developer":
                     myProjects = db.Users.Find(userId).Projects.ToList();
                     break;
                 case "Submitter":
@@ -105,7 +106,7 @@ namespace PengBugTracker.Controllers
                     break;
             }
 
-            return View("MyProjectIndex",myProjects);
+            return View("MyProjectIndex", myProjects);
         }
 
         // GET: Projects/Details/5
@@ -124,8 +125,8 @@ namespace PengBugTracker.Controllers
         }
 
         // GET: Projects/Create//////////////////////////////////////////////////////////////////////////////////////////
-        
-        [Authorize(Roles ="Admin,Manager")]
+
+        [Authorize(Roles = "Admin,Manager")]
         public ActionResult Create()
         {
             return View();
@@ -173,6 +174,7 @@ namespace PengBugTracker.Controllers
         {
             if (ModelState.IsValid)
             {
+                project.Updated = DateTime.Now;
                 db.Entry(project).State = EntityState.Modified;
                 db.SaveChanges();
                 return RedirectToAction("ProjectIndex");
@@ -214,5 +216,16 @@ namespace PengBugTracker.Controllers
             }
             base.Dispose(disposing);
         }
+
     }
+
+    // GET: Assign Project
+    
 }
+
+
+    //POST: Assign Project
+    
+
+
+

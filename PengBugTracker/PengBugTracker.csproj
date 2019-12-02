@@ -674,6 +674,8 @@
     <Content Include="Views\Account\DemoUsers.cshtml" />
     <Content Include="Views\Tickets\MyIndex.cshtml" />
     <Content Include="Views\Tickets\AssignTicket.cshtml" />
+    <Content Include="Views\Projects\AssignProject.cshtml" />
+    <Content Include="Views\Projects\ManageProjectUsers.cshtml" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
