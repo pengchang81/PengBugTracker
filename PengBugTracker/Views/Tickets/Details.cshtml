@@ -215,6 +215,13 @@
                                     </table>
 
 
+
+                                    @using (Html.BeginForm("Create", "TicketAttachments", FormMethod.Post, new { enctype = "Multipart/form-data" }))
+                                    {
+                                        @Html.AntiForgeryToken()
+                                        @Html.Hidden("TicketId", Model.Id)
+                                        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
                                         <div class="fileinput fileinput-new text-center" data-provides="fileinput">
                                             <div class="fileinput-new thumbnail">
                                                 <img src="~/img/image_placeholder.jpg" alt="...">
@@ -224,35 +231,24 @@
                                                 <span class="btn btn-rose btn-round btn-file">
                                                     <span class="fileinput-new">Select image</span>
                                                     <span class="fileinput-exists">Change</span>
-                                                    <input type="file" name="..." />
+                                                    <input type="file" name="attachment" id="fileUpload"/>
                                                 </span>
                                                 <a href="#pablo" class="btn btn-danger btn-round fileinput-exists" data-dismiss="fileinput"><i class="fa fa-times"></i> Remove</a>
                                             </div>
                                         </div>
-                                        @*@using (Html.BeginForm("Create", "TicketAttachments", FormMethod.Post, new { enctype = "Multipart/form-data" }))
-            {
-                @Html.AntiForgeryToken()
-                @Html.Hidden("TicketId", Model.Id)
-                @Html.Hidden("Ticket", Model)
-                @Html.ValidationSummary(true, "", new { @class = "text-danger" })
 
-                <div class="form-group">
-                    <input name="image" type="file" class="form-control" id="fileUpload" />
-                    @Html.TextBox("file", null, new { @class = "btn btn-info", type = "file", value = "fileButton" })
-                </div>
-
-                <div class="form-group">
-                    <div>
-                        @Html.TextArea("Description", "", new { @class = "form-control", rows = 5, placeholder = "Description" })
-                        @Html.ValidationMessageFor(model => model.Description, "", new { @class = "text-danger" })
-                    </div>
-                </div>
-                <div class="card-footer ">
-                    <button type="submit" class="btn btn-fill btn-rose">Attach</button>
-                </div>
-            }*@
-                                    </div>
+                                        <div class="form-group">
+                                            <div>
+                                                @Html.TextArea("Description", "", new { @class = "form-control", rows = 5, placeholder = "Description" })
+                                                @Html.ValidationMessageFor(model => model.Description, "", new { @class = "text-danger" })
+                                            </div>
+                                        </div>
+                                        <div class="card-footer ">
+                                            <button type="submit" class="btn btn-fill btn-rose">Attach</button>
+                                        </div>
+                                    }
                                 </div>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -279,13 +275,13 @@
                                     }
                                     else
                                     {
-                                        <img src="@Url.Content("~/uploads/Default-avaar.jpg")" class="img-responsive avatar"/>
+                                        <img src="@Url.Content("~/uploads/Default-avaar.jpg")" class="img-responsive avatar" />
 
                                     }
                                 </div>
                                 <div class="timeline-panel">
                                     <div class="timeline-heading">
-                                        
+
                                         <span class="badge badge-pill badge-danger">Edit Author: @history.User.FullName</span>
                                     </div>
                                     <div class="timeline-body">
@@ -300,7 +296,7 @@
                     </ul>
                 </div>
             </div>
-            
+
 
         </div>
     </div>

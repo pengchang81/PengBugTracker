@@ -101,7 +101,7 @@ namespace PengBugTracker.Controllers
             List<string> projectDevIds = new List<string>();
             foreach (Project project in myProjects)
             {
-                projectDevIds = projectsHelper.ListUsersOnProjectRole(project.Id, "Developer");   
+                projectDevIds = projectsHelper.ListUsersOnProjectRole(project.Id, "Developer");
             }
             foreach (string devId in projectDevIds)
             {
@@ -113,7 +113,7 @@ namespace PengBugTracker.Controllers
         }
 
         // GET: Tickets Submitters Create
-        [Authorize(Roles ="Submitter")]
+        [Authorize(Roles = "Submitter")]
         public ActionResult Create()
         {
             var userId = User.Identity.GetUserId();
@@ -121,7 +121,7 @@ namespace PengBugTracker.Controllers
             var devs = roleHelper.UsersInRole("Developer").ToList();
 
             ViewBag.ProjectId = new SelectList(myProjects, "Id", "Name");
-            ViewBag.TicketPriorityId = new SelectList(db.TicketPriorities, "Id", "PriorityName");            
+            ViewBag.TicketPriorityId = new SelectList(db.TicketPriorities, "Id", "PriorityName");
             ViewBag.TicketTypeId = new SelectList(db.TicketTypes, "Id", "TypeName");
             ViewBag.AssignToUserId = new SelectList(devs, "Id", "FullName");
             return View();
@@ -138,7 +138,7 @@ namespace PengBugTracker.Controllers
             {
                 ticket.Created = DateTime.Now;
                 ticket.OwnerUserId = User.Identity.GetUserId();
-                ticket.TicketStatusId = db.TicketStatus.FirstOrDefault(t=>t.StatusName == "Open").Id;
+                ticket.TicketStatusId = db.TicketStatus.FirstOrDefault(t => t.StatusName == "Open").Id;
                 db.Tickets.Add(ticket);
                 db.SaveChanges();
                 return RedirectToAction("MyIndex");
@@ -256,7 +256,7 @@ namespace PengBugTracker.Controllers
             var ticket = db.Tickets.Find(id);
 
             var users = roleHelper.UsersInRole("Developer").ToList();
-            ViewBag.DeveloperId = new SelectList(users, "Id", "FullName", ticket.DeveloperId);
+            ViewBag.AssignedToUserId = new SelectList(users, "Id", "FullName", ticket.AssignedToUserId);
 
             return View(ticket);
         }
@@ -267,22 +267,24 @@ namespace PengBugTracker.Controllers
         public async Task<ActionResult> AssignTicket(Ticket model)
         {
             var ticket = db.Tickets.Find(model.Id);
-            ticket.DeveloperId = model.DeveloperId;
+            ticket.AssignedToUserId = model.AssignedToUserId;
+            ticket.Updated = DateTime.Now;
 
             db.SaveChanges();
 
             var callbackUrl = Url.Action("Details", "Tickets", new { id = ticket.Id }, protocol: Request.Url.Scheme);
-
+            notificationHelper.SendNotification(ticket, $"You have been assigned to <b>Ticket</b> #{ticket.Id}/({ticket.Description}), for the <b>{ticket.Project.Name}</b>.");
+                                   
             try
             {
                 EmailService ems = new EmailService();
                 IdentityMessage msg = new IdentityMessage();
-                ApplicationUser user = db.Users.Find(model.TicketAttachments);
+                ApplicationUser user = db.Users.Find(model.AssignedToUserId);
 
                 msg.Body = $"You have been assigned a new Ticket.{Environment.NewLine}Please click the following link to view the details <a href = \"{callbackUrl}\">New Ticket <a/>";
 
                 msg.Destination = user.Email;
-                msg.Subject = "Invite to Household";
+                msg.Subject = "New Ticket Assignment";
 
                 await ems.SendMailAsync(msg);
             }
@@ -292,6 +294,6 @@ namespace PengBugTracker.Controllers
             }
 
             return RedirectToAction("Index");
-        }                          
+        }
     }
 }

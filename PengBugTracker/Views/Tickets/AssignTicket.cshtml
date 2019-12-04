@@ -13,14 +13,15 @@
         <hr />
         @Html.ValidationSummary(true, "", new { @class = "text-danger" })
         @Html.HiddenFor(model => model.Id)
+        @*@Html.HiddenFor(model => model.OwnerUser)*@
         <div class="form-group">
             @Html.LabelFor(model => model.AssignedToUserId, "Assign Developer", new
             {
                 @class = "control-label col-md-2"
             })
             <div class="col-md-10">
-                @Html.DropDownList("DeveloperId", null, new { @class = "form-control" })
-                @Html.ValidationMessageFor(model => model.DeveloperId, "", new
+                @Html.DropDownList("AssignedToUserId", null, new { @class = "form-control" })
+                @Html.ValidationMessageFor(model => model.AssignedToUserId, "", new
                 {
                     @class = "text-danger"
                 })

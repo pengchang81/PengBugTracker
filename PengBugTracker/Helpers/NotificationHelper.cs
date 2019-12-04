@@ -12,9 +12,9 @@ namespace PengBugTracker.Helpers
         private static ApplicationDbContext db = new ApplicationDbContext();
         public void ManageNotifications(Ticket oldTicket, Ticket newTicket)
         {
-            var ticketAssigned = oldTicket.DeveloperId == null && newTicket.DeveloperId != null;
-            var ticketUnAssigned = oldTicket.DeveloperId != null && newTicket.DeveloperId == null;
-            var ticketReAssigned = oldTicket.DeveloperId != null && newTicket.DeveloperId != null && oldTicket.DeveloperId != newTicket.DeveloperId;
+            var ticketAssigned = oldTicket.AssignedToUserId == null && newTicket.AssignedToUserId != null;
+            var ticketUnAssigned = oldTicket.AssignedToUserId != null && newTicket.AssignedToUserId == null;
+            var ticketReAssigned = oldTicket.AssignedToUserId != null && newTicket.AssignedToUserId != null && oldTicket.AssignedToUserId != newTicket.AssignedToUserId;
 
             if (ticketAssigned)
                 AssignmentNotification(oldTicket, newTicket);
@@ -28,6 +28,30 @@ namespace PengBugTracker.Helpers
 
         }
 
+
+
+
+
+        public void SendNotification(Ticket ticket, string body)
+        {
+            var notification = new TicketNotification
+            {
+                TicketId = ticket.Id,
+                IsRead = false,
+                SenderId = HttpContext.Current.User.Identity.GetUserId(),
+                RecipientId = ticket.AssignedToUserId ?? ticket.OwnerUserId,
+                Created = DateTime.Now,
+                NotificationBody = body
+            };
+            db.TicketNotifications.Add(notification);
+            db.SaveChanges();
+        }
+
+
+
+
+
+
         private void AssignmentNotification(Ticket oldTicket, Ticket newTicket)
         {
             var notification = new TicketNotification
@@ -35,7 +59,7 @@ namespace PengBugTracker.Helpers
                 TicketId = newTicket.Id,
                 IsRead = false,
                 SenderId = HttpContext.Current.User.Identity.GetUserId(),
-                RecipientId = newTicket.DeveloperId,
+                RecipientId = newTicket.AssignedToUserId,
                 Created = DateTime.Now,
                 NotificationBody = $"You have been assigned to <b>Ticket</b> #{newTicket.Id}, for the <b>{newTicket.Project.Name}</b>."
             };
@@ -50,7 +74,7 @@ namespace PengBugTracker.Helpers
                 TicketId = newTicket.Id,
                 IsRead = false,
                 SenderId = HttpContext.Current.User.Identity.GetUserId(),
-                RecipientId = oldTicket.DeveloperId,
+                RecipientId = oldTicket.AssignedToUserId,
                 Created = DateTime.Now,
                 NotificationBody = $"You have been unassigned from <b>Ticket</b> #{newTicket.Id}, for the <b>{newTicket.Project.Name}</b>."
             };
@@ -65,7 +89,7 @@ namespace PengBugTracker.Helpers
                 TicketId = newTicket.Id,
                 IsRead = false,
                 SenderId = HttpContext.Current.User.Identity.GetUserId(),
-                RecipientId = newTicket.DeveloperId,
+                RecipientId = newTicket.AssignedToUserId,
                 Created = DateTime.Now,
                 NotificationBody = $"There is a new attachment for <b>Ticket</b> #{newTicket.Id}, for the <b>{newTicket.Project.Name}</b>."
             };
@@ -80,7 +104,7 @@ namespace PengBugTracker.Helpers
                 TicketId = newTicket.Id,
                 IsRead = false,
                 SenderId = HttpContext.Current.User.Identity.GetUserId(),
-                RecipientId = newTicket.DeveloperId,
+                RecipientId = newTicket.AssignedToUserId,
                 Created = DateTime.Now,
                 NotificationBody = $"There is a new comment for <b>Ticket</b> #{newTicket.Id}, for the <b>{newTicket.Project.Name}</b>."
             };

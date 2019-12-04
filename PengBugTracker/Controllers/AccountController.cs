@@ -190,7 +190,11 @@ namespace PengBugTracker.Controllers
                     Email = model.Email, 
                     FirstName = model.FirstName, 
                     LastName = model.LastName,
-                    AvatarUrl ="/Avatars/default_user.png"           
+                    AvatarUrl ="/Avatars/default_user.png",
+
+                    //this is part of IdentityModels.cs. Use below when [Not Mapped] is removed
+                    FullName = $"{model.FirstName} {model.LastName}"
+
                 };
 
                 if(avatar != null)

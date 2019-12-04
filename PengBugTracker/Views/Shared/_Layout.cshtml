@@ -12,6 +12,7 @@
         RoleHelper roleHelper = new RoleHelper();
         cUserRole = roleHelper.ListUserRoles(userId).FirstOrDefault();
     }
+
 }
 
 <!DOCTYPE html>
@@ -40,6 +41,10 @@
 </head>
 
 <body class="">
+    @using (Html.BeginForm("LogOff", "Account", FormMethod.Post, new { id = "logoutForm", @class = "navbar-right" }))
+    {
+        @Html.AntiForgeryToken()
+    }
     <div class="wrapper">
         <div class="sidebar" data-color="rose" data-background-color="black" data-image="../img/sidebar-1.jpg">
             <!--
@@ -78,21 +83,16 @@
                             </a>
 
                             <div class="collapse" id="collapseExample">
-                                @*<ul class="nav">
-                                        <li class="nav-item">
-                                            <a class="nav-link" href="#">
-                                                <i class="fa fa-dot-circle-o"></i>
-                                                <span class="sidebar-normal"> My Profile </span>
-                                            </a>
-                                        </li>
-                                        <li class="nav-item">
-                                            <a class="nav-link" href="#">
-                                                <i class="fa fa-dot-circle-o"></i>
-                                                <span class="sidebar-normal"> Edit Profile </span>
-                                            </a>
-                                        </li>
-                                    </ul>*@
-                                @Html.Partial("_LoginPartial")
+
+                                @*@Html.Partial("_LoginPartial")*@
+                                <ul class="nav navbar-nav navbar-right">
+                                    <li class="nav-item">
+                                        <a class="nav-link" href="@Url.Action("EditProfile", "Members")"><i class="material-icons">album</i>My Profile</a>
+                                    </li>
+                                    <li>
+                                        <a class="nav-link" href="javascript:document.getElementById('logoutForm').submit()"><i class="material-icons">album</i>Log off</a>
+                                    </li>
+                                </ul>
                             </div>
                         </div>
                     </div>
@@ -291,39 +291,39 @@
 
 
                                 @*Ticket Notification*@
-                                <role="presentation" class="dropdown">
-                                <a href="javascript:;" class="dropdown-toggle info-number" data-toggle="dropdown" aria-expanded=""
-                                       <i class="fa fa-envelope-o"></i>
-                                    <span class="badge badge-green">@NotificationHelper.GetUnreadNotifications().Count()</span>
+                                <li role="presentation" class="dropdown">
+                                    <a href="javascript:;" class="dropdown-toggle info-number" data-toggle="dropdown" aria-expanded="">
+                                        <i class="fa fa-envelope-o"></i>
+                                        <span class="badge badge-green">@NotificationHelper.GetUnreadNotifications().Count()</span>
                                     </a>
 
-                                <ul id="menu1" class="dropdown-menu list-unstyled msg_list" role="menu">
-                                    @foreach (var unreadNotification in NotificationHelper.GetUnreadNotifications())
-                                    {
-                                        <li>
-                                            @using (Html.BeginForm("Dismiss", "TicketNotifications", FormMethod.Post))
-                                            {
-                                                @Html.AntiForgeryToken()
-                                                @Html.Hidden("Id", unreadNotification.Id)
+                                    <ul id="menu1" class="dropdown-menu list-unstyled msg_list" role="menu">
+                                        @foreach (var unreadNotification in NotificationHelper.GetUnreadNotifications())
+                                        {
+                                            <li>
+                                                @using (Html.BeginForm("Dismiss", "TicketNotifications", FormMethod.Post))
+                                                {
+                                                    @Html.AntiForgeryToken()
+                                                    @Html.Hidden("Id", unreadNotification.Id)
 
-                                                <!-- THis is the Image of the person that generated to notification-->
-                                                <span class="image">
-                                                    <img src="@unreadNotification.Sender.AvatarUrl" alt="Sender"
-                                                </span>
-                                                <span>@unreadNotification.Sender.FullName</span>
-                                                <span class="time">
-                                                    Created:@unreadNotification.Created.ToString("MMM dd,yyy")
-                                                </span>
-                                                <span class="message">
-                                                    @unreadNotification.NotificationBody
-                                                </span>
-                                                <br />
-                                                <button type="submit">Dissmiss</button>
-                                            }
-                                        </li>
-                                    }
-                                </ul>
-                                </>
+                                                    <!-- This is the Image of the person that generated to notification-->
+                                                    <span class="image">
+                                                        <img src="@unreadNotification.Sender.AvatarUrl" alt="Sender"
+                                                    </span>
+                                                    <span>@unreadNotification.Sender.FullName</span>
+                                                    <span class="time">
+                                                        Created:@unreadNotification.Created.ToString("MMM dd,yyy")
+                                                    </span>
+                                                    <span class="message">
+                                                        @unreadNotification.NotificationBody
+                                                    </span>
+                                                    <br />
+                                                    <button type="submit">Dismiss</button>
+                                                }
+                                            </li>
+                                        }
+                                    </ul>
+                                </li>
 
                             </ul>
                         </div>

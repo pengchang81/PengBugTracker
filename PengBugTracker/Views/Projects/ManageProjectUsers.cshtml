@@ -14,7 +14,7 @@
                 @using (Html.BeginForm())
                 {
                     @Html.AntiForgeryToken()
-                    @Html.Hidden("ProjectId",(int)ViewBag.ProjectId)
+                    @Html.Hidden("ProjectId", (int)ViewBag.ProjectId)
 
                     <div class="col">
                         @if (User.IsInRole("Admin"))
@@ -34,13 +34,13 @@
                             </div>
                         </div>
                         <hr />
-                        <div class="row">
+                        @*<div class="row">
                             <div class="col-md-12">
                                 <h3>Submitters</h3>
                                 @Html.ListBox("Submitters", null, new { @class = "itemlist" })
                             </div>
-                        </div>
-                        <hr />                       
+                        </div>*@
+                        <hr />
                         <div class="col pt-3">
                             <button type="submit" class="btn btn-primary">Assign</button>
                         </div>
@@ -48,7 +48,11 @@
                 }
             </div>
         </div>
-    </div>    
+    </div>
+</div>
+
+<div>
+@Html.ActionLink("Back to List", "MyIndex")
 </div>
 
 

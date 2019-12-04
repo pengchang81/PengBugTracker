@@ -23,18 +23,21 @@ namespace PengBugTracker.Models
         [Display(Name = "Display Name")]
         [StringLength(50, MinimumLength = 1, ErrorMessage = "Display Name must have min length of 1 and maximum of 20")]
         public string DisplayName { get; set; }
-
         public string AvatarUrl { get; set; }
 
-        [NotMapped]
-        public string FullName
-        {
-            get {
+        //Use NotMapped until finish public String FullName 
+        public string FullName { get; set; }
 
-                return $"{FirstName}, {LastName}";
-            }
-        }
+        //[NotMapped]
+        //public string FullName
+        //{
+        //    get
+        //    {
 
+        //        return $"{FirstName}, {LastName}";
+        //    }
+        //}
+       
         public virtual ICollection<TicketComment> TicketComments { get; set; }
         public virtual ICollection<Project> Projects { get; set; }
         public virtual ICollection<TicketAttachment> TicketAttachments { get; set; }
@@ -76,7 +79,7 @@ namespace PengBugTracker.Models
         public System.Data.Entity.DbSet<PengBugTracker.Models.Project> Projects { get; set; }
 
         public System.Data.Entity.DbSet<PengBugTracker.Models.Ticket> Tickets { get; set; }
-        
+
         public System.Data.Entity.DbSet<PengBugTracker.Models.TicketPriority> TicketPriorities { get; set; }
 
         public System.Data.Entity.DbSet<PengBugTracker.Models.TicketStatus> TicketStatus { get; set; }

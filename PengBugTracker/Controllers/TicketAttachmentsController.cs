@@ -57,7 +57,7 @@ namespace PengBugTracker.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.                       
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "TicketId,Description,Created")] TicketAttachment ticketAttachment, HttpPostedFileBase attachment)
+        public ActionResult Create([Bind(Include = "TicketId,Description")] TicketAttachment ticketAttachment, HttpPostedFileBase attachment)
         {
             if (ModelState.IsValid)
             {
@@ -87,7 +87,7 @@ namespace PengBugTracker.Controllers
                         var newTicket = db.Tickets.AsNoTracking().FirstOrDefault(t => t.Id == ticketId);
 
                         auditHelper.RecordHistoricalChanges(oldTicket, newTicket);
-                        notificationHelper.AttachmentNotification(newTicket);   // create notification
+                        notificationHelper.SendNotification(newTicket, $"There is a new attachment for <b>Ticket</b> #{newTicket.Id}, for the <b>{newTicket.Project.Name}</b>.");   // create notification
                         //===================================================================================
 
                         db.TicketAttachments.Add(ticketAttachment);
@@ -96,7 +96,7 @@ namespace PengBugTracker.Controllers
                     }
                 }
                 //Response.Redirect(Request.RawUrl);
-                return RedirectToAction("Index", "TicketAttachments", new { id = ticketAttachment.TicketId });
+                return RedirectToAction("Details", "Tickets", new { id = ticketAttachment.TicketId });
             }
             return View(ticketAttachment);
         }

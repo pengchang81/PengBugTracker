@@ -57,11 +57,11 @@ namespace PengBugTracker.Helpers
             }
             else if(myRole == "Developer")
             {
-                myTickets.AddRange(db.Tickets.Where(t => t.DeveloperId==userId));
+                myTickets.AddRange(db.Tickets.Where(t => t.AssignedToUserId==userId));
             }
             else if(myRole == "Submitter")
             {
-                myTickets.AddRange(db.Tickets.Where(t => t.SubmitterId==userId));
+                myTickets.AddRange(db.Tickets.Where(t => t.OwnerUserId==userId));
             }
             return myTickets;                                                        
         }

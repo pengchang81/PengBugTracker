@@ -27,15 +27,15 @@ namespace PengBugTracker.Controllers
 
             #region PM section
             var pmId = projectHelper.ListUsersOnProjectRole(id, "Manager").FirstOrDefault();
-            ViewBag.ProjectManagerId = new SelectList(roleHelper.UsersInRole("Manager"), "Id", "Email", pmId);
+            ViewBag.ProjectManagerId = new SelectList(roleHelper.UsersInRole("Manager"), "Id", "FullName", pmId);
             #endregion
 
             #region Dev section
-            ViewBag.Developers = new MultiSelectList(roleHelper.UsersInRole("Developer"), "Id", "Email", projectHelper.ListUsersOnProjectRole(id, "Developer"));
+            ViewBag.Developers = new MultiSelectList(roleHelper.UsersInRole("Developer"), "Id", "FullName", projectHelper.ListUsersOnProjectRole(id, "Developer"));
             #endregion
 
             #region Sub section
-            ViewBag.Submitters = new MultiSelectList(roleHelper.UsersInRole("Submitter"), "Id", "Email", projectHelper.ListUsersOnProjectRole(id, "Submitter").FirstOrDefault());
+            ViewBag.Submitters = new MultiSelectList(roleHelper.UsersInRole("Submitter"), "Id", "FullName", projectHelper.ListUsersOnProjectRole(id, "Submitter").FirstOrDefault());
             #endregion
 
             return View();
