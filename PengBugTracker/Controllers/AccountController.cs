@@ -72,7 +72,6 @@ namespace PengBugTracker.Controllers
             return View();
         }
 
-
         // POST: Demo Login Async
         [AllowAnonymous]
         [HttpPost]

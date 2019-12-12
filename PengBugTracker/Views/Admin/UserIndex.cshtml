@@ -19,15 +19,15 @@
     }
 </style>
 
-<h2>User Index</h2>
+<h2>
+    <button type="button" class="btn btn-primary btn-lg btn-block">User Index</button>     
+
+</h2>
+
 <div class="row">
     <div class="col-md-12">
         <div class="card">
-            <div class="card-header card-header-primary card-header-icon">
-                <div class="card-icon">
-                    <i class="material-icons">assignment</i>
-                </div>               
-            </div>
+            
             <div class="card-body">
                 <div class="toolbar">
                     <!--        Here you can write extra buttons/actions for the toolbar              -->
@@ -85,11 +85,18 @@
                                         @roleHelper.ListUserRoles(user.Id).FirstOrDefault()
                                     </td>
                                     <td class="text-right">
+
+
+
+                                        
+
+
+
                                         @*<a href="#" class="btn btn-link btn-info btn-just-icon like"><i class="material-icons">favorite</i></a>
-                                            <a href="#" class="btn btn-link btn-warning btn-just-icon edit"><i class="material-icons">dvr</i></a>
-                                         <a href="#" class="btn btn-link btn-danger btn-just-icon remove"><i class="material-icons">close</i></a>*@
-                                        @Html.ActionLink("Assign Role ", "ManageUserRole", "Admin", new { userId = user.Id }, null)|
-                                        @Html.ActionLink("Assign Projects","ManageUserProjects", "Admin", new { userId = user.Id }, null)
+           <a href="#" class="btn btn-link btn-warning btn-just-icon edit"><i class="material-icons">dvr</i></a>
+        <a href="#" class="btn btn-link btn-danger btn-just-icon remove"><i class="material-icons">close</i></a>*@
+                                        @Html.ActionLink("Assign Role ", "ManageUserRole", "Admin", new { userId = user.Id }, new { @class = "btn btn-outline-primary btn-sm", onclick = "return confirm" })
+                                        @Html.ActionLink("Assign Projects", "ManageUserProjects", "Admin",  new { userId = user.Id }, new { @class = "btn  btn-primary btn-sm", onclick = "return confirm" })
                                     </td>
                                 </tr>
                             }

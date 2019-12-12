@@ -4,8 +4,10 @@
 @{
     ViewBag.Title = "Project Assignments";
 }
-@*Assigning Project to Managers*@
-<h2>Assigning Project to Users</h2>
+
+    <h2>        
+        <button type="button" class="btn btn-primary btn-lg btn-block">Assign Project to Users</button>
+    </h2>
 
 <div class="row">
     <div class="col-md-4">
@@ -24,31 +26,37 @@
                                     @Html.DropDownList("ProjectManagerId", null, "--Select--", new { @class = "rolelist" })
                                 </div>
                             </div>
-                            <hr />
+                            <hr/>
                         }
-                        <div class="row">
-                            <div class="col-md-12">
-                                <h3>Developers</h3>
-                                @Html.ListBox("Developers", null, new { @class = "itemlist" })
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <h3>Developers</h3>
+                                    @Html.ListBox("Developers", null, new { @class = "itemlist" })
+                                </div>
                             </div>
-                        </div>
-                        <hr />
-                        <div class="row">
-                            <div class="col-md-12">
-                                <h3>Submitters</h3>
-                                @Html.ListBox("Submitters", null, new { @class = "itemlist" })
+                            <hr/>
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <h3>Submitters</h3>
+                                    @Html.ListBox("Submitters", null, new { @class = "itemlist" })
+                                </div>
                             </div>
-                        </div>
-                        <hr />
-                        <div class="row">
-                            <div class="col-md-12">
-                                <h3>Projects</h3>
-                                @Html.ListBox("Projects", null, new { @class = "itemlist" })
+                            <hr/>
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <h3>Projects</h3>
+                                    @Html.ListBox("Projects", null, new { @class = "itemlist" })
+                                </div>
                             </div>
-                        </div>
-                        <div class="col pt-3">
-                            <button type="submit" class="btn btn-primary">Assign</button>
-                        </div>
+                            <hr/>
+
+
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <button type="submit" class="btn btn-success cntrlWide">ASSIGN</button>
+                                </div>
+                            </div>
+                        
                     </div>
                 }
             </div>

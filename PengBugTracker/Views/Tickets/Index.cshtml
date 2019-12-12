@@ -4,20 +4,21 @@
     ViewBag.Title = "Index";
 }
 
-<h2>Tickets Index</h2>
+
 
 <div class="content">
     <div class="container-fluid">
         <div class="row">
             <div class="col-md-12">
                 <div class="card">
-                    <div class="card-header card-header-primary card-header-icon">
-                        <div class="card-icon">
-                            <i class="material-icons">assignment</i>
+                    <div class="card-header card-header-primary card-header-text">
+                        <div class="card-text">
+                            @*<i class="material-icons">assignment</i>*@
+                            <h4 class="card-title">All Tickets</h4>
                         </div>
                         @*<h3>
-                            @Html.ActionLink("Create New", "Create")
-                        </h3>*@
+            @Html.ActionLink("Create New", "Create")
+        </h3>*@
                     </div>
                     <div class="card-body">
                         <div class="toolbar">
@@ -94,12 +95,12 @@
                                             </td>
 
                                             <td>
-                                                @Html.ActionLink("Edit", "Edit", new { id = item.Id }) |
-                                                @Html.ActionLink("Details", "Details", new { id = item.Id }) |
-                                                @Html.ActionLink("Delete", "Delete", new { id = item.Id }) |
-                                                @Html.ActionLink("Add Attachment", "Create", "TicketAttachments", new { id = item.Id}, null) |
-                                                @Html.ActionLink("Assign","AssignTicket", new { id = item.Id})
-                                            </td>
+                                                @Html.ActionLink("Edit", "Edit", new { id = item.Id }, new { @class = "btn btn-primary btn-sm", onclick = "return confirm" })
+                                                @Html.ActionLink("Details", "Details", new { id = item.Id }, new { @class = "btn btn-primary btn-sm", onclick = "return confirm" })
+                                                @Html.ActionLink("Assign", "ManageProjectUsers", "Projects", new { id = item.Id }, new { @class = "btn btn-success btn-sm", onclick = "return confirm" })
+                                                @Html.ActionLink("Add Attachment", "Create", "TicketAttachments", new { id = item.Id }, new { @class = "btn btn-primary btn-sm", onclick = "return confirm" })
+                                                @Html.ActionLink("Delete", "Delete", new { id = item.Id }, new { @class = "btn btn-danger btn-sm", onclick = "return confirm" })
+                                                                                                
                                         </tr>
                                     }
                                 </tbody>

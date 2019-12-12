@@ -87,7 +87,7 @@
                                 @*@Html.Partial("_LoginPartial")*@
                                 <ul class="nav navbar-nav navbar-right">
                                     <li class="nav-item">
-                                        <a class="nav-link" href="@Url.Action("EditProfile", "Members")"><i class="material-icons">album</i>My Profile</a>
+                                        <a class="nav-link" href="@Url.Action("MyProfile", "MyProfile")"><i class="material-icons">album</i>My Profile</a>
                                     </li>
                                     <li>
                                         <a class="nav-link" href="javascript:document.getElementById('logoutForm').submit()"><i class="material-icons">album</i>Log off</a>
@@ -308,7 +308,7 @@
 
                                                     <!-- This is the Image of the person that generated to notification-->
                                                     <span class="image">
-                                                        <img src="@unreadNotification.Sender.AvatarUrl" alt="Sender"
+                                                        <img src="@unreadNotification.Sender.AvatarUrl" alt="Sender" />
                                                     </span>
                                                     <span>@unreadNotification.Sender.FullName</span>
                                                     <span class="time">

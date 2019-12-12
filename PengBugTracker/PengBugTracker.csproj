@@ -171,6 +171,7 @@
     <Compile Include="Controllers\AdminController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\ManageController.cs" />
+    <Compile Include="Controllers\MyProfileController.cs" />
     <Compile Include="Controllers\ProjectsController.cs" />
     <Compile Include="Controllers\TicketAttachmentsController.cs" />
     <Compile Include="Controllers\TicketCommentsController.cs" />
@@ -191,10 +192,12 @@
     <Compile Include="Helpers\StringUtilities.cs" />
     <Compile Include="Helpers\TicketHelper.cs" />
     <Compile Include="Helpers\TicketHistoryHelper.cs" />
+    <Compile Include="Helpers\UserHelper.cs" />
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\IdentityModels.cs" />
     <Compile Include="Models\ManageViewModels.cs" />
+    <Compile Include="Models\MyProfileModel.cs" />
     <Compile Include="Models\Project.cs" />
     <Compile Include="Models\Ticket.cs" />
     <Compile Include="Models\TicketAttachment.cs" />
@@ -251,14 +254,22 @@
     <Content Include="favicon.ico" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />
+    <Content Include="img\abstract-art-artistic-autumn-459301.jpg" />
+    <Content Include="img\abstract-art-artistic-blur-279376.jpg" />
     <Content Include="img\action_balls.jpg" />
+    <Content Include="img\afterglow.jpg" />
     <Content Include="img\antique-key-lock.png" />
     <Content Include="img\apple-icon.png" />
+    <Content Include="img\architecture-buildings-business-city-325185.jpg" />
+    <Content Include="img\assorted-leaves-piled-on-border-of-brown-wooden-board-630754.jpg" />
+    <Content Include="img\autumn-autumn-leaves-blur-close-up-589840.jpg" />
     <Content Include="img\avatardev.png" />
     <Content Include="img\avatarsub.png" />
+    <Content Include="img\ball-ball-shaped-blur-color-235615.jpg" />
     <Content Include="img\bg-pricing.jpg" />
     <Content Include="img\bg3.jpg" />
     <Content Include="img\bg9.jpg" />
+    <Content Include="img\botanical-cactus-close-up-decor-305821.jpg" />
     <Content Include="img\bubbles-chemistry-close-up-color-220989.jpg" />
     <Content Include="img\card-1.jpeg" />
     <Content Include="img\card-1.jpg" />
@@ -281,13 +292,17 @@
     <Content Include="img\flags\GB.png" />
     <Content Include="img\flags\RO.png" />
     <Content Include="img\flags\US.png" />
+    <Content Include="img\green-tree-plant-leaves-40896.jpg" />
     <Content Include="img\header-doc.jpg" />
     <Content Include="img\image_placeholder.jpg" />
+    <Content Include="img\landscape-photography-of-mountains-covered-in-snow-691668.jpg" />
+    <Content Include="img\light-landscape-nature-red-33041.jpg" />
     <Content Include="img\lock.jpg" />
     <Content Include="img\login.jpg" />
     <Content Include="img\macro-shot-of-gray-crawling-insect-762946.jpg" />
     <Content Include="img\mask.png" />
     <Content Include="img\new_logo.png" />
+    <Content Include="img\ocean-wave.jpg" />
     <Content Include="img\people-goup.png" />
     <Content Include="img\people.png" />
     <Content Include="img\placeholder.jpg" />
@@ -300,8 +315,11 @@
     <Content Include="img\sidebar-2.jpg" />
     <Content Include="img\sidebar-3.jpg" />
     <Content Include="img\sidebar-4.jpg" />
+    <Content Include="img\silhouette-of-mountains-1323550.jpg" />
     <Content Include="img\silhouette-of-person-holding-glass-mason-jar-1274260.jpg" />
-    <Content Include="Models\modernizr.js" />
+    <Content Include="img\time-lapse-photography-of-curved-road-with-vehicles-passing-2437299.jpg" />
+    <Content Include="img\umbrellas-art-flying-17679.jpg" />
+    <Content Include="Scripts\js\modernizr.js" />
     <Content Include="Scripts\all.js" />
     <Content Include="Scripts\all.min.js" />
     <Content Include="Scripts\bootstrap.bundle.js" />
@@ -676,6 +694,7 @@
     <Content Include="Views\Tickets\AssignTicket.cshtml" />
     <Content Include="Views\Projects\AssignProject.cshtml" />
     <Content Include="Views\Projects\ManageProjectUsers.cshtml" />
+    <Content Include="Views\MyProfile\MyProfile.cshtml" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
