@@ -16,12 +16,16 @@ namespace PengBugTracker.Controllers
     {
         private ApplicationDbContext db = new ApplicationDbContext();
         private NotificationHelper notificationHelper = new NotificationHelper();
+        private RoleHelper roleHelper = new RoleHelper();
 
         public ActionResult Dismiss(int id)
         {
             var notification = db.TicketNotifications.Find(id);
             notification.IsRead = true;
-            db.SaveChanges();
+            if (!roleHelper.IsUserDemo())
+            {
+                db.SaveChanges();
+            }
             return RedirectToAction("Dashboard", "Home");
         }
 
@@ -71,7 +75,10 @@ namespace PengBugTracker.Controllers
             {
                 ticketNotification.Created = DateTime.Now;
                 db.TicketNotifications.Add(ticketNotification);
-                db.SaveChanges();
+                if (!roleHelper.IsUserDemo())
+                {
+                    db.SaveChanges();
+                }
                 return RedirectToAction("Index");
             }
 
@@ -107,7 +114,10 @@ namespace PengBugTracker.Controllers
             if (ModelState.IsValid)
             {
                 db.Entry(ticketNotification).State = EntityState.Modified;
-                db.SaveChanges();
+                if (!roleHelper.IsUserDemo())
+                {
+                    db.SaveChanges();
+                }
                 return RedirectToAction("Index");
             }
             ViewBag.RecipientId = new SelectList(db.Users, "Id", "FirstName", ticketNotification.RecipientId);
@@ -137,7 +147,10 @@ namespace PengBugTracker.Controllers
         {
             TicketNotification ticketNotification = db.TicketNotifications.Find(id);
             db.TicketNotifications.Remove(ticketNotification);
-            db.SaveChanges();
+            if (!roleHelper.IsUserDemo())
+            {
+                db.SaveChanges();
+            }
             return RedirectToAction("Index");
         }
 

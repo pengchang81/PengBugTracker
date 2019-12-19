@@ -58,5 +58,21 @@ namespace PengBugTracker.Helpers
             }
             return resultList;
         }
+
+        public bool IsUserDemo()
+        {
+            var user = HttpContext.Current.User.Identity.GetUserId();
+
+            var demoARole = ListUserRoles(user).FirstOrDefault().Contains("DemoAdmin"); 
+            var demoPRole = ListUserRoles(user).FirstOrDefault().Contains("DemoManager");
+            var demoDRole = ListUserRoles(user).FirstOrDefault().Contains("DemoDeveloper");
+            var demoSRole = ListUserRoles(user).FirstOrDefault().Contains("DemoSubmitter");
+
+            if (demoARole || demoPRole || demoDRole || demoSRole == true)
+            {
+                return true;
+            }
+            return false;
+        }
     }
 }

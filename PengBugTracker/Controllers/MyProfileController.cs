@@ -17,6 +17,7 @@ namespace PengBugTracker.Controllers
     public class MyProfileController : Controller
     {
         private ApplicationDbContext db = new ApplicationDbContext();
+        private RoleHelper roleHelper = new RoleHelper();
         // GET: MyProfileModel
 
         public ActionResult MyProfile()
@@ -36,16 +37,33 @@ namespace PengBugTracker.Controllers
         // POST : MyProfileViewModel
         [HttpPost]
 
-        public ActionResult MyProfile(MyProfileModel model)
+        public ActionResult MyProfile(MyProfileModel model, HttpPostedFileBase avatar)
         {
             var userId = User.Identity.GetUserId();
             var user = db.Users.Find(userId);
 
             user.FirstName = model.FirstName;
             user.LastName = model.LastName;
-            user.Email = model.Email;            
+            user.FullName = $"{model.FirstName} {model.LastName}";
+            user.Email = model.Email;
 
-            db.SaveChanges();
+            if (avatar != null)
+            {
+                if (ImageUploadValidator.IsWebFriendlyImage(avatar))
+                {
+
+                    var fileName = Path.GetFileName(avatar.FileName);
+                    var justFileName = Path.GetFileNameWithoutExtension(fileName);
+                    justFileName = StringUtilities.URLFriendly(justFileName);
+                    fileName = $"{justFileName} {DateTime.Now.Ticks}{Path.GetExtension(fileName)}";
+                    avatar.SaveAs(Path.Combine(Server.MapPath("~/Avatar/"), fileName));
+                    user.AvatarUrl = "/Avatar/" + fileName;
+                }
+            }
+            if (!roleHelper.IsUserDemo())
+            {
+                db.SaveChanges();
+            }
 
             return RedirectToAction("MyProfile");
 

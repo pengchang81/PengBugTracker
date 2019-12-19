@@ -17,7 +17,7 @@ namespace PengBugTracker.Controllers
         private ApplicationDbContext db = new ApplicationDbContext();
         private NotificationHelper notificationHelper = new NotificationHelper();
         private TicketHistoryHelper auditHelper = new TicketHistoryHelper();
-
+        private RoleHelper roleHelper = new RoleHelper();
 
         // GET: TicketComments
         public ActionResult Index()
@@ -65,8 +65,11 @@ namespace PengBugTracker.Controllers
                     ticketComment.UserId = User.Identity.GetUserId();
                     db.TicketComments.Add(ticketComment);
 
+                if (!roleHelper.IsUserDemo())
+                {
                     db.SaveChanges();
-                    return RedirectToAction("Details", "Tickets", new { id = ticketId });
+                }
+                return RedirectToAction("Details", "Tickets", new { id = ticketId });
                 }
 
             ViewBag.TicketId = new SelectList(db.Tickets, "Id", "Title", ticketComment.TicketId);
@@ -101,7 +104,10 @@ namespace PengBugTracker.Controllers
             if (ModelState.IsValid)
             {
                 db.Entry(ticketComment).State = EntityState.Modified;
-                db.SaveChanges();
+                if (!roleHelper.IsUserDemo())
+                {
+                    db.SaveChanges();
+                }
                 return RedirectToAction("Index");
             }
             ViewBag.TicketId = new SelectList(db.Tickets, "Id", "OwnerUserId", ticketComment.TicketId);
@@ -131,7 +137,10 @@ namespace PengBugTracker.Controllers
         {
             TicketComment ticketComment = db.TicketComments.Find(id);
             db.TicketComments.Remove(ticketComment);
-            db.SaveChanges();
+            if (!roleHelper.IsUserDemo())
+            {
+                db.SaveChanges();
+            }
             return RedirectToAction("Index");
         }
 

@@ -144,7 +144,7 @@
                                                 {
                                                     <div class="row">
                                                         <div class="col-md-offset-6">
-                                                            <a class="textcolor" href="@Url.Action("Edit", "TicketComments", new { Id = comment.Id })">Edit</a>|
+                                                            <a class="textcolor" href="@Url.Action("Edit", "TicketComments", new { Id = comment.Id })">Edit</a> |
                                                             <a class="textcolor" href="@Url.Action("Delete", "TicketComments", new { Id = comment.Id })">Delete</a>
                                                         </div>
                                                     </div>
@@ -196,7 +196,7 @@
                         <div class="card-body ">
                             <div class="row table-responsive">
                                 <div class="col-md-12">
-                                    <table>
+                                    <table class="table-striped">
                                         @foreach (var attachments in Model.TicketAttachments)
                                         {
                                             <tr>
@@ -209,15 +209,14 @@
                                                     @Html.DisplayFor(modelAttachments => attachments.Description)
                                                 </td>
                                                 <td>
-                                                    @Html.ActionLink("Edit", "Edit", new { id = attachments.Id })|
-                                                    @Html.ActionLink("Details", "Details", new { id = attachments.Id })|
-                                                    @Html.ActionLink("Delete", "Delete", new { id = attachments.Id })
+                                                    @*@Html.ActionLink("Edit", "Edit", "TicketAttachments", new { id = attachments.Id }, new { @class = "btn btn-warning btn-sm btn-round"})*@
+                                                    @Html.ActionLink("Details", "Index", "TicketAttachments", new { id = attachments.Id },  new { @class = "btn btn-warning btn-sm btn-round"})
+                                                    @Html.ActionLink("Delete", "Delete", new { id = attachments.Id },  new { @class = "btn btn-danger btn-sm btn-round"})
                                                 </td>
-                                            </tr>
+                                                
+                                            </tr>                                        
                                         }
                                     </table>
-
-
 
                                     @using (Html.BeginForm("Create", "TicketAttachments", FormMethod.Post, new { enctype = "Multipart/form-data" }))
                                     {
@@ -300,8 +299,6 @@
                     </ul>
                 </div>
             </div>
-
-
         </div>
     </div>
 </div>

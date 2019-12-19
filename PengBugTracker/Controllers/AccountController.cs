@@ -189,7 +189,7 @@ namespace PengBugTracker.Controllers
                     Email = model.Email, 
                     FirstName = model.FirstName, 
                     LastName = model.LastName,
-                    AvatarUrl ="/Avatars/default_user.png",
+                    AvatarUrl ="/Avatar/default_user.png",
 
                     //this is part of IdentityModels.cs. Use below when [Not Mapped] is removed
                     FullName = $"{model.FirstName} {model.LastName}"
@@ -205,17 +205,17 @@ namespace PengBugTracker.Controllers
                         var justFileName = Path.GetFileNameWithoutExtension(fileName);
                         justFileName = StringUtilities.URLFriendly(justFileName);
                         fileName = $"{justFileName} {DateTime.Now.Ticks}{Path.GetExtension(fileName)}";
-                        avatar.SaveAs(Path.Combine(Server.MapPath("~/Avatars/"), fileName));
-                        user.AvatarUrl = "/Uploads/" + fileName;
+                        avatar.SaveAs(Path.Combine(Server.MapPath("~/Avatar/"), fileName));
+                        user.AvatarUrl = "/Avatar/" + fileName;
                     }
                 }
                
-                if (ImageUploadValidator.IsWebFriendlyImage(model.Avatar))
-                {
-                    var fileName = Path.GetFileName(model.Avatar.FileName);
-                    model.Avatar.SaveAs(Path.Combine(Server.MapPath("~/Uploads/"), fileName));
-                    user.AvatarUrl = "/Uploads/" + fileName;
-                }    
+                //if (ImageUploadValidator.IsWebFriendlyImage(model.Avatar))
+                //{
+                //    var fileName = Path.GetFileName(model.Avatar.FileName);
+                //    model.Avatar.SaveAs(Path.Combine(Server.MapPath("~/Avatar/"), fileName));
+                //    user.AvatarUrl = "/Avatar/" + fileName;
+                //}    
                 
                 var result = await UserManager.CreateAsync(user, model.Password);
                 if (result.Succeeded)

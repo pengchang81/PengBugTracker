@@ -19,6 +19,7 @@ namespace PengBugTracker.Controllers
         private ImageUploadValidator imageUploadValidator = new ImageUploadValidator();
         private NotificationHelper notificationHelper = new NotificationHelper();
         private TicketHistoryHelper auditHelper = new TicketHistoryHelper();
+        private RoleHelper roleHelper = new RoleHelper();
 
         // GET: TicketAttachments
         public ActionResult Index()
@@ -92,7 +93,10 @@ namespace PengBugTracker.Controllers
 
                         db.TicketAttachments.Add(ticketAttachment);
 
-                        db.SaveChanges();
+                        if (!roleHelper.IsUserDemo())
+                        {
+                            db.SaveChanges();
+                        }
                     }
                 }
                 //Response.Redirect(Request.RawUrl);
@@ -115,6 +119,7 @@ namespace PengBugTracker.Controllers
             }
             ViewBag.TicketId = new SelectList(db.Tickets, "Id", "OwnerUserId", ticketAttachment.TicketId);
             ViewBag.UserId = new SelectList(db.Users, "Id", "FirstName", ticketAttachment.UserId);
+            ViewBag.ProjectId = new SelectList(db.Projects, "Id", "Name", ticketAttachment.ProjectId);
             return View(ticketAttachment);
         }
 
@@ -125,10 +130,18 @@ namespace PengBugTracker.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Edit([Bind(Include = "Id,TicketId,UserId,Description,FilePath,Created,Updated")] TicketAttachment ticketAttachment)
         {
+
+            //if(roleHelper.IsUserDemo() == true)
+            //{
+            //    return RedirectToAction("Dashboard","Home");
+            //}
             if (ModelState.IsValid)
             {
                 db.Entry(ticketAttachment).State = EntityState.Modified;
-                db.SaveChanges();
+                if (!roleHelper.IsUserDemo())
+                {
+                    db.SaveChanges();
+                }
                 return RedirectToAction("Index");
             }
             ViewBag.TicketId = new SelectList(db.Tickets, "Id", "OwnerUserId", ticketAttachment.TicketId);
@@ -158,7 +171,10 @@ namespace PengBugTracker.Controllers
         {
             TicketAttachment ticketAttachment = db.TicketAttachments.Find(id);
             db.TicketAttachments.Remove(ticketAttachment);
-            db.SaveChanges();
+            if (!roleHelper.IsUserDemo())
+            {
+                db.SaveChanges();
+            }
             return RedirectToAction("Index");
         }
 

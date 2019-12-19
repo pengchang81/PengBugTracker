@@ -53,7 +53,7 @@
                 Tip 2: you can also add an image using data-image tag
             -->
             <div class="logo">
-                <a href="http://www.creative-tim.com" class="simple-text text-center logo-normal">Peng's Bug Tracker</a>
+                <a class="simple-text text-center logo-normal">Peng's Bug Tracker</a>
             </div>
             <div class="sidebar-wrapper">
                 @if (user != null)
@@ -218,7 +218,7 @@
                                     </li>
                                 }
 
-                                @if (User.IsInRole("Manager") || User.IsInRole("Submitter") || User.IsInRole("Developer") || User.IsInRole("DemoManager") || User.IsInRole("DemoSubmitter") || User.IsInRole("DemoDeveloper"))
+                                @if (User.IsInRole("Manager") || User.IsInRole("Admin") || User.IsInRole("DemoAdmin") || User.IsInRole("Submitter") || User.IsInRole("Developer") || User.IsInRole("DemoManager") || User.IsInRole("DemoSubmitter") || User.IsInRole("DemoDeveloper"))
                                 {
                                     <li class="nav-item ">
                                         <a class="nav-link" href="@Url.Action("MyIndex","Tickets")">

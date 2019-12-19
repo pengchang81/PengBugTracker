@@ -23,7 +23,7 @@ namespace PengBugTracker.Controllers
         private TicketHistoryHelper ticketHistoryHelper = new TicketHistoryHelper();
 
         // GET: All Tickets: Everyone can view tickets        
-        [Authorize(Roles = "Admin,Manager,Developer,Submitter")]
+        [Authorize(Roles = "Admin, DemoAdmin, Manager, DemoManager, Developer, DemoDeveloper, Submitter, DemoSubmitter")]
         public ActionResult Index()
         {
             var allTickets = db.Tickets.ToList();
@@ -35,7 +35,7 @@ namespace PengBugTracker.Controllers
 
         }
         //Get: All Tickets MyIndex: Authorized can view   
-        [Authorize(Roles = "Admin,Manager,Developer,Submitter")]
+        [Authorize(Roles = "Admin, DemoAdmin, Manager, DemoManager, Developer, DemoDeveloper, Submitter, DemoSubmitter")]
         public ActionResult MyIndex(string req)
         {
             //First get the Id of the logged in User
@@ -113,7 +113,7 @@ namespace PengBugTracker.Controllers
         }
 
         // GET: Tickets Submitters Create
-        [Authorize(Roles = "Submitter")]
+        [Authorize(Roles = "Submitter, Admin, DemoSubmitter, DemoAdmin, DemoDeveloper, DemoManager")]
         public ActionResult Create()
         {
             var userId = User.Identity.GetUserId();
@@ -140,7 +140,10 @@ namespace PengBugTracker.Controllers
                 ticket.OwnerUserId = User.Identity.GetUserId();
                 ticket.TicketStatusId = db.TicketStatus.FirstOrDefault(t => t.StatusName == "Open").Id;
                 db.Tickets.Add(ticket);
-                db.SaveChanges();
+                if (!roleHelper.IsUserDemo())
+                {
+                    db.SaveChanges();
+                }
                 return RedirectToAction("MyIndex");
             }
 
@@ -182,10 +185,15 @@ namespace PengBugTracker.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Edit([Bind(Include = "Id,ProjectId,TicketTypeId,TicketPriorityId,TicketStatusId,OwnerUserId,AssignedToUserId,Title,Description,Created,Updated")] Ticket ticket)
         {
+            if(roleHelper.IsUserDemo() == true)
+            {
+                return RedirectToAction("Dashboard","Home");
+            }
             if (ModelState.IsValid)
             {
                 //Record the old Ticket before it gets updated for comparison
                 //var oldTicket = db.Tickets.FInd(Ticket.Id);
+               
                 var oldTicket = db.Tickets.AsNoTracking().FirstOrDefault(t => t.Id == ticket.Id);
                 if (ticket.AssignedToUserId != null)
                 {
@@ -194,8 +202,12 @@ namespace PengBugTracker.Controllers
                 }
                 ticket.Updated = DateTime.Now;
                 db.Entry(ticket).State = EntityState.Modified;
-                db.SaveChanges();
 
+                if (!roleHelper.IsUserDemo())
+                {
+                    db.SaveChanges();
+                }
+                
                 var newTicket = db.Tickets.AsNoTracking().FirstOrDefault(t => t.Id == ticket.Id);
 
                 //decide for yourself HistoryHelper as to whether a history record needs to be added...
@@ -216,6 +228,7 @@ namespace PengBugTracker.Controllers
         // GET: Tickets/Delete/5
         public ActionResult Delete(int? id)
         {
+
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
@@ -233,9 +246,16 @@ namespace PengBugTracker.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)
         {
+            if (roleHelper.IsUserDemo() == true)
+            {
+                return RedirectToAction("Dashboard", "Home");
+            }
             Ticket ticket = db.Tickets.Find(id);
             db.Tickets.Remove(ticket);
-            db.SaveChanges();
+            if (!roleHelper.IsUserDemo())
+            {
+                db.SaveChanges();
+            }
             return RedirectToAction("Index");
         }
 
@@ -270,7 +290,10 @@ namespace PengBugTracker.Controllers
             ticket.AssignedToUserId = model.AssignedToUserId;
             ticket.Updated = DateTime.Now;
 
-            db.SaveChanges();
+            if (!roleHelper.IsUserDemo())
+            {
+                db.SaveChanges();
+            }
 
             var callbackUrl = Url.Action("Details", "Tickets", new { id = ticket.Id }, protocol: Request.Url.Scheme);
             notificationHelper.SendNotification(ticket, $"You have been assigned to <b>Ticket</b> #{ticket.Id}/({ticket.Description}), for the <b>{ticket.Project.Name}</b>.");

@@ -143,7 +143,10 @@ namespace PengBugTracker.Controllers
             {
                 project.Created = DateTime.Now;
                 db.Projects.Add(project);
-                db.SaveChanges();
+                if (!roleHelper.IsUserDemo())
+                {
+                    db.SaveChanges();
+                }
                 return RedirectToAction("ProjectIndex");
             }
 
@@ -176,7 +179,10 @@ namespace PengBugTracker.Controllers
             {
                 project.Updated = DateTime.Now;
                 db.Entry(project).State = EntityState.Modified;
-                db.SaveChanges();
+                if (!roleHelper.IsUserDemo())
+                {
+                    db.SaveChanges();
+                }
                 return RedirectToAction("ProjectIndex");
             }
             return View(project);
@@ -204,7 +210,10 @@ namespace PengBugTracker.Controllers
         {
             Project project = db.Projects.Find(id);
             db.Projects.Remove(project);
-            db.SaveChanges();
+            if (!roleHelper.IsUserDemo())
+            {
+                db.SaveChanges();
+            }
             return RedirectToAction("ProjectIndex");
         }
 

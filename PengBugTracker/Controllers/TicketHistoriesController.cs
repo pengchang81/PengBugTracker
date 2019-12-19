@@ -7,12 +7,14 @@ using System.Net;
 using System.Web;
 using System.Web.Mvc;
 using PengBugTracker.Models;
+using PengBugTracker.Helpers;
 
 namespace PengBugTracker.Controllers
 {
     public class TicketHistoriesController : Controller
     {
         private ApplicationDbContext db = new ApplicationDbContext();
+        private RoleHelper roleHelper = new RoleHelper();
 
         // GET: TicketHistories
         public ActionResult Index()
@@ -54,7 +56,10 @@ namespace PengBugTracker.Controllers
             if (ModelState.IsValid)
             {
                 db.TicketHistories.Add(ticketHistory);
-                db.SaveChanges();
+                if (!roleHelper.IsUserDemo())
+                {
+                    db.SaveChanges();
+                }
                 return RedirectToAction("Index");
             }
 
@@ -90,7 +95,10 @@ namespace PengBugTracker.Controllers
             if (ModelState.IsValid)
             {
                 db.Entry(ticketHistory).State = EntityState.Modified;
-                db.SaveChanges();
+                if (!roleHelper.IsUserDemo())
+                {
+                    db.SaveChanges();
+                }
                 return RedirectToAction("Index");
             }
             ViewBag.TicketId = new SelectList(db.Tickets, "Id", "OwnerUserId", ticketHistory.TicketId);
@@ -120,7 +128,10 @@ namespace PengBugTracker.Controllers
         {
             TicketHistory ticketHistory = db.TicketHistories.Find(id);
             db.TicketHistories.Remove(ticketHistory);
-            db.SaveChanges();
+            if (!roleHelper.IsUserDemo())
+            {
+                db.SaveChanges();
+            }
             return RedirectToAction("Index");
         }
 
