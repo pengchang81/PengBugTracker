@@ -192,7 +192,7 @@ namespace PengBugTracker.Controllers
                     AvatarUrl ="/Avatar/default_user.png",
 
                     //this is part of IdentityModels.cs. Use below when [Not Mapped] is removed
-                    FullName = $"{model.FirstName} {model.LastName}"
+                    //FullName = $"{model.FirstName} {model.LastName}"
 
                 };
 
@@ -210,13 +210,7 @@ namespace PengBugTracker.Controllers
                     }
                 }
                
-                //if (ImageUploadValidator.IsWebFriendlyImage(model.Avatar))
-                //{
-                //    var fileName = Path.GetFileName(model.Avatar.FileName);
-                //    model.Avatar.SaveAs(Path.Combine(Server.MapPath("~/Avatar/"), fileName));
-                //    user.AvatarUrl = "/Avatar/" + fileName;
-                //}    
-                
+                                
                 var result = await UserManager.CreateAsync(user, model.Password);
                 if (result.Succeeded)
                 {

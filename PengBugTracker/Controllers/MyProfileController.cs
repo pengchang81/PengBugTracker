@@ -60,10 +60,9 @@ namespace PengBugTracker.Controllers
                     user.AvatarUrl = "/Avatar/" + fileName;
                 }
             }
-            if (!roleHelper.IsUserDemo())
-            {
+            
                 db.SaveChanges();
-            }
+            
 
             return RedirectToAction("MyProfile");
 

@@ -13,15 +13,15 @@ namespace PengBugTracker.Models
     public class ApplicationUser : IdentityUser
     {
         [Display(Name = "First Name")]
-        [StringLength(50, MinimumLength = 1, ErrorMessage = "First Name must have min length of 1 and maximum of 20")]
+        [StringLength(50, MinimumLength = 2, ErrorMessage = "First Name must have min length of 2 and maximum of 20")]
         public string FirstName { get; set; }
 
         [Display(Name = "Last Name")]
-        [StringLength(50, MinimumLength = 1, ErrorMessage = "Last Name must have min length of 1 and maximum of 20")]
+        [StringLength(50, MinimumLength = 2, ErrorMessage = "Last Name must have min length of 2 and maximum of 20")]
         public string LastName { get; set; }
 
         [Display(Name = "Display Name")]
-        [StringLength(50, MinimumLength = 1, ErrorMessage = "Display Name must have min length of 1 and maximum of 20")]
+        [StringLength(50, MinimumLength = 5, ErrorMessage = "Display Name must have min length of 5 and maximum of 20")]
         public string DisplayName { get; set; }
         public string AvatarUrl { get; set; }
 

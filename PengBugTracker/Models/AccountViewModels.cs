@@ -71,12 +71,14 @@ namespace PengBugTracker.Models
     public class RegisterViewModel
     {
         [Required]
-        [MaxLength(40), MinLength(1)]
+        [RegularExpression(@"^[^<>.,?;:'()!~%\-_@#/*""\s]+$", ErrorMessage = "Only letters are valid")]
+        [MaxLength(40), MinLength(2)] 
         [Display(Name = "First Name")]
         public string FirstName { get; set; }
 
         [Required]
-        [MaxLength(40), MinLength(1)]
+        [RegularExpression(@"^[^<>.,?;:'()!~%\-_@#/*""\s]+$", ErrorMessage = "Only letters are valid")]
+        [MaxLength(40), MinLength(2)]
         [Display(Name = "Last Name")]
         public string LastName { get; set; }
 
